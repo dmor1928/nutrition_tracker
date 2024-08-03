@@ -3,17 +3,24 @@ import sqlite3
 
 conn = sqlite3.connect('CoFID_2021_nutrition_information.db')
 
-macros_data = pd.read_csv('databases/CoFID_2021_proximates.csv')[[
+proximates_data = pd.read_csv('database/CoFID_2021_proximates.csv')[[
     'Food Name', 
     'Energy (kcal) (kcal)', 
     'Protein (g)', 
     'Fat (g)', 
     'Carbohydrate (g)', 
-    'AOAC fibre (g)'
+    'AOAC fibre (g)',
+    'Satd FA /100g fd (g)',
+    'n-6 poly /100g food (g)',
+    'n-3 poly /100g food (g)',
+    'Mono FA /100g food (g)',
+    'Poly FA /100g food (g)',
+    'Trans FAs /100g food (g)',
+    'Cholesterol (mg)'
     ]]
-macros_data.to_sql('macros', conn, if_exists='replace', index=False)
+proximates_data.to_sql('proximates', conn, if_exists='replace', index=False)
 
-inorganics_data = pd.read_csv('databases/CoFID_2021_inorganics.csv')[[
+inorganics_data = pd.read_csv('database/CoFID_2021_inorganics.csv')[[
     'Sodium (mg)', 
     'Potassium (mg)', 
     'Calcium (mg)', 
@@ -27,7 +34,6 @@ inorganics_data = pd.read_csv('databases/CoFID_2021_inorganics.csv')[[
     'Selenium (µg)', 
     'Iodine (µg)'
     ]]
-
 inorganics_data.to_sql('inorganics', conn, if_exists='replace', index=False)
 
 vitamins_data = pd.read_csv('database/CoFID_2021_vitamins.csv')[[
@@ -49,12 +55,20 @@ vitamins_data = pd.read_csv('database/CoFID_2021_vitamins.csv')[[
     'Biotin (µg)', 
     'Vitamin C (mg)'
     ]]
+vitamins_data.to_sql('inorganics', conn, if_exists='replace', index=False)
 
-inorganics_data.to_sql('vitamisn', conn, if_exists='replace', index=False)
+
+vitamin_fractions_data = pd.read_csv('database/CoFID_2021_vitamin_fractions.csv')[[
+    'Alpha-carotene (µg)', 
+    'Beta-carotene (µg)',
+    'Lutein (µg)', 
+    'Lycopene (µg)'
+]]
+vitamin_fractions_data.to_sql('vitamin_fractions', conn, if_exists='replace', index=False)
 
 cur = conn.cursor()
 
-for i, row in enumerate(cur.execute('SELECT * FROM macros')):
+for i, row in enumerate(cur.execute('SELECT * FROM proximates')):
     print(row)
     if i > 20:
         break
