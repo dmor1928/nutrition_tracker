@@ -3,7 +3,7 @@ import sqlite3
 
 conn = sqlite3.connect('CoFID_2021_nutrition_information.db')
 
-proximates_data = pd.read_csv('database/CoFID_2021_proximates.csv')[[
+proximates_data = pd.read_csv('database/CoFID/CoFID_2021_proximates.csv')[[
     'Food Name', 
     'Energy (kcal) (kcal)', 
     'Protein (g)', 
@@ -20,7 +20,7 @@ proximates_data = pd.read_csv('database/CoFID_2021_proximates.csv')[[
     ]]
 proximates_data.to_sql('proximates', conn, if_exists='replace', index=False)
 
-inorganics_data = pd.read_csv('database/CoFID_2021_inorganics.csv')[[
+inorganics_data = pd.read_csv('database/CoFID/CoFID_2021_inorganics.csv')[[
     'Sodium (mg)', 
     'Potassium (mg)', 
     'Calcium (mg)', 
@@ -36,7 +36,7 @@ inorganics_data = pd.read_csv('database/CoFID_2021_inorganics.csv')[[
     ]]
 inorganics_data.to_sql('inorganics', conn, if_exists='replace', index=False)
 
-vitamins_data = pd.read_csv('database/CoFID_2021_vitamins.csv')[[
+vitamins_data = pd.read_csv('database/CoFID/CoFID_2021_vitamins.csv')[[
     'Retinol (µg)', 
     'Carotene (µg)', 
     'Retinol Equivalent (µg)', 
@@ -58,7 +58,7 @@ vitamins_data = pd.read_csv('database/CoFID_2021_vitamins.csv')[[
 vitamins_data.to_sql('inorganics', conn, if_exists='replace', index=False)
 
 
-vitamin_fractions_data = pd.read_csv('database/CoFID_2021_vitamin_fractions.csv')[[
+vitamin_fractions_data = pd.read_csv('database/CoFID/CoFID_2021_vitamin_fractions.csv')[[
     'Alpha-carotene (µg)', 
     'Beta-carotene (µg)',
     'Lutein (µg)', 
