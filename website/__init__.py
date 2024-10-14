@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
+from flask_login import LoginManager  # type: ignore
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
@@ -21,10 +22,23 @@ def create_app():
 
     create_database(app)
 
+    login_manager = LoginManager()
+    login_manager.login_view = 'auth.login'  # If user not logged in at entry, flask redirects to login page
+    login_manager.init_app(app)  # Tells login manager whihc app is being used
+
+    @login_manager.user_loader  # Tells flask how a user is loaded
+    def load_user(id):
+        return User.query.get(int(id))  # similar to the filter function. Filters for the primary key by default to check if it;s equal to int(id)
+
+
     return app
 
 def create_database(app):
-    if not path.exists('website/' + DB_NAME):
+    dir_path = path.dirname(path.realpath(__file__))
+    instance_dir, _ = path.split(dir_path)
+    instance_dir += "\\instance\\"
+
+    if not path.exists(instance_dir + DB_NAME):
         with app.app_context():
             db.create_all()
         print('Created Database')
