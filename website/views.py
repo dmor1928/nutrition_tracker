@@ -36,3 +36,12 @@ def delete_note():
             db.session.commit()
     
     return jsonify({})
+
+@views.route('/my-product-page')
+def productPage():
+    return render_template("my-landing-page/my-product-page.html")
+
+@views.route('/create-recipe')
+@login_required
+def createRecipePage():
+    return render_template("create-recipe.html", user=current_user)

@@ -16,4 +16,3 @@ class User(db.Model, UserMixin):  # type: ignore
     password = db.Column(db.String(150))
     firstName = db.Column(db.String(150))
     notes = db.relationship('Note')
-

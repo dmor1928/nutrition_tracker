@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- <link rel="stylesheet/less" type="text/css" href="styles.less" /> -->
+<script src="https://cdn.jsdelivr.net/npm/less" ></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/my-landing-page/productpage.css') }}">
+    <title>NutriMetrics - Nutritional Tracker and Planner</title>
+  </head>
+  <body>
+    <header id="header">
+      <div class="logo">
+    <svg id="header-img" width="100" height="100" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+      <path d="M34 24L24 34C24 34 15.0002 25 14 24C12.9998 23 12.5 21 14 19C15.5 17 18.5 17 20 18C21.5001 19 22.0001 20 24 20C26 20 26.5001 19 28 18C29.5 17 32.5003 17 34.0003 19C35.5003 21 35 23 34 24Z" fill="#00d959" stroke="#00d959" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+      <h1>Nutri<span class="emphasis">Metrics</span></h1>
+      </div>
+      <nav id="nav-bar"> <!-- Navigation bar -->
+        <a class="nav-link" href="#Home">Home</a>
+        <a class="nav-link" href="#About">About</a>
+        <a class="nav-link" href="#Our-Story">Our story</a>
+        <a class="nav-link" href="#Reviews">Reviews</a>
+        <a class="nav-link" href="#Contact">Contact</a>
+      </nav>
+    </header>
+    <main>
+      <div class="row" id="top-container">
+        <div class="two-column">
+          <div class="textbox big">
+            <h2>
+              The most <br>
+              <span id="Home" class="emphasis big">in-depth</span><br> 
+              nutrition tracker.
+            </h2>
+          </div>
+          <div id="textbox-column" class="textbox big">
+            <h3> And it's <span class="emphasis">free</span>! What's not to love?</h3>
+          </div>
+        </div>
+        <div id="phone-img-column" class="two-column">
+          <img id="phone-img" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F048%2F718%2F898%2Flarge_2x%2Fmale-hand-holding-a-phone-on-transparent-background-free-png.png&f=1&nofb=1&ipt=fdc787e38d9e8d1717f32f3d6a1879a126da67aa7304491d392c06f77d12c297&ipo=images">
+        </div>
+      </div>
+      <div class="row flat-corners" id="app-badges-section">
+        <div></div>
+        <div>
+          <img class="appstore-badge" 
+          src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg">
+        </div>
+        <div>
+          <img class="appstore-badge" 
+          src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg">
+      </div>
+      <div></div>
+      <div></div>
+      </div>
+      <div class="row features-container flat-corners">
+        <div class="three-column">
+          <div class="textbox">
+            <svg class="features-img" fill="#000000" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+              <title>tick-checkbox</title>
+              <path d="M0 26.016v-20q0-2.496 1.76-4.256t4.256-1.76h20q2.464 0 4.224 1.76t1.76 4.256v20q0 2.496-1.76 4.224t-4.224 1.76h-20q-2.496 0-4.256-1.76t-1.76-4.224zM4 26.016q0 0.832 0.576 1.408t1.44 0.576h20q0.8 0 1.408-0.576t0.576-1.408v-20q0-0.832-0.576-1.408t-1.408-0.608h-20q-0.832 0-1.44 0.608t-0.576 1.408v20zM7.584 16q0-0.832 0.608-1.408t1.408-0.576 1.408 0.576l2.848 2.816 7.072-7.040q0.576-0.608 1.408-0.608t1.408 0.608 0.608 1.408-0.608 1.408l-8.48 8.48q-0.576 0.608-1.408 0.608t-1.408-0.608l-4.256-4.256q-0.608-0.576-0.608-1.408z"></path>
+              </svg>
+            <h3>Track your habits with a tap.</h3>
+          </div>
+        </div>
+        <div class="three-column">
+          <div class="textbox">
+            <svg class="features-img" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <g id="layer1">
+              <path d="M 0 2 L 0 18 L 20 18 L 20 17 L 1 17 L 1 2 L 0 2 z M 6.4921875 2.5 C 6.3623006 2.50207 6.2383174 2.554606 6.1464844 2.6464844 L 2.1464844 6.6464844 C 1.6556578 7.1177388 2.3822612 7.8443422 2.8535156 7.3535156 L 6.421875 3.7851562 L 10.083984 9.2773438 C 10.223774 9.4866441 10.49734 9.5594276 10.722656 9.4472656 L 14.400391 7.6074219 L 18.146484 11.353516 C 18.617739 11.844289 19.344289 11.117739 18.853516 10.646484 L 14.853516 6.6464844 C 14.701521 6.4947425 14.469605 6.457007 14.277344 6.5527344 L 10.671875 8.3554688 L 6.9160156 2.7226562 C 6.8217568 2.5812359 6.6621214 2.497372 6.4921875 2.5 z M 6.4824219 10.5 A 0.50083746 0.50083746 0 0 0 6.1464844 10.646484 L 2.1464844 14.646484 A 0.50083746 0.50083746 0 1 0 2.8535156 15.353516 L 6.5996094 11.609375 L 10.275391 13.447266 A 0.50083746 0.50083746 0 0 0 10.621094 13.486328 L 14.441406 12.53125 L 18.275391 14.447266 A 0.50083746 0.50083746 0 1 0 18.724609 13.552734 L 14.724609 11.552734 A 0.50083746 0.50083746 0 0 0 14.378906 11.513672 L 10.558594 12.46875 L 6.7246094 10.552734 A 0.50083746 0.50083746 0 0 0 6.4824219 10.5 z " style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0px;"/>
+              </g>
+              </svg>
+            <h3>See long-term trends and learn what works for you.</h3>
+          </div>
+        </div>
+        <div class="three-column">
+          <div class="textbox">
+            <svg class="features-img" fill="#000000" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+              
+              <path d="M6.016 10.016q0 3.264 1.984 5.92v0.064q0.128 0.128 0.32 0.384l0.064 0.064q1.632 1.92 1.632 3.552v2.016q0 0.832 0.576 1.408t1.408 0.576h8q0.832 0 1.408-0.576t0.608-1.408v-2.016q0-0.064 0-0.224t0.128-0.608 0.288-0.896 0.608-1.088 0.96-1.184q0.544-0.512 0.736-1.216 1.28-2.208 1.28-4.768 0-2.048-0.8-3.872t-2.144-3.2-3.2-2.144-3.872-0.8q-2.72 0-5.024 1.344t-3.616 3.648-1.344 5.024zM10.016 10.016q0-2.496 1.728-4.256t4.256-1.76 4.256 1.76 1.76 4.256q0 1.92-1.12 3.456t-2.88 2.176v2.368q0 0.832-0.608 1.408t-1.408 0.576-1.408-0.576-0.576-1.408v-2.368q-1.792-0.608-2.912-2.144t-1.088-3.488zM12 27.008q0 0.416 0.288 0.704t0.704 0.288h6.016q0.384 0 0.704-0.288t0.288-0.704-0.288-0.704-0.704-0.288h-6.016q-0.384 0-0.704 0.288t-0.288 0.704zM14.016 31.040q0 0.384 0.288 0.704t0.704 0.288h1.984q0.416 0 0.704-0.288t0.32-0.704-0.32-0.704-0.704-0.32h-1.984q-0.416 0-0.704 0.32t-0.288 0.704z"></path>
+              </svg>
+            <h3>Suggested recipes and foods, tailored to your diet</h3>
+              
+          </div>
+        </div>
+      </div>
+
+      <div class="row features-container" id="features-container">
+        <div class="three-column">
+          <div class="textbox">
+            <svg class="features-img" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 5.00005C7.01165 5.00082 6.49359 5.01338 6.09202 5.21799C5.71569 5.40973 5.40973 5.71569 5.21799 6.09202C5 6.51984 5 7.07989 5 8.2V17.8C5 18.9201 5 19.4802 5.21799 19.908C5.40973 20.2843 5.71569 20.5903 6.09202 20.782C6.51984 21 7.07989 21 8.2 21H15.8C16.9201 21 17.4802 21 17.908 20.782C18.2843 20.5903 18.5903 20.2843 18.782 19.908C19 19.4802 19 18.9201 19 17.8V8.2C19 7.07989 19 6.51984 18.782 6.09202C18.5903 5.71569 18.2843 5.40973 17.908 5.21799C17.5064 5.01338 16.9884 5.00082 16 5.00005M8 5.00005V7H16V5.00005M8 5.00005V4.70711C8 4.25435 8.17986 3.82014 8.5 3.5C8.82014 3.17986 9.25435 3 9.70711 3H14.2929C14.7456 3 15.1799 3.17986 15.5 3.5C15.8201 3.82014 16 4.25435 16 4.70711V5.00005M16 11H14M16 16H14M8 11L9 12L11 10M8 16L9 17L11 15" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/> 
+              </svg>
+            <h3>50+ nutrients automatically logged and reported.</h3>
+          </div>
+        </div>
+        <div class="three-column">
+          <div class="textbox">
+            <svg class="features-img" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <g id="layer1">
+              <path d="M 0 2 L 0 18 L 20 18 L 20 17 L 1 17 L 1 2 L 0 2 z M 6.4921875 2.5 C 6.3623006 2.50207 6.2383174 2.554606 6.1464844 2.6464844 L 2.1464844 6.6464844 C 1.6556578 7.1177388 2.3822612 7.8443422 2.8535156 7.3535156 L 6.421875 3.7851562 L 10.083984 9.2773438 C 10.223774 9.4866441 10.49734 9.5594276 10.722656 9.4472656 L 14.400391 7.6074219 L 18.146484 11.353516 C 18.617739 11.844289 19.344289 11.117739 18.853516 10.646484 L 14.853516 6.6464844 C 14.701521 6.4947425 14.469605 6.457007 14.277344 6.5527344 L 10.671875 8.3554688 L 6.9160156 2.7226562 C 6.8217568 2.5812359 6.6621214 2.497372 6.4921875 2.5 z M 6.4824219 10.5 A 0.50083746 0.50083746 0 0 0 6.1464844 10.646484 L 2.1464844 14.646484 A 0.50083746 0.50083746 0 1 0 2.8535156 15.353516 L 6.5996094 11.609375 L 10.275391 13.447266 A 0.50083746 0.50083746 0 0 0 10.621094 13.486328 L 14.441406 12.53125 L 18.275391 14.447266 A 0.50083746 0.50083746 0 1 0 18.724609 13.552734 L 14.724609 11.552734 A 0.50083746 0.50083746 0 0 0 14.378906 11.513672 L 10.558594 12.46875 L 6.7246094 10.552734 A 0.50083746 0.50083746 0 0 0 6.4824219 10.5 z " style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:0px;"/>
+              </g>
+              </svg>
+            <h3>Smart suggestions offer food ideas for the nutrients you're low in.</h3>
+          </div>
+        </div>
+        <div class="three-column">
+          <div class="textbox">
+            <svg class="features-img" viewBox="0 0 1024 1024" fill="#000000" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+              <path d="M512 201.076364c33.978182 55.156364 69.818182 105.658182 103.563636 152.901818C700.741818 473.6 768 568.087273 768 674.909091c0 116.363636-114.269091 256-256 256S256 791.272727 256 674.909091c0-106.821818 67.258182-201.309091 152.436364-320.930909 33.512727-46.545455 69.818182-97.745455 103.563636-152.901818M512 0C395.636364 279.272727 162.909091 442.181818 162.909091 674.909091c0 170.589091 160.581818 349.090909 349.090909 349.090909s349.090909-178.501818 349.090909-349.090909c0-232.727273-232.727273-395.636364-349.090909-674.909091zM575.534545 744.727273a116.363636 116.363636 0 0 1-80.058181-31.650909L465.454545 683.52a23.272727 23.272727 0 0 0-31.883636 0l-28.16 26.763636a46.545455 46.545455 0 1 1-64.232727-67.490909l28.16-26.763636a116.363636 116.363636 0 0 1 160.116363 0L558.545455 645.585455a23.272727 23.272727 0 0 0 31.883636 0l28.16-26.763637a46.545455 46.545455 0 1 1 64.232727 67.490909l-28.16 26.763637a116.363636 116.363636 0 0 1-79.127273 31.650909z" />
+            </svg>
+            <h3>Track your water and alcohol intake.</h3>
+              
+          </div>
+        </div>
+      </div>
+
+      <div class="m-scroll">
+  <div class="m-scroll__title">
+    <div>
+      <h1>
+         Nutritional labels are sooo 1996. N
+      </h1>
+      <h1></h1>
+      <h1>
+         utritional labels are sooo 1996. 
+      </h1>
+    </div>
+  </div>
+</div>
+
+      <div id="about-section" class="section">
+        <div class="textbox">
+          <h1 id="About">About</h1>
+          <p>Nutritonal labels haven't changed for 30 years, but nutritional science has changed a <i>lot</i>. Scientists have discovered over 80 essential nutrients that people should be getting every day. How many people even know that? Many food and drinks aren't even required to have a nutritional label, or have information that is so lacking in detail other than 'calories'. Most of the fruit and fresh produce won't have any labels. The same goes for the alcohol. If people saw how much sugar was in alcohol, people would probably think again about drinking it! But even the people who know are concerned about their diet, it can be so overwhelming to push that desire into action. The mammoth task of researching all of the micronutrients, figuring how much you need based on your age, sex and personal medical issues and then finding the foods that fit in a meal plan that are tasty but also not too expensive, and not too time-consuming to cook... Oh gosh, I'm getting stressed just thinking about it! Well, like many, I have been there, but I want to change that, and I want to make it as easy as possible for anyone to eat healthy! I believe empowering users with data and knowledge will encourage healthy eating and make it accessible to everyone.</p>
+        </div>
+      </div>
+      <div id="our-story-section" class="section">
+        <div class="textbox">
+          <h1 id="Our-Story">Our Story</h1>
+          <p>
+            My name is David, I am a student who loves solving problems and helping people change their lives. I am also a software developer. When I started university, the responsibility of cooking and preparing food for myself was thrown into my hands. I loved cooking and trying out fun recipes that my family wouldn't usually cook. However, as I researched more into food and diet, I realised that I should probably be more thoughtful about what I eat. I would spend hours skimming through Healthline articles, making tables of nutritional information, to try and figure out a meal plan that works for me and meets all my nutritional needs. I had a friend who also share this interested, to an even greater extent than me, who started reading scientific papers on nutrition and different nutrients. 
+          </p>
+        </div>
+      </div>
+      <div id="our-story-section" class="section">
+        <div class="textbox">
+          <h1 id="Reviews">Reviews</h1>
+          <h2>Charli XCX</h2>
+          <p>
+            "When I'm on the road, usually it's a toss-up between UberEats or Deliveroo. It felt kinda bad knowing that I should be thinking more about it. However, after my friend Lorde turned me on to this app, it has made it soo much easier for me to see what I'm eating and where to improve. I love the suggestions feature, which will remind me to eat more carrots and sweet potatoes next week to keep my glowing skin, so I can serve cvnt on-stage for my angels on my arena tour. Plus, I have saved so much on supplements after getting my meals in order."
+          </p>
+          <h2>Donald J. Trump</h2>
+          <p>Let me tell you folks about this app called NutriMetrics. A great app! I installed it and when I opened it thought "wow, this is a very great app." I like the green hearts, let me tell your folks, those green heart they love me and I love them. Let me tell you, it's almost as good as Truth. Maybe not quite, but I like it and it's a great app. It will make Your Diet Great Again!</p>
+        </div>
+      </div>
+      <div id="our-story-section" class="section">
+        <div class="textbox">
+          <h1 id="Contact">Contact</h1>
+          <p>
+
+          </p>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
