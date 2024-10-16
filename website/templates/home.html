@@ -4,12 +4,22 @@
 <h1 align="center">Notes</h1>
 <ul class="list-group list-group-flush" id="notes">
     {% for note in user.notes %}
-    <li class="list-group-item">{{ note.data }}
-        <button type="button" class="close" onClick="deleteNote({{ note.id }})">
+    <li class="list-group-item"><p>test</p>{{ note.data }}
+        <button type="button" class="btn close" onClick="deleteNote({{ note.id }})">
             <span aria-hidden="true">&times;</span>
         </button>
     </li>
     {% endfor %}
+    <li class="list-group-item"> <!-- sample of create-recipe list-->
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+            <span class="input-group-text"> grams of </span>
+            <input class="form-control" value="Dried Mushrooms" readonly>
+            <button type="button" class="btn close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>          
+    </li>
 </ul>
 <form method="POST">
     <textarea name="note" id="note" class="form-control"></textarea>
