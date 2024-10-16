@@ -2,20 +2,41 @@
 
 {% block content %}
 <h1 align="center">Create a recipe</h1>
-<ul class="list-group list-group-flush" id="notes">
-    {% for note in user.notes %}
-    <li class="list-group-item">{{ note.data }}
-        <button type="button" class="close" onClick="deleteNote({{ note.id }})">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </li>
-    {% endfor %}
-</ul>
 <form method="POST">
-    <textarea name="note" id="note" class="form-control"></textarea>
+    <div input-group mb-3>
+        <label for="recipe-name" class="form-label">Name your recipe</label>
+        <input type="text" class="form-control" placeholder="'My breakfast granola'" aria-label="Recipe name" name="recipe-name" id="recipe-name"></input>
+    </div>
+    <br/>
+    <div input-group mb-3>
+        <label for="recipe-description" class="form-label">Describe your recipe</label>
+        <textarea class="form-control" placeholder="'My favourite weekday fruit and yoghurt granola, goes well with my morning coffee'" aria-label="Recipe description" name="recipe-description" id="recipe-description"></textarea>
+    </div>
+    <br/>
+    <div input-group mb-3>
+        <label for="recipe-description" class="form-label">Dietary restrictions</label>
+        <div class="btn-group d-flex" role="group">
+            <button class="btn btn-outline-secondary" type="button">None</button>  
+            <button class="btn btn-outline-secondary" type="button">Vegan</button>
+            <button class="btn btn-outline-secondary" type="button">Vegetarian</button>      
+            <button class="btn btn-outline-secondary" type="button">Pescatarian</button>  
+        </div>
+    </div>
+    <br/>
+    <h3 align="center">Add ingredients</h3>
+    <div class="input-group">
+        <select class="form-select" id="ingredient" aria-label="Select ingredient">
+          <option selected>Choose...</option>
+          <option value="One">One</option>
+          <option value="Two">Two</option>
+          <option value="Three">Three</option>
+        </select>
+        <input type="button" value="&plus;" class="btn btn-outline-secondary" id="add_ingredient"/>
+    </div>
+    <ul id='ingredients_list'></ul>
     <br/>
     <div align="center">
-        <button type="submit" class="btn btn-primary">Add Notes</button>
+        <button type="submit" class="btn btn-primary">Add recipe</button>
     </div>
 </form>
 {% endblock %}

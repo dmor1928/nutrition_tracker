@@ -1,5 +1,8 @@
 '''
-for managing logins and authentication
+for managing logins and authentication.
+
+Has the login(), logout(), and signup() functions, routed to ./login, ./logout, ./sing-up respectively
+
 '''
 
 from flask import Blueprint, render_template, request, flash, redirect, url_for
