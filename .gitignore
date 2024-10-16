@@ -2,6 +2,8 @@ venv/*
 .venv/*
 .vscode/settings.json
 
+landing-page/startbootstrap-new-age-gh-pages/
+
 databases/FoodData_Central_csv_2024-04-18/.~lock.Download API Field Descriptions.xlsx#
 databases/FoodData_Central_csv_2024-04-18/acquisition_samples.csv
 databases/FoodData_Central_csv_2024-04-18/agricultural_samples.csv
