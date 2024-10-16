@@ -37,7 +37,7 @@ def delete_note():
     
     return jsonify({})
 
-@views.route('/my-product-page')
+@views.route('/product-page')
 def productPage():
     return render_template("my-landing-page/my-product-page.html")
 
