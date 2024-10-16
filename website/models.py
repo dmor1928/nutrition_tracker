@@ -16,3 +16,20 @@ class User(db.Model, UserMixin):  # type: ignore
     password = db.Column(db.String(150))
     firstName = db.Column(db.String(150))
     notes = db.relationship('Note')
+
+# Database model for recipe ingredients
+class RecipeIngredient(db.Model):  # type: ignore
+    id = db.Column(db.Integer, primary_key=True)  # The id uniquely identifying each instance of an ingredient in a recipe (various amounts etc.)
+    amount = db.Column(db.Float)  # In grams
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))  # Links the instance of an ingredient to its recipe
+    food_id = db.Column(db.Integer, db.ForeignKey('foods.id'))
+
+# Database model for recipes
+class Recipe(db.Model):  # type: ignore
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64)) 
+    description = db.Column(db.String(1000))
+    vegetarian = db.Column(db.Boolean)  # Dietary requirements
+    vegan = db.Column(db.Boolean)
+    pescatarian = db.Column(db.Boolean)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # Which user created the recipe

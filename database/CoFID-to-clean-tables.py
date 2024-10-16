@@ -1,19 +1,20 @@
 """ 
- -  Saves an .db file with 2 tables:
+ -  Reads the CoFID.csv files and returns two cleaned .csv files in ./clean-tables
         1. A table showing the relevant nutritional information for all food 
             entries
         2. A table of the units that each nutrient is recorded in
- -  Both in sql form
+ -  Both in .csv tables, ready to be imported as sql databases in csv-to-sqlalchemy.py
  -  Extracts the information from multiple .csv files, (proximates, inorganics, vitamins)
     and compiles them into a single .db file named 'CoFID_2021_nutrition_information' 
  -  All nutrtional information is given per 100g of food item
 """
 
 import pandas as pd
-import sqlite3
+# import sqlite3
+import os
 
-database_name = 'CoFID_2021_nutrition_information.db'
-conn = sqlite3.connect(database_name)
+# database_name = 'CoFID_2021_nutrition_information.db'
+# conn = sqlite3.connect(database_name)
 
 proximates_data = pd.read_csv('CoFID/CoFID_2021_proximates.csv', skiprows=[1, 2])[[
     'Food Name', 
@@ -88,12 +89,11 @@ vitamin_fractions_data = pd.read_csv('CoFID/CoFID_2021_vitamin_fractions.csv', s
 # vitamin_fractions_data.to_sql('vitamin_fractions', conn, if_exists='replace', index=False)
 
 complete_nutritional_data = pd.concat([proximates_data, inorganics_data, vitamins_data, vitamin_fractions_data], axis=1)
-complete_nutritional_data.insert(0, 'id', range(len(complete_nutritional_data))) # Add id column at front for primary key
 
 column_names = list(complete_nutritional_data.columns)
 new_names = [None] * len(column_names)
 units = [None] * len(column_names)
-for n, column_name in enumerate(column_names[1:]):
+for n, column_name in enumerate(column_names):
     # Extracting unit from original column name
     if "(" in column_name:
         units[n] = column_name.split("(")[1].split(")")[0]
@@ -121,12 +121,22 @@ print("The new nutrient names: ", new_names)
 print("The units: ", units)
 
 complete_nutritional_data.columns = new_names
+complete_nutritional_data.insert(0, 'id', range(len(complete_nutritional_data))) # Add id column at front for primary key
 
 nutrients_units = pd.concat([pd.Series(new_names, name="nutrients"), pd.Series(units, name="unit")], axis=1)
-nutrients_units.to_sql('nutrients_units', conn, if_exists='replace', index=False)
+nutrients_units.insert(0, 'nutrient_id', range(len(nutrients_units))) # Add id column at front for primary key
 
-complete_nutritional_data.to_sql('complete_nutritional_data', conn, if_exists='replace', index=False)
-conn.close()
+outdir = './clean-tables'
+if not os.path.exists(outdir):
+    os.mkdir(outdir)
+
+complete_nutritional_data.to_csv(outdir + '/complete_nutritional_data.csv', index=False)
+nutrients_units.to_csv(outdir + '/nutrients_units.csv', index=False)
+
+
+# nutrients_units.to_sql('nutrients_units', conn, if_exists='replace', index=False)
+# complete_nutritional_data.to_sql('complete_nutritional_data', conn, if_exists='replace', index=False)
+# conn.close()
 
 # Adding primary key ID_column to complete_nutritonal_data
 
