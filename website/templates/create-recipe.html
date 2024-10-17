@@ -5,12 +5,12 @@
 <form method="POST">
     <div input-group mb-3>
         <label for="recipe-name" class="form-label">Name your recipe</label>
-        <input type="text" class="form-control" placeholder="'My breakfast granola'" aria-label="Recipe name" name="recipe-name" id="recipe-name"></input>
+        <input name="recipe-name" id="recipe-name" type="text" class="form-control" placeholder="'My breakfast granola'" aria-label="Recipe name"></input>
     </div>
     <br/>
     <div input-group mb-3>
         <label for="recipe-description" class="form-label">Describe your recipe</label>
-        <textarea class="form-control" placeholder="'My favourite weekday fruit and yoghurt granola, goes well with my morning coffee'" aria-label="Recipe description" name="recipe-description" id="recipe-description"></textarea>
+        <textarea name="recipe-description" id="recipe-description" class="form-control" placeholder="'My favourite weekday fruit and yoghurt granola, goes well with my morning coffee'" aria-label="Recipe description"></textarea>
     </div>
     <br/>
     <div input-group mb-3>
@@ -37,12 +37,12 @@
         <select class="form-select" id="ingredient" aria-label="Select ingredient">
             <option selected>Choose...</option>
             {% for food in foods %}
-            <option value="{{food.name}}">{{food.name}}</option>
+            <option id="{{food.id}}" value="{{food.name}}">{{food.name}}</option>
             {% endfor %}
         </select>
         <input type="button" value="&plus;" class="btn btn-outline-secondary" id="add_ingredient"/>
     </div>
-    <ul class="list-group list-group-flush" id='ingredients_list'></ul>
+    <ul name="recipe-ingredients" id="recipe-ingredients" class="list-group list-group-flush"></ul>
     <br/>
     <div align="center">
         <button type="submit" class="btn btn-primary">Add recipe</button>

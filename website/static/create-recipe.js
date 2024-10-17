@@ -3,16 +3,29 @@ document.getElementById("add_ingredient").onclick  = function() {
 
     // Create list element
     var li_element = document.createElement("Li")
-    li_element.classList.add("list-group-item");
+    li_element.classList.add("list-group-item"); //bootstrap
 
     // Get the value of element selected by ingredient dropdown
-    var ingredient_text = document.getElementById("ingredient").value; 
+
+    var selected_ingredient = document.getElementById("ingredient");
+    var selected_ingredient_value = selected_ingredient.value;
+    var food_id = selected_ingredient.options[selected_ingredient.selectedIndex].id;
+
+    // Check if ingredient already in list by checking if "-li" element already exists
+    if (!(Object.is(document.getElementById(food_id + "-li"), null))) {
+        console.log("food_id " + food_id + " already in list");
+        return;
+    } 
 
     // Create a text node of the value of element selected in dropdown
-    var ingredient_textnode=document.createTextNode(ingredient_text);
+    var ingredient_textnode=document.createTextNode(selected_ingredient_value);
 
-    if (ingredient_text == "Choose...")  // Makes 'choose...' unable to be added
+    if (selected_ingredient_value == "Choose...")  // Makes 'choose...' unable to be added
         return;
+
+    //Removing punctuation and spaces so naming id's etc is easier
+    var formatted_ingredient_text = selected_ingredient_value.replace(/\s+/g, '-').toLowerCase();
+    formatted_ingredient_text = formatted_ingredient_text.replaceAll(",", "");
 
     /*
     Recreating the delete button from home.html example
@@ -20,7 +33,7 @@ document.getElementById("add_ingredient").onclick  = function() {
     
     <li id= class="list-group-item">
         <div class="input-group mb-3">
-            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+            <input name="" type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
             <span class="input-group-text"> grams of </span>
             <input class="form-control" value="Crushed tomatoes" readonly>
             <button type="button" id="Crushed tomatoes" class="btn close"">
@@ -35,9 +48,11 @@ document.getElementById("add_ingredient").onclick  = function() {
     div_element.classList.add("mb-3");
 
     var grams_input = document.createElement("input");
-    grams_input.type = "text";
+    grams_input.type = "number";
     grams_input.classList.add("form-control");
     grams_input.ariaLabel = "Amount (to the nearest gram)";
+    grams_input.min = "1";
+    grams_input.name = food_id + ("-grams")
     
     var grams_of_span = document.createElement("span");
     grams_of_span.classList.add("input-group-text");
@@ -46,7 +61,7 @@ document.getElementById("add_ingredient").onclick  = function() {
     var ingredient_input = document.createElement("input");
     ingredient_input.classList.add("form-control");
     ingredient_input.readOnly = true; 
-    ingredient_input.value = ingredient_text;
+    ingredient_input.value = selected_ingredient_value;
     
     var delete_button_text = document.createTextNode("\u00D7");
     var delete_button_span_element = document.createElement("span");
@@ -57,16 +72,13 @@ document.getElementById("add_ingredient").onclick  = function() {
     deleteButton.classList.add("btn"); 
     deleteButton.classList.add("close");
 
-    var li_element_id = ingredient_text.replace(/\s+/g, '-').toLowerCase();
-    li_element_id = li_element_id.replaceAll(",", "");
-    li_element_id = li_element_id + "-li";
-    li_element.id = li_element_id;
+    li_element.id = food_id + "-li";
     
     // When clicked, run delete_recipe_ingredient function and input its id
     //deleteButton.addEventListener("click", delete_recipe_ingredient());
     deleteButton.onclick = function(){
         console.log("clicked");
-        document.getElementById(li_element_id).parentNode.removeChild(document.getElementById(li_element_id));
+        document.getElementById(li_element.id).parentNode.removeChild(document.getElementById(li_element.id));
     }
 
     deleteButton.appendChild(delete_button_span_element);
@@ -80,6 +92,5 @@ document.getElementById("add_ingredient").onclick  = function() {
     li_element.appendChild(div_element);
 
     // Append li_element to the ul element ingredients_list
-    document.getElementById("ingredients_list").appendChild(li_element);
-    console.log(li_element.id); 
+    document.getElementById("recipe-ingredients").appendChild(li_element);
 }
