@@ -11,6 +11,8 @@ document.getElementById("add_ingredient").onclick  = function() {
     // Create a text node of the value of element selected in dropdown
     var ingredient_textnode=document.createTextNode(ingredient_text);
 
+    if (ingredient_text == "Choose...")  // Makes 'choose...' unable to be added
+        return;
 
     /*
     Recreating the delete button from home.html example

@@ -5,7 +5,7 @@ Note than the login page will NOT be in here and will isntead be in auth.py, sin
 
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user # type: ignore
-from .models import Note, Foods
+from .models import Note, Foods, Recipe, RecipeIngredient
 from . import db  # type: ignore
 import json
 
@@ -45,7 +45,8 @@ def productPage():
 @login_required
 def createRecipePage():
     # if request.method == "POST":
-    #     ingredient = request.form.get('note')
+    #     recipe_name = request.form.get('recipe-name')
+    #     recipe_description = request.form.get('recipe-description')
     #     if len(note) < 1:
     #         flash('Note is too short', category='error')
     #     else:
@@ -54,4 +55,7 @@ def createRecipePage():
     #         db.session.commit()
     #         flash('Note added', category='success')
     # return render_template("home.html", user=current_user)
-    return render_template("create-recipe.html", user=current_user, foods=db.session.query(Foods).all())
+    return render_template(
+        "create-recipe.html", 
+        user=current_user, 
+        foods=db.session.query(Foods).all())

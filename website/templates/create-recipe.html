@@ -14,14 +14,23 @@
     </div>
     <br/>
     <div input-group mb-3>
-        <label for="recipe-description" class="form-label">Dietary restrictions</label>
-        <div class="btn-group d-flex" role="group">
-            <button class="btn btn-outline-secondary" type="button">None</button>  
-            <button class="btn btn-outline-secondary" type="button">Vegan</button>
-            <button class="btn btn-outline-secondary" type="button">Vegetarian</button>      
-            <button class="btn btn-outline-secondary" type="button">Pescatarian</button>  
+        <label for="recipe-dietary-restrictions" class="form-label">Dietary restrictions</label>
+        <div class="btn-group btn-group-toggle d-flex" data-toggle="buttons">
+            <label class="btn btn-secondary" onclick="this.button('toggle')">
+                <input name="recipe-dietary-restrictions" id="none" autocomplete="off" type="radio" checked> None 
+            </label>
+            <label class="btn btn-secondary">
+                <input name="recipe-dietary-restrictions" id="vegan" autocomplete="off" type="radio"> Vegan 
+            </label> 
+            <label class="btn btn-secondary">
+                <input name="recipe-dietary-restrictions" id="vegetarian" autocomplete="off" type="radio"> Vegetarian 
+            </label> 
+            <label class="btn btn-secondary">
+                <input name="recipe-dietary-restrictions" id="pescatarian" autocomplete="off" type="radio"> Pescatarian 
+            </label>
         </div>
     </div>
+    
     <br/>
     <h3 align="center">Add ingredients</h3>
     <div class="input-group">
