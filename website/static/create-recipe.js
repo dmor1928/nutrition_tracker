@@ -73,6 +73,7 @@ document.getElementById("add_ingredient").onclick  = function() {
     deleteButton.classList.add("btn"); 
     deleteButton.classList.add("close");
 
+    // For checking if li_element already exists in list to prevent duplicates
     li_element.id = food_id + "-li";
     
     // When clicked, run delete_recipe_ingredient function and input its id
