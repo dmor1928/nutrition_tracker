@@ -31,11 +31,11 @@ document.getElementById("add_ingredient").onclick  = function() {
     Recreating the delete button from home.html example
     each thing in the unordererd list ul:
     
-    <li id= class="list-group-item">
+    <li id="[food_id]-il" class="list-group-item">
         <div class="input-group mb-3">
-            <input name="" type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
+            <input name="[food_id]-grams" type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
             <span class="input-group-text"> grams of </span>
-            <input class="form-control" value="Crushed tomatoes" readonly>
+            <input name="[food_id]"" class="form-control" value="Crushed tomatoes" readonly>
             <button type="button" id="Crushed tomatoes" class="btn close"">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -61,6 +61,7 @@ document.getElementById("add_ingredient").onclick  = function() {
     var ingredient_input = document.createElement("input");
     ingredient_input.classList.add("form-control");
     ingredient_input.readOnly = true; 
+    ingredient_input.name = food_id;
     ingredient_input.value = selected_ingredient_value;
     
     var delete_button_text = document.createTextNode("\u00D7");
@@ -77,7 +78,7 @@ document.getElementById("add_ingredient").onclick  = function() {
     // When clicked, run delete_recipe_ingredient function and input its id
     //deleteButton.addEventListener("click", delete_recipe_ingredient());
     deleteButton.onclick = function(){
-        console.log("clicked");
+        console.log("Deleted food_id " + food_id);
         document.getElementById(li_element.id).parentNode.removeChild(document.getElementById(li_element.id));
     }
 
