@@ -31,7 +31,7 @@ document.getElementById("add_ingredient").onclick  = function() {
     Recreating the delete button from home.html example
     each thing in the unordererd list ul:
     
-    <li id="[food_id]-il" class="list-group-item">
+    <li id="[food_id]-li" class="list-group-item">
         <div class="input-group mb-3">
             <input name="[food_id]-grams" type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
             <span class="input-group-text"> grams of </span>
