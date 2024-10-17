@@ -119,3 +119,11 @@ def createRecipePage():
             "create-recipe.html", 
             user=current_user, 
             foods=db.session.query(Foods).all())
+
+@views.route('/my-recipes', methods=['GET', 'POST'])
+@login_required
+def myRecipesPage():
+    return render_template(
+            "my-recipes.html", 
+            user=current_user,
+            my_recipes=db.session.query(Recipe).filter(Recipe.user_id == current_user.id))
