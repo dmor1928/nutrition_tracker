@@ -45,7 +45,7 @@ def signup():
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
-        
+
         user = User.query.filter_by(email=email).first()
         if user:  # Checking if user with same email is already registered
             flash('Email already registered', category='error')
@@ -62,7 +62,7 @@ def signup():
             new_user = User(email=email, firstName=firstName, password=generate_password_hash(password1, method='pbkdf2:sha256'))
             db.session.add(new_user)
             db.session.commit()
-            login_user(user, remember=True)
+            login_user(new_user, remember=True)
             flash('Account registered', category='success')
             return redirect(url_for('views.home'))
     return render_template("signup.html", user=current_user)

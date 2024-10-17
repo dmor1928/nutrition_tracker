@@ -35,7 +35,7 @@ document.getElementById("add_ingredient").onclick  = function() {
         <div class="input-group mb-3">
             <input name="[food_id]-grams" type="number" class="form-control" aria-label="Amount (to the nearest dollar)">
             <span class="input-group-text"> grams of </span>
-            <input name="[food_id]"" class="form-control" value="Crushed tomatoes" readonly>
+            <input class="form-control" value="Crushed tomatoes" readonly>
             <button type="button" id="Crushed tomatoes" class="btn close"">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -52,7 +52,7 @@ document.getElementById("add_ingredient").onclick  = function() {
     grams_input.classList.add("form-control");
     grams_input.ariaLabel = "Amount (to the nearest gram)";
     grams_input.min = "1";
-    grams_input.name = food_id + ("-grams")
+    grams_input.name = food_id
     
     var grams_of_span = document.createElement("span");
     grams_of_span.classList.add("input-group-text");
@@ -61,7 +61,6 @@ document.getElementById("add_ingredient").onclick  = function() {
     var ingredient_input = document.createElement("input");
     ingredient_input.classList.add("form-control");
     ingredient_input.readOnly = true; 
-    ingredient_input.name = food_id;
     ingredient_input.value = selected_ingredient_value;
     
     var delete_button_text = document.createTextNode("\u00D7");

@@ -86,7 +86,6 @@ class Foods(Base):  # type: ignore
             self.b6, self.b12, self.folate, self.pantothenate, self.biotin, self.c, 
             self.alpha_carotene, self.beta_carotene, self.lutein, self.lycopene)
 
-
 Base.metadata.create_all(engine)
 
 file_dir = 'database/clean-tables/'

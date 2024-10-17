@@ -19,7 +19,7 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
-    from .models import User, Note, Foods
+    from .models import User, Note, Foods, Recipe, RecipeIngredient
 
     create_database(app)
 
@@ -29,7 +29,7 @@ def create_app():
 
     @login_manager.user_loader  # Tells flask how a user is loaded
     def load_user(id):
-        return User.query.get(int(id))  # similar to the filter function. Filters for the primary key by default to check if it;s equal to int(id)
+        return User.query.get(int(id))  # similar to the filter function. Filters for the primary key by default to check if it's equal to int(id)
 
 
     return app

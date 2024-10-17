@@ -41,21 +41,81 @@ def delete_note():
 def productPage():
     return render_template("my-landing-page/my-product-page.html")
 
-@views.route('/create-recipe')
+@views.route('/create-recipe', methods=['GET', 'POST'])
 @login_required
 def createRecipePage():
-    # if request.method == "POST":
-    #     recipe_name = request.form.get('recipe-name')
-    #     recipe_description = request.form.get('recipe-description')
-    #     if len(note) < 1:
-    #         flash('Note is too short', category='error')
-    #     else:
-    #         new_note = Note(data=note, user_id=current_user.id)
-    #         db.session.add(new_note)
-    #         db.session.commit()
-    #         flash('Note added', category='success')
-    # return render_template("home.html", user=current_user)
+    if request.method == "POST":
+
+        recipe_name = request.form.get('recipe-name')
+        recipe_description = request.form.get('recipe-description')
+        recipe_dietary_restrictions = request.form.get('recipe-dietary-restrictions')
+
+        keys = request.form.keys()
+
+        for key in keys:
+            if not key.startswith("recipe-"):
+                print(key)
+                grams = int(request.form.get(key))
+                if grams == None:
+                    food_id = int(key)
+                    food_name = db.session.get(Foods, food_id).name
+                    break
+        
+        if recipe_name is None:
+            flash('Error: No recipe name added', category='error')
+        elif len(recipe_name) < 5:
+            flash('Recipe name is too short', category='error')
+        elif 'food_id' in locals():  # If in locals() then grams == None
+            flash(food_name, ' in list has missing grams value', category='error')
+        else:
+
+            is_vegan = True
+            is_vegetarian = True
+            is_pescatarian = True
+
+            if recipe_dietary_restrictions != "vegan":
+                is_vegan = False
+            if recipe_dietary_restrictions != "vegetarian":
+                is_vegetarian = False
+            if recipe_dietary_restrictions != "pescatarian":
+                is_pescatarian = False
+
+            new_recipe = Recipe(
+                name=recipe_name, 
+                description=recipe_description, 
+                vegetarian=is_vegetarian,
+                vegan=is_vegan,
+                pescatarian=is_pescatarian,
+                user_id=current_user.id)
+            
+            db.session.add(new_recipe)
+            db.session.commit()
+
+            new_recipe_id = Recipe.query.filter(
+                Recipe.user_id == current_user.id,
+                Recipe.name == recipe_name).first().id
+            
+            print("new_recipe_id: ", new_recipe_id)
+            
+            new_ingredients = []
+            for key in keys:
+                if not key.startswith("recipe-"):
+                    food_id = key
+                    food_name = db.session.get(Foods, food_id).name
+                    print("food name: ", food_name)
+                    grams = int(request.form.get(key))
+                    new_ingredient = RecipeIngredient(amount=grams, food_id=food_id, recipe_id=new_recipe_id)
+                    new_ingredients.append(new_ingredient)
+                    # db.session.add(new_ingredient)
+            db.session.add_all(new_ingredients)
+            db.session.commit()
+            flash('Recipe added', category='success')
+            return render_template("home.html", user=current_user)
+        return render_template(
+            "create-recipe.html", 
+            user=current_user, 
+            foods=db.session.query(Foods).all())
     return render_template(
-        "create-recipe.html", 
-        user=current_user, 
-        foods=db.session.query(Foods).all())
+            "create-recipe.html", 
+            user=current_user, 
+            foods=db.session.query(Foods).all())
