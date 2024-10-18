@@ -1,6 +1,8 @@
 """
 Reads the clean .csv tables in clean-tables and creates an sqlite database out of them, 
 saving them to the database.db file
+
+18/10/24: Not needed now. The food import is done automatically in website/__init__.py when a database is not already detected
 """
 
 from sqlalchemy import create_engine, Column, Integer, String, Float

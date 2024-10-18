@@ -3,7 +3,7 @@ views.py will store the standard routes for our websites, such as the home page,
 Note than the login page will NOT be in here and will isntead be in auth.py, since you need to authenticate the login
 '''
 
-from flask import Blueprint, render_template, request, flash, jsonify
+from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user # type: ignore
 from .models import Note, Foods, Recipe, RecipeIngredient
 from . import db  # type: ignore
@@ -79,9 +79,16 @@ def createRecipePage():
                 is_vegetarian = False
             if recipe_dietary_restrictions != "pescatarian":
                 is_pescatarian = False
+            
+            recipe_name_formatted = recipe_name.lower()
+            for character in [" ", "    "]:
+                recipe_name_formatted = recipe_name_formatted.replace(character, "-")
+            for character in ["'", '"', "<", ">", "!", "?", "=", "/", "\\"]:
+                recipe_name_formatted = recipe_name_formatted.replace(character, "")
 
             new_recipe = Recipe(
                 name=recipe_name, 
+                formatted_name=recipe_name_formatted,
                 description=recipe_description, 
                 vegetarian=is_vegetarian,
                 vegan=is_vegan,
@@ -104,7 +111,7 @@ def createRecipePage():
                     food_name = db.session.get(Foods, food_id).name
                     print("food name: ", food_name)
                     grams = int(request.form.get(key))
-                    new_ingredient = RecipeIngredient(amount=grams, food_id=food_id, recipe_id=new_recipe_id)
+                    new_ingredient = RecipeIngredient(amount=grams, food_id=food_id, food_name=food_name, recipe_id=new_recipe_id)
                     new_ingredients.append(new_ingredient)
                     # db.session.add(new_ingredient)
             db.session.add_all(new_ingredients)
@@ -123,7 +130,27 @@ def createRecipePage():
 @views.route('/my-recipes', methods=['GET', 'POST'])
 @login_required
 def myRecipesPage():
+    if request.method == "POST":
+        formatted_recipe_name = request.form['recipe-name']
+        recipe_id = request.form['recipe-id']
+        if request.form["view-or-edit"] == "view":
+            return redirect(url_for("views.viewRecipePage", formatted_recipe_name=formatted_recipe_name, recipe_id=recipe_id))
+        
     return render_template(
-            "my-recipes.html", 
+            "my-recipes.html",  # If you click on an 'open recipe' button in my-recipes.html it sends you to /my-recipes/<recipe_name>
             user=current_user,
             my_recipes=db.session.query(Recipe).filter(Recipe.user_id == current_user.id))
+
+@views.route('/my-recipes/<formatted_recipe_name>')
+@login_required
+def viewRecipePage(formatted_recipe_name):
+     recipe_id=request.args.get('recipe_id')
+     recipe = db.session.get(Recipe, recipe_id)
+     recipe_ingredients = db.session.query(RecipeIngredient).filter_by(recipe_id=recipe_id)
+     print(recipe_ingredients)
+     # food_name = db.session.get(Foods, food_id).name
+     return render_template(
+         "view-recipe.html", 
+         user=current_user, 
+         recipe=recipe, 
+         recipe_ingredients=recipe_ingredients)  # Goes to view-recipe.html

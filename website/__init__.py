@@ -3,6 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager  # type: ignore
 
+# For importing food data into newly created database
+from sqlalchemy.ext.declarative import declarative_base
+import pandas as pd
+
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
@@ -30,7 +34,11 @@ def create_app():
     @login_manager.user_loader  # Tells flask how a user is loaded
     def load_user(id):
         return User.query.get(int(id))  # similar to the filter function. Filters for the primary key by default to check if it's equal to int(id)
-
+    
+    def toInteger(x):  # for view-recipe table page, turns floating amount into integer to look neater
+         return int(x)
+    
+    app.jinja_env.globals.update(toInteger=toInteger)
 
     return app
 
@@ -43,3 +51,16 @@ def create_database(app):
         with app.app_context():
             db.create_all()
         print('Created Database')
+
+         # Importing food data
+        from .models import Foods
+        engine = db.create_engine('sqlite:///instance/database.db', echo=False)
+        Base = declarative_base()
+        Base.metadata.create_all(engine)
+
+        file_dir = 'database/clean-tables/'
+        file_name = 'complete_nutritional_data.csv'
+        df = pd.read_csv(file_dir + file_name)
+        df.to_sql(con=engine, name=Foods.__tablename__, if_exists='replace', index=False)
+        
+        print("Imported food data")

@@ -1,16 +1,3 @@
-/*
-document.getElementById("add_ingredient").onclick = function() {
-    //First things first, we need our text:
-    var text = document.getElementById("ingredient").value; //.value gets input values
-
-    //Now construct a quick list element
-    var li = "<li>" + text + "</li>";
-
-    //Now use appendChild and add it to the list!
-    document.getElementById("ingredients_list").appendChild(li);
-}
-*/
-
 //Defining a listener for add_ingredient button (specifically, an onclick handler)
 document.getElementById("add_ingredient").onclick  = function() {
 
@@ -32,6 +19,19 @@ document.getElementById("add_ingredient").onclick  = function() {
     <button type="button" class="close" onClick="deleteNote({{ note.id }})">
             <span aria-hidden="true">&times;</span>
     </button> */
+
+    /* 
+    <li>
+        <div class="input-group mb-3">
+            <input type="number" class="form-control" aria-label="Amount (to the nearest gram)" min="1" name="3">
+            <span class="input-group-text"> grams of </span>
+            <input class="form-control" readonly="">
+            <button type="button" class="btn close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    </li>
+    */
 
     
     var deleteButtonText = document.createTextNode("\u00D7");

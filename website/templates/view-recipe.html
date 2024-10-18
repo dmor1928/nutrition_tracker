@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %}
+
+{% block content %}
+<h1 align="center">{{recipe.name}}</h1>
+<h4 align="center">View recipe</h4>
+<br/>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>Ingredients list</h3>
+            <table class="table table-striped" id="ingredients-table">
+                <thead>
+                    <th scope="col">Amount (grams)</th>
+                    <th scope="col">Ingredient</th>
+                </thead>
+                <tbody>
+                    {% for ingredient in recipe_ingredients %}
+                    <tr>
+                        <td>{{toInteger(ingredient.amount)}}</td>
+                        <td>{{ingredient.food_name}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
+            <h3>Nutritional breakdown</h3>
+        </div>
+      </div>
+</div>
+{% endblock %}
