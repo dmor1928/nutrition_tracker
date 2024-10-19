@@ -2,8 +2,8 @@
 Reads the RDA tables in database/dietary-requirements .csv files and compiles them into a single table saved as RDA.csv in database/clean-tables
 
 ID      Age     Category    Sex     Calcium     Chromium        ...     water       carbohydrate    fibre       fat
-1       0       infants     both    
-
+1       0       infants     both    200         0.2             ...     0.7         60              None        31
+:
 """
 
 import pandas as pd
