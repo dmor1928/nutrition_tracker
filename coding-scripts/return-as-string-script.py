@@ -1,5 +1,3 @@
-import pandas
-
 import pandas as pd
 
 complete_nutritional_data = pd.read_csv('database/clean-tables/complete_nutritional_data.csv')
