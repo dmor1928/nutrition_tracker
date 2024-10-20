@@ -1,6 +1,6 @@
 import pandas as pd
 
-complete_nutritional_data = pd.read_csv('database/clean-tables/complete_nutritional_data.csv')
+complete_nutritional_data = pd.read_csv('./clean-tables/complete_nutritional_data.csv')
 
 columns = complete_nutritional_data.columns
 

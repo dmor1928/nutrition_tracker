@@ -109,6 +109,8 @@ for n, column_name in enumerate(column_names):
         new_name = "name"
     elif new_name_split[1] == "equivalent":
         new_name = new_name_split[0]+"_"+new_name_split[1]
+    elif new_name_split[1] == "fibre":
+        new_name = "fibre"
     else:
         new_name = new_name_split[0]  # Else set to first word
     
@@ -121,10 +123,15 @@ print("The new nutrient names: ", new_names)
 print("The units: ", units)
 
 complete_nutritional_data.columns = new_names
-complete_nutritional_data.insert(0, 'id', range(len(complete_nutritional_data))) # Add id column at front for primary key
+complete_nutritional_data.insert(0, 'id', range(1, len(complete_nutritional_data)+1)) # Add id column at front for primary key
 
 nutrients_units = pd.concat([pd.Series(new_names, name="nutrients"), pd.Series(units, name="unit")], axis=1)
-nutrients_units.insert(0, 'nutrient_id', range(len(nutrients_units))) # Add id column at front for primary key
+nutrients_units.insert(0, 'nutrient_id', range(1, len(nutrients_units)+1)) # Add id column at front for primary key
+
+sorted_list = ['id', 'name'] + sorted(complete_nutritional_data.columns[2:])
+print(sorted_list)
+
+complete_nutritional_data = complete_nutritional_data[sorted_list]
 
 outdir = './clean-tables'
 if not os.path.exists(outdir):

@@ -22,6 +22,7 @@ class User(db.Model, UserMixin):  # type: ignore
     sex = db.Column(db.string(8)) # male or female
     isPregnant = db.Column(db.Boolean)
     isLactating = db.Column(db.Boolean)
+    rda_id = db.column(db.Integer), db.ForeignKey('RDA')
 
 # Database model for recipe ingredients
 class RecipeIngredient(db.Model):  # type: ignore
@@ -45,123 +46,133 @@ class Recipe(db.Model):  # type: ignore
 
 # Database model for food nutritional information (same as in add-food-to-database.py)
 class Foods(db.Model):  # type: ignore
+    # TO-DO: Make more complete list of nutritional information from USDA database
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250))
-    energy = db.Column(db.Float)
-    protein = db.Column(db.Float)
-    fat = db.Column(db.Float)
-    carbohydrate = db.Column(db.Float)
-    aoac = db.Column(db.Float)
-    satd = db.Column(db.Float)
-    n_6 = db.Column(db.Float)
-    n_3 = db.Column(db.Float)
-    mono = db.Column(db.Float)
-    poly = db.Column(db.Float)
-    trans = db.Column(db.Float)
-    cholesterol = db.Column(db.Float)
-    sodium = db.Column(db.Float)
-    potassium = db.Column(db.Float)
-    calcium = db.Column(db.Float)
-    magnesium = db.Column(db.Float)
-    phosphorus = db.Column(db.Float)
-    iron = db.Column(db.Float)
-    copper = db.Column(db.Float)
-    zinc = db.Column(db.Float)
-    chloride = db.Column(db.Float)
-    manganese = db.Column(db.Float)
-    selenium = db.Column(db.Float)
-    iodine = db.Column(db.Float)
-    retinol = db.Column(db.Float)
-    carotene = db.Column(db.Float)
-    retinol_equivalent = db.Column(db.Float)
-    d = db.Column(db.Float)
-    e = db.Column(db.Float)
-    k1 = db.Column(db.Float)
-    thiamin = db.Column(db.Float)
-    riboflavin = db.Column(db.Float)
-    niacin = db.Column(db.Float)
-    tryptophan_60 = db.Column(db.Float)
-    niacin_equivalent = db.Column(db.Float)
-    b6 = db.Column(db.Float)
-    b12 = db.Column(db.Float)
-    folate = db.Column(db.Float)
-    pantothenate = db.Column(db.Float)
-    biotin = db.Column(db.Float)
-    c = db.Column(db.Float)
-    alpha_carotene = db.Column(db.Float)
-    beta_carotene = db.Column(db.Float)
-    lutein = db.Column(db.Float)
-    lycopene = db.Column(db.Float)
+
+    alpha_carotene = Column(Float)
+    b12 = Column(Float)
+    b6 = Column(Float)
+    beta_carotene = Column(Float)
+    biotin = Column(Float)
+    c = Column(Float)
+    calcium = Column(Float)
+    carbohydrate = Column(Float)
+    carotene = Column(Float)
+    chloride = Column(Float)
+    cholesterol = Column(Float)
+    copper = Column(Float)
+    d = Column(Float)
+    e = Column(Float)
+    energy = Column(Float)
+    fat = Column(Float)
+    fibre = Column(Float)
+    folate = Column(Float)
+    iodine = Column(Float)
+    iron = Column(Float)
+    k1 = Column(Float)
+    lutein = Column(Float)
+    lycopene = Column(Float)
+    magnesium = Column(Float)
+    manganese = Column(Float)
+    mono = Column(Float)
+    n_3 = Column(Float)
+    n_6 = Column(Float)
+    niacin = Column(Float)
+    niacin_equivalent = Column(Float)
+    pantothenate = Column(Float)
+    phosphorus = Column(Float)
+    poly = Column(Float)
+    potassium = Column(Float)
+    protein = Column(Float)
+    retinol = Column(Float)
+    retinol_equivalent = Column(Float)
+    riboflavin = Column(Float)
+    satd = Column(Float)
+    selenium = Column(Float)
+    sodium = Column(Float)
+    thiamin = Column(Float)
+    trans = Column(Float)
+    tryptophan_60 = Column(Float)
+    zinc = Column(Float)
 
     def __repr__(self):
-        return '''<Foods(id='{0}', name='{1}', energy='{2}', protein='{3}', 
-        fat='{4}', carbohydrate='{5}', aoac='{6}', satd='{7}', n_6='{8}', 
-        n_3='{9}', mono='{10}', poly='{11}', trans='{12}', cholesterol='{13}', 
-        sodium='{14}', potassium='{15}', calcium='{16}', magnesium='{17}', 
-        phosphorus='{18}', iron='{19}', copper='{20}', zinc='{21}', chloride='{22}', 
-        manganese='{23}', selenium='{24}', iodine='{25}', retinol='{26}', 
-        carotene='{27}', retinol_equivalent='{28}', d='{29}', e='{30}', k1='{31}', 
-        thiamin='{32}', riboflavin='{33}', niacin='{34}', tryptophan_60='{35}', 
-        niacin_equivalent='{36}', b6='{37}', b12='{38}', folate='{39}', 
-        pantothenate='{40}', biotin='{41}', c='{42}', alpha_carotene='{43}', 
-        beta_carotene='{44}', lutein='{45}', lycopene='{46}')>'''.format(
-            self.id, self.name, self.energy, self.protein, self.fat, self.carbohydrate, 
-            self.aoac, self.satd, self.n_6, self.n_3, self.mono, self.poly, self.trans, 
-            self.cholesterol, self.sodium, self.potassium, self.calcium, self.magnesium, 
-            self.phosphorus, self.iron, self.copper, self.zinc, self.chloride, 
-            self.manganese, self.selenium, self.iodine, self.retinol, self.carotene, 
-            self.retinol_equivalent, self.d,  self.e, self.k1, self.thiamin, 
-            self.riboflavin, self.niacin, self.tryptophan_60, self.niacin_equivalent,  
-            self.b6, self.b12, self.folate, self.pantothenate, self.biotin, self.c, 
-            self.alpha_carotene, self.beta_carotene, self.lutein, self.lycopene)
+        return '''<Foods(id='{0}', name='{1}', alpha_carotene='{2}', b12='{3}', b6='{4}', 
+        beta_carotene='{5}', biotin='{6}', c='{7}', calcium='{8}', carbohydrate='{9}', 
+        carotene='{10}', chloride='{11}', cholesterol='{12}', copper='{13}', d='{14}', 
+        e='{15}', energy='{16}', fat='{17}', fibre='{18}', folate='{19}', iodine='{20}', 
+        iron='{21}', k1='{22}', lutein='{23}', lycopene='{24}', magnesium='{25}', 
+        manganese='{26}', mono='{27}', n_3='{28}', n_6='{29}', niacin='{30}', 
+        niacin_equivalent='{31}', pantothenate='{32}', phosphorus='{33}', poly='{34}', 
+        potassium='{35}', protein='{36}', retinol='{37}', retinol_equivalent='{38}', 
+        riboflavin='{39}', satd='{40}', selenium='{41}', sodium='{42}', thiamin='{43}', 
+        trans='{44}', tryptophan_60='{45}', zinc='{46}')>'''.format(
+            self.id, self.name, self.alpha_carotene, self.b12, self.b6, self.beta_carotene, 
+            self.biotin, self.c, self.calcium, self.carbohydrate, self.carotene, 
+            self.chloride, self.cholesterol, self.copper, self.d, self.e, self.energy, 
+            self.fat, self.fibre, self.folate, self.iodine, self.iron, self.k1, self.lutein, 
+            self.lycopene, self.magnesium, self.manganese, self.mono, self.n_3, self.n_6, 
+            self.niacin, self.niacin_equivalent, self.pantothenate, self.phosphorus, 
+            self.poly, self.potassium, self.protein, self.retinol, self.retinol_equivalent, 
+            self.riboflavin, self.satd, self.selenium, self.sodium, self.thiamin, self.trans, 
+            self.tryptophan_60, self.zinc)
 
 # Nutrients and units
-class Nutrients(db.Model):  # type: ignore
+class RDA(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     age = db.Column(db.Integer)
+    category = db.Column(db.String(32))
     sex = db.Column(db.String(8))
 
-    protein = db.Column(db.Float)
-    fat = db.Column(db.Float)
-    carbohydrate = db.Column(db.Float)
-    fibre = db.Column(db.Float)  # Originally only aoac but will just take it as fibre for now
-    satd = db.Column(db.Float)
-    n_6 = db.Column(db.Float)
-    n_3 = db.Column(db.Float)
-    mono = db.Column(db.Float)
-    poly = db.Column(db.Float)
-    trans = db.Column(db.Float)
-    cholesterol = db.Column(db.Float)
-    sodium = db.Column(db.Float)
-    potassium = db.Column(db.Float)
-    calcium = db.Column(db.Float)
-    magnesium = db.Column(db.Float)
-    phosphorus = db.Column(db.Float)
-    iron = db.Column(db.Float)
-    copper = db.Column(db.Float)
-    zinc = db.Column(db.Float)
-    chloride = db.Column(db.Float)
-    manganese = db.Column(db.Float)
-    selenium = db.Column(db.Float)
-    iodine = db.Column(db.Float)
-    retinol = db.Column(db.Float)
-    carotene = db.Column(db.Float)
-    retinol_equivalent = db.Column(db.Float)
-    d = db.Column(db.Float)
-    e = db.Column(db.Float)
-    k1 = db.Column(db.Float)
-    thiamin = db.Column(db.Float)
-    riboflavin = db.Column(db.Float)
-    niacin = db.Column(db.Float)
-    tryptophan_60 = db.Column(db.Float)
-    niacin_equivalent = db.Column(db.Float)
-    b6 = db.Column(db.Float)
-    b12 = db.Column(db.Float)
-    folate = db.Column(db.Float)
-    pantothenate = db.Column(db.Float)
-    biotin = db.Column(db.Float)
-    c = db.Column(db.Float)
-    alpha_carotene = db.Column(db.Float)
-    beta_carotene = db.Column(db.Float)
-    lutein = db.Column(db.Float)
-    lycopene = db.Column(db.Float)
+    # TO-DO: Make more complete list of RDA for all nutrients
+    # TO-DO: implement pregnancy and lactating RDAs
+
+    b12 = db.Column(db.Integer)
+    b6 = db.Column(db.Integer)
+    biotin = db.Column(db.Integer)
+    c = db.Column(db.Integer)
+    calcium = db.Column(db.Integer)
+    carbohydrate = db.Column(db.Integer)
+    carbohydrate_max_percent = db.Column(db.Integer)
+    carbohydrate_min_percent = db.Column(db.Integer)
+    chloride = db.Column(db.Integer)
+    cholesterol = db.Column(db.Integer)
+    choline = db.Column(db.Integer)
+    chromium = db.Column(db.Integer)
+    copper = db.Column(db.Integer)
+    d = db.Column(db.Integer)
+    e = db.Column(db.Integer)
+    fat = db.Column(db.Integer)
+    fat_max_percent = db.Column(db.Integer)
+    fat_min_percent = db.Column(db.Integer)
+    fibre = db.Column(db.Integer)
+    fluoride = db.Column(db.Integer)
+    folate = db.Column(db.Integer)
+    iodine = db.Column(db.Integer)
+    iron = db.Column(db.Integer)
+    k = db.Column(db.Integer)
+    magnesium = db.Column(db.Integer)
+    manganese = db.Column(db.Integer)
+    molybdenum = db.Column(db.Integer)
+    n_3 = db.Column(db.Integer)
+    n_3_max_percent = db.Column(db.Integer)
+    n_3_min_percent = db.Column(db.Integer)
+    n_6 = db.Column(db.Integer)
+    n_6_max_percent = db.Column(db.Integer)
+    n_6_min_percent = db.Column(db.Integer)
+    niacin = db.Column(db.Integer)
+    pantothenate = db.Column(db.Integer)
+    phosphorus = db.Column(db.Integer)
+    potassium = db.Column(db.Integer)
+    protein = db.Column(db.Integer)
+    protein_max_percent = db.Column(db.Integer)
+    protein_min_percent = db.Column(db.Integer)
+    retinol = db.Column(db.Integer)
+    riboflavin = db.Column(db.Integer)
+    satd = db.Column(db.Integer)
+    selenium = db.Column(db.Integer)
+    sodium = db.Column(db.Integer)
+    thiamin = db.Column(db.Integer)
+    trans = db.Column(db.Integer)
+    water = db.Column(db.Integer)
+    zinc = db.Column(db.Integer)

@@ -70,7 +70,7 @@ def cleanEntry(old_entry):
         return new_entry
 
 
-first_row = ['Age', 'Category', 'Sex']  #The column titles
+first_row = ['age', 'category', 'sex']  #The column titles
 for file in rda_tables:
     df = pd.read_csv(file)
     nutrients_columns_titles = df.columns[2:]
@@ -204,7 +204,7 @@ def missingFatRDAColumns (age_column):
     
     return total_fat_column, saturated_fat_column, cholesterol_column, trans_fat_column
 
-fat, satd, cholesterol, trans = missingFatRDAColumns(compiled_RDA_dataframe['Age'])
+fat, satd, cholesterol, trans = missingFatRDAColumns(compiled_RDA_dataframe['age'])
 
 compiled_RDA_dataframe = compiled_RDA_dataframe.assign(fat=fat.values)
 compiled_RDA_dataframe = compiled_RDA_dataframe.assign(satd=satd.values)
@@ -220,14 +220,11 @@ for column_index, column_title in enumerate(list(macronutrient_percentages.colum
     
     min_column = []
     max_column = []
-    print(column_entries)
     for index, entry in enumerate(column_entries):
         if '-' in entry:
             [entry_min, entry_max] = entry.split('-')
             min_column.append(float(entry_min))
             max_column.append(float(entry_max))
-    print(min_column)
-    print(max_column)
     
     macronutrient_percentages[column_title + '_min_percent'] = min_column
     macronutrient_percentages[column_title + '_max_percent'] = max_column
@@ -237,7 +234,7 @@ for column_title in ['fat', 'n_6', 'n_3', 'carbohydrate', 'protein']:
 
 print(macronutrient_percentages)
 
-age_column = compiled_RDA_dataframe['Age']
+age_column = compiled_RDA_dataframe['age']
 for column_title in list(macronutrient_percentages.columns):
     
     new_column = pd.Series()
@@ -255,11 +252,22 @@ for column_title in list(macronutrient_percentages.columns):
 
 
 # Changing 19, 31, and 51s in age category to 18, 30, 50
-print(age_column)
-compiled_RDA_dataframe['Age'] = compiled_RDA_dataframe['Age'].replace([19.0], 18.0)
-compiled_RDA_dataframe['Age'] = compiled_RDA_dataframe['Age'].replace([31.0], 30.0)
-compiled_RDA_dataframe['Age'] = compiled_RDA_dataframe['Age'].replace([51.0], 50.0)
+compiled_RDA_dataframe['age'] = compiled_RDA_dataframe['age'].replace([19.0], 18.0)
+compiled_RDA_dataframe['age'] = compiled_RDA_dataframe['age'].replace([31.0], 30.0)
+compiled_RDA_dataframe['age'] = compiled_RDA_dataframe['age'].replace([51.0], 50.0)
 
 print(compiled_RDA_dataframe)
 
-compiled_RDA_dataframe.to_csv('./clean-tables/RDA.csv')
+print(sorted(list(set(cofid_df.columns[2:]) & set(compiled_RDA_dataframe))))
+
+for item in sorted(compiled_RDA_dataframe.columns[3:]):
+    print(item)
+
+sorted_list = ['age', 'category', 'sex'] + sorted(compiled_RDA_dataframe.columns[3:])
+print(sorted_list)
+
+compiled_RDA_dataframe = compiled_RDA_dataframe[sorted_list]
+
+compiled_RDA_dataframe.insert(0, 'id', [x for x in range(1, compiled_RDA_dataframe.shape[0]+1)])
+
+compiled_RDA_dataframe.to_csv('./clean-tables/RDA.csv', index=False)
