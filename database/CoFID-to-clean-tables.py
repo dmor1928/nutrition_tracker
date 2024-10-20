@@ -140,4 +140,4 @@ nutrients_units.to_csv(outdir + '/nutrients_units.csv', index=False)
 
 # Adding primary key ID_column to complete_nutritonal_data
 
-print(f'Nutritional information successfully extracted to {database_name}')
+print(f'Nutritional information successfully extracted to {outdir}/nutrients_units.csv')
