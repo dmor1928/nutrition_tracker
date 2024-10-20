@@ -130,8 +130,8 @@ rda_nutrients = list(compiled_RDA_dataframe.columns[3:])
 
 # print("cofid: ", cofid_nutrients)
 # print("rda   : ", rda_nutrients)
-for element in (set(cofid_nutrients) ^ set(rda_nutrients)):
-    print(element)
+# for element in (set(cofid_nutrients) ^ set(rda_nutrients)):
+#     print(element)
 """
 Current assumptions/approximations: 
 Vitamin K = K1 are the same
@@ -261,3 +261,5 @@ compiled_RDA_dataframe['Age'] = compiled_RDA_dataframe['Age'].replace([31.0], 30
 compiled_RDA_dataframe['Age'] = compiled_RDA_dataframe['Age'].replace([51.0], 50.0)
 
 print(compiled_RDA_dataframe)
+
+compiled_RDA_dataframe.to_csv('./clean-tables/RDA.csv')
