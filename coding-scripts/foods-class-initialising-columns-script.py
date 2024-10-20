@@ -7,7 +7,7 @@ columns = complete_nutritional_data.columns
 for column in columns:
 
     if column == 'id':
-        bracketExpression = 'Integer'
+        bracketExpression = 'db.Integer'
     elif column == 'name':
         bracketExpression = 'String(250), primary_key=True'
     else:
