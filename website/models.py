@@ -17,6 +17,12 @@ class User(db.Model, UserMixin):  # type: ignore
     firstName = db.Column(db.String(150))
     notes = db.relationship('Note')
 
+    birthDate = db.Column(db.Date)
+    age = db.Column(db.Float)
+    sex = db.Column(db.string(8)) # male or female
+    isPregnant = db.Column(db.Boolean)
+    isLactating = db.Column(db.Boolean)
+
 # Database model for recipe ingredients
 class RecipeIngredient(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)  # The id uniquely identifying each instance of an ingredient in a recipe (various amounts etc.)
@@ -108,3 +114,54 @@ class Foods(db.Model):  # type: ignore
             self.riboflavin, self.niacin, self.tryptophan_60, self.niacin_equivalent,  
             self.b6, self.b12, self.folate, self.pantothenate, self.biotin, self.c, 
             self.alpha_carotene, self.beta_carotene, self.lutein, self.lycopene)
+
+# Nutrients and units
+class Nutrients(db.Model):  # type: ignore
+    id = db.Column(db.Integer, primary_key=True)
+    age = db.Column(db.Integer)
+    sex = db.Column(db.String(8))
+
+    protein = db.Column(db.Float)
+    fat = db.Column(db.Float)
+    carbohydrate = db.Column(db.Float)
+    fibre = db.Column(db.Float)  # Originally only aoac but will just take it as fibre for now
+    satd = db.Column(db.Float)
+    n_6 = db.Column(db.Float)
+    n_3 = db.Column(db.Float)
+    mono = db.Column(db.Float)
+    poly = db.Column(db.Float)
+    trans = db.Column(db.Float)
+    cholesterol = db.Column(db.Float)
+    sodium = db.Column(db.Float)
+    potassium = db.Column(db.Float)
+    calcium = db.Column(db.Float)
+    magnesium = db.Column(db.Float)
+    phosphorus = db.Column(db.Float)
+    iron = db.Column(db.Float)
+    copper = db.Column(db.Float)
+    zinc = db.Column(db.Float)
+    chloride = db.Column(db.Float)
+    manganese = db.Column(db.Float)
+    selenium = db.Column(db.Float)
+    iodine = db.Column(db.Float)
+    retinol = db.Column(db.Float)
+    carotene = db.Column(db.Float)
+    retinol_equivalent = db.Column(db.Float)
+    d = db.Column(db.Float)
+    e = db.Column(db.Float)
+    k1 = db.Column(db.Float)
+    thiamin = db.Column(db.Float)
+    riboflavin = db.Column(db.Float)
+    niacin = db.Column(db.Float)
+    tryptophan_60 = db.Column(db.Float)
+    niacin_equivalent = db.Column(db.Float)
+    b6 = db.Column(db.Float)
+    b12 = db.Column(db.Float)
+    folate = db.Column(db.Float)
+    pantothenate = db.Column(db.Float)
+    biotin = db.Column(db.Float)
+    c = db.Column(db.Float)
+    alpha_carotene = db.Column(db.Float)
+    beta_carotene = db.Column(db.Float)
+    lutein = db.Column(db.Float)
+    lycopene = db.Column(db.Float)
