@@ -12,5 +12,5 @@ for column in columns:
         bracketExpression = 'String(250), primary_key=True'
     else:
         bracketExpression = 'Float'
-    print(f'{column} = Column({bracketExpression})')
+    print(f'{column} = db.Column({bracketExpression})')
 
