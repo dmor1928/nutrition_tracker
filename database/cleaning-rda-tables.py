@@ -181,7 +181,6 @@ def missingFatRDAColumns (age_column):
             total_fat_column[ row_index] = 39
         else:
             total_fat_column[row_index] = 78
-        print(age,", ", total_fat_column[row_index])
 
     saturated_fat_column = pd.Series()
     for row_index, age in enumerate(age_column):
@@ -212,6 +211,53 @@ compiled_RDA_dataframe = compiled_RDA_dataframe.assign(satd=satd.values)
 compiled_RDA_dataframe = compiled_RDA_dataframe.assign(cholesterol=cholesterol.values)
 compiled_RDA_dataframe = compiled_RDA_dataframe.assign(trans=trans.values)
 
+macronutrient_percentages = pd.read_csv('./dietary-requirements/macronutrient_percentage_ranges.csv')
+
+print(macronutrient_percentages.columns)
+
+for column_index, column_title in enumerate(list(macronutrient_percentages.columns)):
+    column_entries = macronutrient_percentages[column_title]
+    
+    min_column = []
+    max_column = []
+    print(column_entries)
+    for index, entry in enumerate(column_entries):
+        if '-' in entry:
+            [entry_min, entry_max] = entry.split('-')
+            min_column.append(float(entry_min))
+            max_column.append(float(entry_max))
+    print(min_column)
+    print(max_column)
+    
+    macronutrient_percentages[column_title + '_min_percent'] = min_column
+    macronutrient_percentages[column_title + '_max_percent'] = max_column
+
+for column_title in ['fat', 'n_6', 'n_3', 'carbohydrate', 'protein']:
+    macronutrient_percentages = macronutrient_percentages.drop(column_title, axis=1)
+
+print(macronutrient_percentages)
+
+age_column = compiled_RDA_dataframe['Age']
+for column_title in list(macronutrient_percentages.columns):
+    
+    new_column = pd.Series()
+    for row_index, age in enumerate(age_column):
+        if age < 1:
+            new_column[row_index] = None
+        elif 1 <= age < 4:
+            new_column[row_index] = macronutrient_percentages[column_title][0]
+        elif 4 <= age < 18:
+            new_column[row_index] = macronutrient_percentages[column_title][1]
+        else:
+            new_column[row_index] = macronutrient_percentages[column_title][2]
+    
+    compiled_RDA_dataframe = compiled_RDA_dataframe.assign(**{column_title: new_column.values})
 
 
-compiled_RDA_dataframe.to_csv('./clean-tables/RDA.csv')
+# Changing 19, 31, and 51s in age category to 18, 30, 50
+print(age_column)
+compiled_RDA_dataframe['Age'] = compiled_RDA_dataframe['Age'].replace([19.0], 18.0)
+compiled_RDA_dataframe['Age'] = compiled_RDA_dataframe['Age'].replace([31.0], 30.0)
+compiled_RDA_dataframe['Age'] = compiled_RDA_dataframe['Age'].replace([51.0], 50.0)
+
+print(compiled_RDA_dataframe)
