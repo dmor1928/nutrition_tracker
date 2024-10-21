@@ -19,7 +19,7 @@ class User(db.Model, UserMixin):  # type: ignore
 
     birthDate = db.Column(db.Date)
     age = db.Column(db.Float)
-    sex = db.Column(db.string(8)) # male or female
+    sex = db.Column(db.String(8)) # male or female
     isPregnant = db.Column(db.Boolean)
     isLactating = db.Column(db.Boolean)
     rda_id = db.column(db.Integer), db.ForeignKey('RDA')

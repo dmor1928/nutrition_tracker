@@ -23,7 +23,7 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
-    from .models import User, Note, Foods, Recipe, RecipeIngredient
+    from .models import User, Note, Foods, Recipe, RecipeIngredient, RDA
 
     create_database(app)
 
@@ -52,15 +52,42 @@ def create_database(app):
             db.create_all()
         print('Created Database')
 
-         # Importing food data
-        from .models import Foods
+         # Importing csv data to models
+        from .models import Foods, RDA, User
         engine = db.create_engine('sqlite:///instance/database.db', echo=False)
         Base = declarative_base()
         Base.metadata.create_all(engine)
-
         file_dir = 'database/clean-tables/'
-        file_name = 'complete_nutritional_data.csv'
-        df = pd.read_csv(file_dir + file_name)
+
+        df = pd.read_csv(file_dir + 'complete_nutritional_data.csv')
         df.to_sql(con=engine, name=Foods.__tablename__, if_exists='replace', index=False)
         
-        print("Imported food data")
+
+        df = pd.read_csv(file_dir + 'RDA.csv')
+        df.to_sql(con=engine, name=RDA.__tablename__, if_exists='replace', index=False)
+
+        print("Imported food and RDA data")
+
+        import datetime
+        from dateutil.relativedelta import relativedelta
+        from werkzeug.security import generate_password_hash
+
+        dob = datetime.datetime(2002, 8, 15)
+        today = datetime.date.today()
+        age = relativedelta(today, dob).years
+        rda_id = 7
+
+        sample_user = User(
+            email='david@gmail.com', 
+            password=generate_password_hash('password123', method='pbkdf2:sha256'), 
+            firstName='David', 
+            birthDate=dob,
+            age=age,
+            sex='male',
+            isPregnant = False,
+            isLactating = False,
+            rda_id = rda_id)
+        
+        with app.app_context():
+            db.session.add(sample_user)
+            db.session.commit()
