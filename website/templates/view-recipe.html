@@ -37,7 +37,7 @@
                         <div class="justify-content-center d-flex position-absolute w-100" style="display: flex; justify-content: center; align-items: center; flex-direction: column">
                             <h5 class="fw-bold" style="line-height: 4em">Calories</h5>
                             <div style="position: absolute; top: 65%;">
-                                <h4 class="fw-bold position-relative">{{food_total['energy']}}</h4>
+                                <h4 class="fw-bold position-relative">{{total_recipe_nutrition['energy']}}</h4>
                             </div>
                         </div>
                         <div class="container position-relative" style="display: flex; justify-content: center; height: 90%; ">
@@ -86,7 +86,7 @@
                             Carbohydrates
                         </div>
                         <div class="col-2">
-                            {{food_total['carbohydrate']}}{{nutrient_units['carbohydrate']}}
+                            {{total_recipe_nutrition['carbohydrate']}}{{nutrient_units['carbohydrate']}}
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -103,7 +103,7 @@
                             {{carb}}
                         </div>
                         <div class="col-2">
-                            {{food_total[carb]}}{{nutrient_units[carb]}}
+                            {{total_recipe_nutrition[carb]}}{{nutrient_units[carb]}}
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -122,7 +122,7 @@
                             Total fat
                         </div>
                         <div class="col-2">
-                            {{food_total['fat']}}{{nutrient_units['fat']}}
+                            {{total_recipe_nutrition['fat']}}{{nutrient_units['fat']}}
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -138,7 +138,7 @@
                             Mono
                         </div>
                         <div class="col-2">
-                            {{food_total['mono']}}{{nutrient_units['mono']}}
+                            {{total_recipe_nutrition['mono']}}{{nutrient_units['mono']}}
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -154,7 +154,7 @@
                             Poly
                         </div>
                         <div class="col-2">
-                            {{food_total['poly']}}g
+                            {{total_recipe_nutrition['poly']}}g
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -171,7 +171,7 @@
                             {{poly_fats[0]}}
                         </div>
                         <div class="col-2">
-                            {{food_total[poly_fats[1]]}}{{nutrient_units[poly_fats[1]]}}
+                            {{total_recipe_nutrition[poly_fats[1]]}}{{nutrient_units[poly_fats[1]]}}
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -187,7 +187,7 @@
                             Saturated
                         </div>
                         <div class="col-2">
-                            {{food_total['satd']}}{{nutrient_units['satd']}}
+                            {{total_recipe_nutrition['satd']}}{{nutrient_units['satd']}}
                         </div>
                         <div class="col-4">
                             <div class="progress position-relative" style="height: 20px;">
@@ -202,7 +202,7 @@
                             Cholesterol
                         </div>
                         <div class="col-2">
-                            {{food_total['cholesterol']}}{{nutrient_units['cholesterol']}}
+                            {{total_recipe_nutrition['cholesterol']}}{{nutrient_units['cholesterol']}}
                         </div>
                         <div class="col-4">
                             <div class="progress position-relative" style="height: 20px;">
@@ -220,7 +220,7 @@
                             Protein
                         </div>
                         <div class="col-2">
-                            {{food_total['protein']}}{{nutrient_units['protein']}}
+                            {{total_recipe_nutrition['protein']}}{{nutrient_units['protein']}}
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -240,7 +240,7 @@
                             {{amino}}
                         </div>
                         <div class="col-2">
-                            {{food_total[amino]}}{{nutrient_units[amino]}}
+                            {{total_recipe_nutrition[amino]}}{{nutrient_units[amino]}}
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -260,7 +260,7 @@
                             {{phytochemical}}
                         </div>
                         <div class="col-2">
-                            {{food_total[phytochemical]}}{{nutrient_units[phytochemical]}}
+                            {{total_recipe_nutrition[phytochemical]}}{{nutrient_units[phytochemical]}}
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -283,7 +283,7 @@
                                 {{b_vitamin[0]}}
                             </div>
                             <div class="col-2">
-                                {{food_total[b_vitamin[1]]}}{{nutrient_units[b_vitamin[1]]}}
+                                {{total_recipe_nutrition[b_vitamin[1]]}}{{nutrient_units[b_vitamin[1]]}}
                             </div>
                             <div class="col">
                                 <div class="progress position-relative" style="height: 20px;">
@@ -304,7 +304,7 @@
                                 {{mineral}}
                             </div>
                             <div class="col-2">
-                                {{food_total[mineral]}}{{nutrient_units[mineral]}}
+                                {{total_recipe_nutrition[mineral]}}{{nutrient_units[mineral]}}
                             </div>
                             <div class="col">
                                 <div class="progress position-relative" style="height: 20px;">

@@ -146,70 +146,71 @@ def myRecipesPage():
 def viewRecipePage(formatted_recipe_name):
     recipe_id=request.args.get('recipe_id')
     recipe = db.session.get(Recipe, recipe_id)
-    recipe_ingredients_ids = db.session.query(RecipeIngredient).filter_by(recipe_id=recipe_id)
     recipe_ingredients = db.session.query(RecipeIngredient).filter_by(recipe_id=recipe_id)
     
     nutrient_units = {}
     for row in NutrientUnit.query.all():
         nutrient_units[row.nutrient] = row.unit
 
-    def NotNutrientEntry():
-        if key == "name" or key == '_sa_instance_state': # non-nutrient entry
+    def NutrientEntry():
+        if key != "name" and key != '_sa_instance_state':
             return True
+        else:
+            return False
     def NutrientEntryIsNone():
         if new_food[key] == None or new_food[key] == "NULL":
             return True
+        else:
+            return False
     def NutrientEntryIsUnknown():  # Not zero but not known
         if new_food[key] == "N":
             return True
+        else:
+            return False
     def NutrientEntryIsTrace():
         if new_food[key] == "Tr":
             return True
+        else:
+            return False
     
-
-    food_list = []
-    food_total = {}
-    for index, ingredient in enumerate(recipe_ingredients_ids):
-        new_food = db.session.get(Foods, ingredient.food_id).__dict__
-        food_list.append(new_food)
-        for key in new_food:
-            if NotNutrientEntry():
-                continue
-            elif NutrientEntryIsNone() or NutrientEntryIsTrace(): 
-                # if index == 0:
-                #     food_total[key] = 0
-                # else:
-                #     food_total[key] += 0
-                if key not in food_total:
-                    food_total[key] = 0
-                else:
-                    pass
-            elif NutrientEntryIsUnknown():
-                pass
-            else:
-                # print(new_food['name'])
-                # print(new_food[key])
-                new_food[key] = round(float(new_food[key]), 2)
-                if index == 0:
-                    try:
-                        food_total[key] = float(new_food[key]  or 0)
-                    except ValueError:
-                        food_total[key] = 0
-                else:
-                    try:
-                        food_total[key] += float(new_food[key] or 0)
-                    except ValueError:
-                        food_total[key] += 0
-                
-                # if key not in new_food:
-                #     new_food[key] = float(new_food[key]  or 0)
-                # else:
-                #     new_food[key] += float(new_food[key]  or 0)
+    recipe_foods_nutrition = []
+    total_recipe_nutrition = {}
+    for ingredient in recipe_ingredients:
         
-    for key in food_total:
-        food_total[key] = round(food_total[key], 2)
-    #  print("food_list:", food_list)
-    #  print("food_total: ", food_total)
+        new_food = db.session.get(Foods, ingredient.food_id).__dict__
+        recipe_foods_nutrition.append(new_food)
+
+        for key in new_food:
+
+            if NutrientEntry():
+
+                if key not in total_recipe_nutrition:
+                    total_recipe_nutrition[key] = 0
+
+                if NutrientEntryIsNone() or NutrientEntryIsTrace(): 
+                    continue
+                elif NutrientEntryIsUnknown():  # TO-DO: Track which nutrients have inaccuracies / unknown
+                    pass
+                else:
+                    new_food[key] = round(float(new_food[key]), 2)
+                    total_recipe_nutrition[key] += new_food[key]
+
+                    # if index == 0:
+                    #     try:
+                    #         total_recipe_nutrition[key] = float(new_food[key]  or 0)
+                    #     except ValueError:
+                    #         total_recipe_nutrition[key] = 0
+                    # else:
+                    #     try:
+                    #         total_recipe_nutrition[key] += float(new_food[key] or 0)
+                    #     except ValueError:
+                    #         total_recipe_nutrition[key] += 0
+
+        
+    for key in total_recipe_nutrition:
+        total_recipe_nutrition[key] = round(total_recipe_nutrition[key], 2)
+    #  print("recipe_foods_nutrition:", recipe_foods_nutrition)
+    #  print("total_recipe_nutrition: ", total_recipe_nutrition)
     print("nutrients_units: ", nutrient_units)
     # food_name = db.session.get(Foods, food_id).name
     return render_template(
@@ -217,6 +218,6 @@ def viewRecipePage(formatted_recipe_name):
         user=current_user, 
         recipe=recipe, 
         recipe_ingredients = recipe_ingredients,
-        food_list=food_list,
-        food_total=food_total,
+        recipe_foods_nutrition=recipe_foods_nutrition,
+        total_recipe_nutrition=total_recipe_nutrition,
         nutrient_units=nutrient_units)  # Goes to view-recipe.html
