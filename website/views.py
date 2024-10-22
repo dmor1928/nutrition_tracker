@@ -5,7 +5,7 @@ Note than the login page will NOT be in here and will isntead be in auth.py, sin
 
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user # type: ignore
-from .models import Note, Foods, Recipe, RecipeIngredient, NutrientUnit
+from .models import Note, Foods, Recipe, RecipeIngredient, NutrientUnit, RDA
 from . import db  # type: ignore
 import json
 
@@ -145,8 +145,12 @@ def myRecipesPage():
 @login_required
 def viewRecipePage(formatted_recipe_name):
     recipe_id=request.args.get('recipe_id')
-    recipe = db.session.get(Recipe, recipe_id)
+    recipe = db.session.get(Recipe, recipe_id)  # TO-DO: Add authentication for user before viewing view-recipe page
     recipe_ingredients = db.session.query(RecipeIngredient).filter_by(recipe_id=recipe_id)
+    rda_id = current_user.rda_id
+    print(rda_id)
+    # user_rda = db.session.get(RDA, rda_id)
+    # print(user_rda)
     
     nutrient_units = {}
     for row in NutrientUnit.query.all():
@@ -158,17 +162,17 @@ def viewRecipePage(formatted_recipe_name):
         else:
             return False
     def NutrientEntryIsNone():
-        if new_food[key] == None or new_food[key] == "NULL":
+        if ingredient_nutrition_per100g[key] == None or ingredient_nutrition_per100g[key] == "NULL":
             return True
         else:
             return False
     def NutrientEntryIsUnknown():  # Not zero but not known
-        if new_food[key] == "N":
+        if ingredient_nutrition_per100g[key] == "N":
             return True
         else:
             return False
     def NutrientEntryIsTrace():
-        if new_food[key] == "Tr":
+        if ingredient_nutrition_per100g[key] == "Tr":
             return True
         else:
             return False
@@ -176,11 +180,13 @@ def viewRecipePage(formatted_recipe_name):
     recipe_foods_nutrition = []
     total_recipe_nutrition = {}
     for ingredient in recipe_ingredients:
-        
-        new_food = db.session.get(Foods, ingredient.food_id).__dict__
-        recipe_foods_nutrition.append(new_food)
 
-        for key in new_food:
+        recipe_ingredient_nutrition = {}
+
+        ingredient_nutrition_per100g = db.session.get(Foods, ingredient.food_id).__dict__
+        ingredient_recipe_amount = ingredient.amount
+
+        for key in ingredient_nutrition_per100g:
 
             if NutrientEntry():
 
@@ -189,35 +195,26 @@ def viewRecipePage(formatted_recipe_name):
 
                 if NutrientEntryIsNone() or NutrientEntryIsTrace(): 
                     continue
+
                 elif NutrientEntryIsUnknown():  # TO-DO: Track which nutrients have inaccuracies / unknown
                     pass
-                else:
-                    new_food[key] = round(float(new_food[key]), 2)
-                    total_recipe_nutrition[key] += new_food[key]
 
-                    # if index == 0:
-                    #     try:
-                    #         total_recipe_nutrition[key] = float(new_food[key]  or 0)
-                    #     except ValueError:
-                    #         total_recipe_nutrition[key] = 0
-                    # else:
-                    #     try:
-                    #         total_recipe_nutrition[key] += float(new_food[key] or 0)
-                    #     except ValueError:
-                    #         total_recipe_nutrition[key] += 0
+                else:
+                    recipe_ingredient_nutrition[key] = round(float(ingredient_nutrition_per100g[key]) * (ingredient.amount / 100), 2)
+                    total_recipe_nutrition[key] += recipe_ingredient_nutrition[key]
+        
+        recipe_foods_nutrition.append(recipe_ingredient_nutrition)
 
         
     for key in total_recipe_nutrition:
         total_recipe_nutrition[key] = round(total_recipe_nutrition[key], 2)
-    #  print("recipe_foods_nutrition:", recipe_foods_nutrition)
-    #  print("total_recipe_nutrition: ", total_recipe_nutrition)
-    print("nutrients_units: ", nutrient_units)
+
     # food_name = db.session.get(Foods, food_id).name
     return render_template(
         "view-recipe.html", 
         user=current_user, 
-        recipe=recipe, 
-        recipe_ingredients = recipe_ingredients,
+        recipe=recipe,  # Recipe name, description
+        recipe_ingredients = recipe_ingredients,  # Full name ingredients list and amount
         recipe_foods_nutrition=recipe_foods_nutrition,
         total_recipe_nutrition=total_recipe_nutrition,
         nutrient_units=nutrient_units)  # Goes to view-recipe.html
