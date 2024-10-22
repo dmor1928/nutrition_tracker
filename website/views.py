@@ -5,7 +5,7 @@ Note than the login page will NOT be in here and will isntead be in auth.py, sin
 
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user # type: ignore
-from .models import Note, Foods, Recipe, RecipeIngredient
+from .models import Note, Foods, Recipe, RecipeIngredient, NutrientUnit
 from . import db  # type: ignore
 import json
 
@@ -144,13 +144,79 @@ def myRecipesPage():
 @views.route('/my-recipes/<formatted_recipe_name>')
 @login_required
 def viewRecipePage(formatted_recipe_name):
-     recipe_id=request.args.get('recipe_id')
-     recipe = db.session.get(Recipe, recipe_id)
-     recipe_ingredients = db.session.query(RecipeIngredient).filter_by(recipe_id=recipe_id)
-     print(recipe_ingredients)
-     # food_name = db.session.get(Foods, food_id).name
-     return render_template(
-         "view-recipe.html", 
-         user=current_user, 
-         recipe=recipe, 
-         recipe_ingredients=recipe_ingredients)  # Goes to view-recipe.html
+    recipe_id=request.args.get('recipe_id')
+    recipe = db.session.get(Recipe, recipe_id)
+    recipe_ingredients_ids = db.session.query(RecipeIngredient).filter_by(recipe_id=recipe_id)
+    recipe_ingredients = db.session.query(RecipeIngredient).filter_by(recipe_id=recipe_id)
+    
+    nutrient_units = {}
+    for row in NutrientUnit.query.all():
+        nutrient_units[row.nutrient] = row.unit
+
+    def NotNutrientEntry():
+        if key == "name" or key == '_sa_instance_state': # non-nutrient entry
+            return True
+    def NutrientEntryIsNone():
+        if new_food[key] == None or new_food[key] == "NULL":
+            return True
+    def NutrientEntryIsUnknown():  # Not zero but not known
+        if new_food[key] == "N":
+            return True
+    def NutrientEntryIsTrace():
+        if new_food[key] == "Tr":
+            return True
+    
+
+    food_list = []
+    food_total = {}
+    for index, ingredient in enumerate(recipe_ingredients_ids):
+        new_food = db.session.get(Foods, ingredient.food_id).__dict__
+        food_list.append(new_food)
+        for key in new_food:
+            if NotNutrientEntry():
+                continue
+            elif NutrientEntryIsNone() or NutrientEntryIsTrace(): 
+                # if index == 0:
+                #     food_total[key] = 0
+                # else:
+                #     food_total[key] += 0
+                if key not in food_total:
+                    food_total[key] = 0
+                else:
+                    pass
+            elif NutrientEntryIsUnknown():
+                pass
+            else:
+                # print(new_food['name'])
+                # print(new_food[key])
+                new_food[key] = round(float(new_food[key]), 2)
+                if index == 0:
+                    try:
+                        food_total[key] = float(new_food[key]  or 0)
+                    except ValueError:
+                        food_total[key] = 0
+                else:
+                    try:
+                        food_total[key] += float(new_food[key] or 0)
+                    except ValueError:
+                        food_total[key] += 0
+                
+                # if key not in new_food:
+                #     new_food[key] = float(new_food[key]  or 0)
+                # else:
+                #     new_food[key] += float(new_food[key]  or 0)
+        
+    for key in food_total:
+        food_total[key] = round(food_total[key], 2)
+    #  print("food_list:", food_list)
+    #  print("food_total: ", food_total)
+    print("nutrients_units: ", nutrient_units)
+    # food_name = db.session.get(Foods, food_id).name
+    return render_template(
+        "view-recipe.html", 
+        user=current_user, 
+        recipe=recipe, 
+        recipe_ingredients = recipe_ingredients,
+        food_list=food_list,
+        food_total=food_total,
+        nutrient_units=nutrient_units)  # Goes to view-recipe.html

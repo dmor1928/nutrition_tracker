@@ -31,29 +31,35 @@
         </div>
         <div class="col">
             <h3>Nutritional breakdown</h3>
-            <div class="row"> <!-- 3 top macro nutrients -->
-                <div class="col justify-content-center d-flex">
+            <div class="row justify-content-center d-flex"> <!-- 3 top macro nutrients -->
+                <div class="col-lg-4 col-md-4 col-sm-3 col-xs-3  justify-content-center d-flex height: 90%;">
                     <div class="my-4 position-relative">
-                        <div class="justify-content-center d-flex position-absolute w-100" style="display: flex; justify-content: center;  align-items: center;">
+                        <div class="justify-content-center d-flex position-absolute w-100" style="display: flex; justify-content: center; align-items: center; flex-direction: column">
                             <h5 class="fw-bold" style="line-height: 4em">Calories</h5>
-                            <h5 class="fw-bold" style="line-height: 4em"></h5>
+                            <div style="position: absolute; top: 65%;">
+                                <h4 class="fw-bold position-relative">{{food_total['energy']}}</h4>
+                            </div>
                         </div>
-                        <div class="container position-relative" style="display: flex; justify-content: center;">
-                            {% set macro_sum = namespace(value=16) %}
-                            {% for macro_mini in [[36, 'red'], [108, 'blue'], [216, 'green']]%}
-                            <div class="pie position-absolute" data-pie='{"number": false, "animationSmooth": "1s ease-out", "percent": "{{(macro_mini[0] - 16) / 3.6 }}", "textPosition": "20%", "fontWeight":"bold", "size":"120", "rotation": "{{macro_sum.value}}", "colorSlice":"{{macro_mini[1]}}", "colorCircle":"#FFFFFF00", "round":"true"}'></div>
-                            {% set macro_sum.value = macro_sum.value + macro_mini[0]%}
+                        <div class="container position-relative" style="display: flex; justify-content: center; height: 90%; ">
+                            {% set macro_sum = namespace(value=0) %}
+                            {% for macro_mini in [[90, 'red'], [180, 'blue'], [90, 'green']]%}
+                            <div class="pie position-absolute" data-pie='{ "number": false, "speed": "120", "percent": "{{(macro_mini[0] - 2) / 3.6 }}", "inverse": "true", "textPosition": "20%", "fontWeight":"bold", "size":"120", "rotation": "{{macro_sum.value}}", "colorSlice":"{{macro_mini[1]}}", "colorCircle":"#FFFFFF00"}'></div>
+                            <!-- if set "round": "true" also set  "percent": "{{(macro_mini[0] - 16) / 3.6 }}" -->
+                            {% set macro_sum.value = macro_sum.value - macro_mini[0]%}
                             {% endfor%}
                         </div>
                     </div>
                 </div>
                 {% for macro in ['Fibre', 'Protein']%}
-                <div class="col justify-content-center d-flex">
+                <div class="col-lg-4 col-md-4 col-sm-3 col-xs-3 justify-content-center d-flex height: 90%;">
                     <div class="my-4 position-relative">
-                        <div class="justify-content-center d-flex position-absolute w-100" style="display: flex; justify-content: center;">
+                        <div class="justify-content-center d-flex position-absolute w-100" style="display: flex; justify-content: center; align-items: center; flex-direction: column">
                             <h5 class="fw-bold" style="line-height: 4em">{{macro}}</h5>
                         </div>
-                        <div class="pie" data-pie='{ "percent": 66, "textPosition": "20%", "fontWeight":"bold", "size":"120", "rotation": "0", "inverse": "true", "colorSlice":"#ffcf00", "round":"true", "strokeBottom": 5, "colorCircle":"#f8f9fa" }'></div>
+                        <div class="container position-relative" style="display: flex; justify-content: center; ">
+                            <div class="pie" data-pie='{ "percent": 66, "speed": "120", "textPosition": "20%", "fontWeight":"bold", "size":"120", "rotation": "0", "inverse": "true", "colorSlice":"#ffcf00", "round":"true", "strokeBottom": 5, "colorCircle":"#f8f9fa" }'></div>
+
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
@@ -80,7 +86,7 @@
                             Carbohydrates
                         </div>
                         <div class="col-2">
-                            50 g
+                            {{food_total['carbohydrate']}}{{nutrient_units['carbohydrate']}}
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -89,15 +95,15 @@
                             </div>
                         </div>
                     </div>
-                    {% for carb in ['Fibre', 'Sugar']%}
+                    {% for carb in ['fibre', 'sugar']%}
                     <div class="row">
                         <div class="col-1">
                         </div>
-                        <div class="col-5">
+                        <div class="col-5" style="text-transform: capitalize">
                             {{carb}}
                         </div>
                         <div class="col-2">
-                            12 g
+                            {{food_total[carb]}}{{nutrient_units[carb]}}
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -116,7 +122,7 @@
                             Total fat
                         </div>
                         <div class="col-2">
-                            15 g
+                            {{food_total['fat']}}{{nutrient_units['fat']}}
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -132,7 +138,7 @@
                             Mono
                         </div>
                         <div class="col-2">
-                            12 g
+                            {{food_total['mono']}}{{nutrient_units['mono']}}
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -148,7 +154,7 @@
                             Poly
                         </div>
                         <div class="col-2">
-                            12 g
+                            {{food_total['poly']}}g
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -157,15 +163,15 @@
                             </div>
                         </div>
                     </div>
-                    {% for poly_fats in ['Omega-3','Omega-6']%}
+                    {% for poly_fats in [['Omega-3', 'n_3'],['Omega-6', 'n_6']]%}
                     <div class="row">
                         <div class="col-2">
                         </div>
                         <div class="col-4">
-                            {{poly_fats}}
+                            {{poly_fats[0]}}
                         </div>
                         <div class="col-2">
-                            2 g
+                            {{food_total[poly_fats[1]]}}{{nutrient_units[poly_fats[1]]}}
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -181,7 +187,7 @@
                             Saturated
                         </div>
                         <div class="col-2">
-                            4 g
+                            {{food_total['satd']}}{{nutrient_units['satd']}}
                         </div>
                         <div class="col-4">
                             <div class="progress position-relative" style="height: 20px;">
@@ -196,7 +202,7 @@
                             Cholesterol
                         </div>
                         <div class="col-2">
-                            4 g
+                            {{food_total['cholesterol']}}{{nutrient_units['cholesterol']}}
                         </div>
                         <div class="col-4">
                             <div class="progress position-relative" style="height: 20px;">
@@ -214,7 +220,7 @@
                             Protein
                         </div>
                         <div class="col-2">
-                            X g
+                            {{food_total['protein']}}{{nutrient_units['protein']}}
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -227,14 +233,14 @@
 
                 <div class="p-2 my-2 bg-light">
                     <h5>Essential amino acids</h5>
-                    {% for amino in ['Phenylalanine', 'Valine', 'Threonine', 'Tryptophan', 'Methionine', 'Leucine', 
-                                    'Isoleucine', 'Lysine', 'Histidine']%}
+                    {% for amino in ['phenylalanine', 'valine', 'threonine', 'tryptophan', 'methionine', 'leucine', 
+                                    'isoleucine', 'lysine', 'histidine']%}
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-6" style="text-transform: capitalize;">
                             {{amino}}
                         </div>
                         <div class="col-2">
-                            X g
+                            {{food_total[amino]}}{{nutrient_units[amino]}}
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -248,13 +254,13 @@
 
                 <div class="p-2 my-2 bg-light">
                     <h5>Phytochemicals</h5>
-                    {% for phytochemical in ['Lypocene', 'Lutein and zeaxanthin', 'Quarcetin', 'Flavonoids', 'Resveratrol', 'Myricetin']%}
+                    {% for phytochemical in ['lypocene', 'lutein and zeaxanthin', 'quarcetin', 'flavonoids', 'resveratrol', 'myricetin']%}
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-6" style="text-transform: capitalize;">
                             {{phytochemical}}
                         </div>
                         <div class="col-2">
-                            X g
+                            {{food_total[phytochemical]}}{{nutrient_units[phytochemical]}}
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
@@ -270,14 +276,14 @@
                 <div class="col">
                     <div class="p-2 my-2 bg-light">
                         <h5>Vitamins</h5>
-                        {% for b_vitamin in ['B1', 'B2', 'B3', 'B5', 'B6', 'B12', 'Choline', 'Folate', 'Pantothenate', 
-                                            'Vitamin A', 'Vitamin C', 'Vitamin D', 'Vitamin E', 'Vitamin K']%}
+                        {% for b_vitamin in [['B1', 'b1'], ['B2', 'b2'], ['B3', 'b3'], ['B5', 'b5'], ['B6', 'b6'], ['B12', 'b12'], ['Choline', 'choline'], ['Folate', 'folate'], ['Pantothenate', 'pantothenate'], 
+                                            ['Vitamin A', 'a'], ['Vitamin C', 'c'], ['Vitamin D', 'd'], ['Vitamin E', 'e'], ['Vitamin K', 'k']]%}
                         <div class="row">
                             <div class="col-6">
-                                {{b_vitamin}}
+                                {{b_vitamin[0]}}
                             </div>
                             <div class="col-2">
-                                X g
+                                {{food_total[b_vitamin[1]]}}{{nutrient_units[b_vitamin[1]]}}
                             </div>
                             <div class="col">
                                 <div class="progress position-relative" style="height: 20px;">
@@ -291,14 +297,14 @@
 
                     <div class="p-2 my-2 bg-light">
                         <h5>Minerals</h5>
-                        {% for mineral in ['Calcium', 'Chloride', 'Chromium', 'Copper', 'Fluoride', 'Iodine', 'Iron', 'Magnesium', 
-                                            'Manganese', 'Molybdenum', 'Phosphorus', 'Potassium', 'Selenium', 'Sodium', 'Zinc' ]%}
+                        {% for mineral in ['calcium', 'chloride', 'chromium', 'copper', 'fluoride', 'iodine', 'iron', 'magnesium', 
+                                            'manganese', 'molybdenum', 'phosphorus', 'potassium', 'selenium', 'sodium', 'zinc' ]%}
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-6" style="text-transform: capitalize;">
                                 {{mineral}}
                             </div>
                             <div class="col-2">
-                                X g
+                                {{food_total[mineral]}}{{nutrient_units[mineral]}}
                             </div>
                             <div class="col">
                                 <div class="progress position-relative" style="height: 20px;">
