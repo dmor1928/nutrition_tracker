@@ -125,8 +125,11 @@ print("The units: ", units)
 complete_nutritional_data.columns = new_names
 complete_nutritional_data.insert(0, 'id', range(1, len(complete_nutritional_data)+1)) # Add id column at front for primary key
 
-nutrients_units = pd.concat([pd.Series(new_names, name="nutrients"), pd.Series(units, name="unit")], axis=1)
-nutrients_units.insert(0, 'nutrient_id', range(1, len(nutrients_units)+1)) # Add id column at front for primary key
+nutrients_units = pd.concat([pd.Series(new_names, name="nutrient"), pd.Series(units, name="unit")], axis=1)
+
+nutrients_units = nutrients_units.iloc[1:, :]
+nutrients_units = nutrients_units.sort_values(by='nutrient')
+nutrients_units.insert(0, 'id', range(1, len(nutrients_units)+1)) # Add id column at front for primary key
 
 sorted_list = ['id', 'name'] + sorted(complete_nutritional_data.columns[2:])
 print(sorted_list)
@@ -137,7 +140,7 @@ outdir = './clean-tables'
 if not os.path.exists(outdir):
     os.mkdir(outdir)
 
-complete_nutritional_data.to_csv(outdir + '/complete_nutritional_data.csv', index=False)
+# complete_nutritional_data.to_csv(outdir + '/complete_nutritional_data.csv', index=False)
 nutrients_units.to_csv(outdir + '/nutrients_units.csv', index=False)
 
 
