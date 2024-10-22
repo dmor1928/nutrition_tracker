@@ -117,7 +117,14 @@ class Foods(db.Model):  # type: ignore
             self.riboflavin, self.satd, self.selenium, self.sodium, self.thiamin, self.trans, 
             self.tryptophan_60, self.zinc)
 
-# Nutrients and units
+# Nutrient units
+class NutrientUnit(db.Model):  # type: ignore
+    id = db.Column(db.Integer, primary_key=True)
+    nutrient = db.Column(db.String(32))
+    unit = db.Column(db.String(8))
+
+
+# Nutrients
 class RDA(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     age = db.Column(db.Integer)

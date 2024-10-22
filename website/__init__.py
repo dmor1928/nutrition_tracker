@@ -53,7 +53,7 @@ def create_database(app):
         print('Created Database')
 
          # Importing csv data to models
-        from .models import Foods, RDA, User
+        from .models import Foods, RDA, User, NutrientUnit
         engine = db.create_engine('sqlite:///instance/database.db', echo=False)
         Base = declarative_base()
         Base.metadata.create_all(engine)
@@ -62,9 +62,11 @@ def create_database(app):
         df = pd.read_csv(file_dir + 'complete_nutritional_data.csv')
         df.to_sql(con=engine, name=Foods.__tablename__, if_exists='replace', index=False)
         
-
         df = pd.read_csv(file_dir + 'RDA.csv')
         df.to_sql(con=engine, name=RDA.__tablename__, if_exists='replace', index=False)
+
+        df = pd.read_csv(file_dir + 'nutrients_units.csv')
+        df.to_sql(con=engine, name=NutrientUnit.__tablename__, if_exists='replace', index=False)
 
         print("Imported food and RDA data")
 
