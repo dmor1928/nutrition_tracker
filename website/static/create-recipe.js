@@ -94,4 +94,17 @@ document.getElementById("add_ingredient").onclick  = function() {
 
     // Append li_element to the ul element ingredients_list
     document.getElementById("recipe-ingredients").appendChild(li_element);
+
+    PrintElem("recipe-ingredients")
 }
+
+
+
+// form.addEventListener('submit', function(event) {
+//     event.preventDefault();    // prevent page from refreshing
+//     const formData = new FormData(form);  // grab the data inside the form fields
+//     fetch('/create-recipe', {   // assuming the backend is hosted on the same server
+//         method: 'POST',
+//         body: formData,
+//     })
+// });
