@@ -16,13 +16,19 @@ class User(db.Model, UserMixin):  # type: ignore
     password = db.Column(db.String(150))
     firstName = db.Column(db.String(150))
     notes = db.relationship('Note')
+  
+    # # TO-DO: Authenticating that user has access to recipe page
+    # recipes = db.relationship('Recipe')
 
+    # For getting the default/recommended RDA
     birthDate = db.Column(db.Date)
     age = db.Column(db.Float)
     sex = db.Column(db.String(8)) # male or female
     isPregnant = db.Column(db.Boolean)
     isLactating = db.Column(db.Boolean)
-    rda_id = db.column(db.Integer), db.ForeignKey('RDA')
+
+    RDADefault_id = db.Column(db.Integer, db.ForeignKey('rda_default.id'))
+    isCustomRDA = db.Column(db.Boolean)
 
 # Database model for recipe ingredients
 class RecipeIngredient(db.Model):  # type: ignore
@@ -70,7 +76,7 @@ class Foods(db.Model):  # type: ignore
     folate = db.Column(db.Float)
     iodine = db.Column(db.Float)
     iron = db.Column(db.Float)
-    k1 = db.Column(db.Float)
+    k = db.Column(db.Float)  # 23/10/24 changed from k1 to k
     lutein = db.Column(db.Float)
     lycopene = db.Column(db.Float)
     magnesium = db.Column(db.Float)
@@ -101,7 +107,7 @@ class Foods(db.Model):  # type: ignore
         beta_carotene='{5}', biotin='{6}', c='{7}', calcium='{8}', carbohydrate='{9}', 
         carotene='{10}', chloride='{11}', cholesterol='{12}', copper='{13}', d='{14}', 
         e='{15}', energy='{16}', fat='{17}', fibre='{18}', folate='{19}', iodine='{20}', 
-        iron='{21}', k1='{22}', lutein='{23}', lycopene='{24}', magnesium='{25}', 
+        iron='{21}', k='{22}', lutein='{23}', lycopene='{24}', magnesium='{25}', 
         manganese='{26}', mono='{27}', n_3='{28}', n_6='{29}', niacin='{30}', 
         niacin_equivalent='{31}', pantothenate='{32}', phosphorus='{33}', poly='{34}', 
         potassium='{35}', protein='{36}', retinol='{37}', retinol_equivalent='{38}', 
@@ -110,7 +116,7 @@ class Foods(db.Model):  # type: ignore
             self.id, self.name, self.alpha_carotene, self.b12, self.b6, self.beta_carotene, 
             self.biotin, self.c, self.calcium, self.carbohydrate, self.carotene, 
             self.chloride, self.cholesterol, self.copper, self.d, self.e, self.energy, 
-            self.fat, self.fibre, self.folate, self.iodine, self.iron, self.k1, self.lutein, 
+            self.fat, self.fibre, self.folate, self.iodine, self.iron, self.k, self.lutein, 
             self.lycopene, self.magnesium, self.manganese, self.mono, self.n_3, self.n_6, 
             self.niacin, self.niacin_equivalent, self.pantothenate, self.phosphorus, 
             self.poly, self.potassium, self.protein, self.retinol, self.retinol_equivalent, 
@@ -125,7 +131,7 @@ class NutrientUnit(db.Model):  # type: ignore
 
 
 # Nutrients
-class RDA(db.Model):  # type: ignore
+class RDADefault(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     age = db.Column(db.Integer)
     category = db.Column(db.String(32))
