@@ -82,13 +82,14 @@ for file in rda_tables:
 # Entries are identical on each table
 table_df = pd.read_csv(rda_tables[0])
 old_entries = table_df.iloc[:, 1]
+
 new_entries = []
 
 for entry in old_entries:
     new_entry = cleanEntry(entry)
     new_entries.append(new_entry)
     
-print(new_entries)
+# print(new_entries)
 
 compiled_RDA_dataframe = pd.DataFrame(columns=first_row)
 
@@ -213,7 +214,7 @@ compiled_RDA_dataframe = compiled_RDA_dataframe.assign(trans=trans.values)
 
 macronutrient_percentages = pd.read_csv('./dietary-requirements/macronutrient_percentage_ranges.csv')
 
-print(macronutrient_percentages.columns)
+# print(macronutrient_percentages.columns)
 
 for column_index, column_title in enumerate(list(macronutrient_percentages.columns)):
     column_entries = macronutrient_percentages[column_title]
@@ -232,7 +233,7 @@ for column_index, column_title in enumerate(list(macronutrient_percentages.colum
 for column_title in ['fat', 'n_6', 'n_3', 'carbohydrate', 'protein']:
     macronutrient_percentages = macronutrient_percentages.drop(column_title, axis=1)
 
-print(macronutrient_percentages)
+# print(macronutrient_percentages)
 
 age_column = compiled_RDA_dataframe['age']
 for column_title in list(macronutrient_percentages.columns):
@@ -256,18 +257,22 @@ compiled_RDA_dataframe['age'] = compiled_RDA_dataframe['age'].replace([19.0], 18
 compiled_RDA_dataframe['age'] = compiled_RDA_dataframe['age'].replace([31.0], 30.0)
 compiled_RDA_dataframe['age'] = compiled_RDA_dataframe['age'].replace([51.0], 50.0)
 
-print(compiled_RDA_dataframe)
+# print(compiled_RDA_dataframe)
 
-print(sorted(list(set(cofid_df.columns[2:]) & set(compiled_RDA_dataframe))))
+# print(sorted(list(set(cofid_df.columns[2:]) & set(compiled_RDA_dataframe))))
 
-for item in sorted(compiled_RDA_dataframe.columns[3:]):
-    print(item)
+# for item in sorted(compiled_RDA_dataframe.columns[3:]):
+#     print(item)
 
 sorted_list = ['age', 'category', 'sex'] + sorted(compiled_RDA_dataframe.columns[3:])
-print(sorted_list)
+# print(sorted_list)
 
 compiled_RDA_dataframe = compiled_RDA_dataframe[sorted_list]
 
 compiled_RDA_dataframe.insert(0, 'id', [x for x in range(1, compiled_RDA_dataframe.shape[0]+1)])
 
-compiled_RDA_dataframe.to_csv('./clean-tables/RDA.csv', index=False)
+compiled_RDA_dataframe = compiled_RDA_dataframe.replace(',', '', regex=True)
+
+compiled_RDA_dataframe['chloride'] = compiled_RDA_dataframe['chloride'].apply(lambda x: float(x) * 1000)  # Convert g to mg
+
+compiled_RDA_dataframe.to_csv('./clean-tables/RDA_defaults.csv', index=False)
