@@ -5,7 +5,7 @@ Note than the login page will NOT be in here and will isntead be in auth.py, sin
 
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user # type: ignore
-from .models import Note, Foods, Recipe, RecipeIngredient, NutrientUnit, RDA
+from .models import Note, Foods, Recipe, RecipeIngredient, NutrientUnit, RDADefault
 from . import db  # type: ignore
 import json
 
@@ -147,8 +147,7 @@ def viewRecipePage(formatted_recipe_name):
     recipe_id=request.args.get('recipe_id')
     recipe = db.session.get(Recipe, recipe_id)  # TO-DO: Add authentication for user before viewing view-recipe page
     recipe_ingredients = db.session.query(RecipeIngredient).filter_by(recipe_id=recipe_id)
-    rda_id = current_user.rda_id
-    print(rda_id)
+
     # user_rda = db.session.get(RDA, rda_id)
     # print(user_rda)
     
@@ -157,10 +156,14 @@ def viewRecipePage(formatted_recipe_name):
         nutrient_units[row.nutrient] = row.unit
 
     def NutrientEntry():
-        if key != "name" and key != '_sa_instance_state':
-            return True
-        else:
+        # missing_entries = ["water", "choline", "chromium", "fluoride", "molybdenum"]
+        if key in ["name", "_sa_instance_state", "age", "category", "sex"] or "_percent" in key:
             return False
+        # elif key in missing_entries:
+        #     print(f"{key} is a missing entry")
+        #     return False
+        else:
+            return True
     def NutrientEntryIsNone():
         if ingredient_nutrition_per100g[key] == None or ingredient_nutrition_per100g[key] == "NULL":
             return True
@@ -182,9 +185,7 @@ def viewRecipePage(formatted_recipe_name):
     for ingredient in recipe_ingredients:
 
         recipe_ingredient_nutrition = {}
-
         ingredient_nutrition_per100g = db.session.get(Foods, ingredient.food_id).__dict__
-        ingredient_recipe_amount = ingredient.amount
 
         for key in ingredient_nutrition_per100g:
 
@@ -205,9 +206,33 @@ def viewRecipePage(formatted_recipe_name):
         
         recipe_foods_nutrition.append(recipe_ingredient_nutrition)
 
-        
+    
+    # Calculate percentages before rounding total_recipe_nutrition to avoid rounding errors
+    if current_user.isCustomRDA:
+        pass
+    else:
+        # print(total_recipe_nutrition)
+        user_rda = db.session.get(RDADefault, current_user.RDADefault_id).__dict__
+        user_rda_percent = {}
+        for key in user_rda:
+            if NutrientEntry():
+
+                if key in ["water", "choline", "chromium", "fluoride", "molybdenum", "sugar"]:  # Missing entry
+                    user_rda_percent[key] = -1
+
+                elif user_rda[key] != 0:
+                    percentage = 100 * total_recipe_nutrition[key] / float(user_rda[key])
+                    user_rda_percent[key] = round(percentage, 2)
+                else:
+                    if total_recipe_nutrition[key] == 0:
+                        user_rda_percent[key] = 0
+                    else:
+                        user_rda_percent[key] = 100
+    
     for key in total_recipe_nutrition:
         total_recipe_nutrition[key] = round(total_recipe_nutrition[key], 2)
+    
+    print(user_rda_percent)
 
     # food_name = db.session.get(Foods, food_id).name
     return render_template(
@@ -217,4 +242,5 @@ def viewRecipePage(formatted_recipe_name):
         recipe_ingredients = recipe_ingredients,  # Full name ingredients list and amount
         recipe_foods_nutrition=recipe_foods_nutrition,
         total_recipe_nutrition=total_recipe_nutrition,
-        nutrient_units=nutrient_units)  # Goes to view-recipe.html
+        nutrient_units=nutrient_units,
+        user_rda_percent=user_rda_percent)  # Goes to view-recipe.html

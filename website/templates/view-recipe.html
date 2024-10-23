@@ -50,14 +50,24 @@
                         </div>
                     </div>
                 </div>
-                {% for macro in ['Fibre', 'Protein']%}
+                {% for macro in ['fibre', 'protein']%}
+
+                {% if 0 <= user_rda_percent[macro]|float < 30 %} 
+                {% set bar_colour = "red" %} 
+                {% elif 30 <= user_rda_percent[macro] < 100 %} 
+                {% set bar_colour = "#ffcf00" %} 
+                {% elif user_rda_percent[macro] >= 100 %} 
+                {% set bar_colour = "green" %} 
+                {% else %}
+                {% set bar_colour = "black" %}
+                {% endif %}
                 <div class="col-lg-4 col-md-4 col-sm-3 col-xs-3 justify-content-center d-flex height: 90%;">
                     <div class="my-4 position-relative">
                         <div class="justify-content-center d-flex position-absolute w-100" style="display: flex; justify-content: center; align-items: center; flex-direction: column">
-                            <h5 class="fw-bold" style="line-height: 4em">{{macro}}</h5>
+                            <h5 class="fw-bold" style="line-height: 4em">{{macro.capitalize()}}</h5>
                         </div>
                         <div class="container position-relative" style="display: flex; justify-content: center; ">
-                            <div class="pie" data-pie='{ "percent": 66, "speed": "120", "textPosition": "20%", "fontWeight":"bold", "size":"120", "rotation": "0", "inverse": "true", "colorSlice":"#ffcf00", "round":"true", "strokeBottom": 5, "colorCircle":"#f8f9fa" }'></div>
+                            <div class="pie" data-pie='{ "percent": {{user_rda_percent[macro]}}, "speed": "120", "textPosition": "20%", "fontWeight":"bold", "size":"120", "rotation": "0", "inverse": "true", "colorSlice":"{{bar_colour}}", "round":"true", "strokeBottom": 5, "colorCircle":"#f8f9fa" }'></div>
 
                         </div>
                     </div>
@@ -82,7 +92,7 @@
                         <h5>Carbohydrates</h5>
 
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-5">
                             Carbohydrates
                         </div>
                         <div class="col-2">
@@ -90,8 +100,8 @@
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                <small class="justify-content-center d-flex position-absolute w-100">20%</small>
+                                <div class="progress-bar" role="progressbar" style="width: {{user_rda_percent['carbohydrate']}}%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                <small class="justify-content-center d-flex position-absolute w-100">{{user_rda_percent['carbohydrate']}}%</small>
                             </div>
                         </div>
                     </div>
@@ -99,196 +109,226 @@
                     <div class="row">
                         <div class="col-1">
                         </div>
-                        <div class="col-5" style="text-transform: capitalize">
+                        <div class="col-4" style="text-transform: capitalize">
                             {{carb}}
                         </div>
                         <div class="col-2">
                             {{total_recipe_nutrition[carb]}}{{nutrient_units[carb]}}
+
                         </div>
                         <div class="col">
                             <div class="progress position-relative" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                <small class="justify-content-center d-flex position-absolute w-100">20%</small>
+                                <div class="progress-bar" role="progressbar" style="width: {{user_rda_percent[carb]}}%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                <small class="justify-content-center d-flex position-absolute w-100">{{user_rda_percent[carb]}}%</small>
                             </div>
                         </div>
                     </div>
                     {% endfor %}
+
+                    <div class="p-2 my-2 bg-light">
+                        <h5>Lipids</h5>
+                        <div class="row">
+                            <div class="col-5">
+                                Total fat
+                            </div>
+                            <div class="col-2">
+                                {{total_recipe_nutrition['fat']}}{{nutrient_units['fat']}}
+    
+                                {% if 0 <= user_rda_percent['fat']|float < 50 %} 
+                                {% set bar_colour = "bg-danger" %} 
+                                {% elif 50 <= user_rda_percent['fat'] < 100 %} 
+                                {% set bar_colour = "bg-warning" %} 
+                                {% elif user_rda_percent['fat'] >= 100 %} 
+                                {% set bar_colour = "bg-success" %} 
+                                {% else %}
+                                {% set bar_colour = "bg-secondary" %}
+                                {% endif %}
+                            </div>
+                            <div class="col">
+                                <div class="progress position-relative" style="height: 20px;">
+                                    <div class="progress-bar {{bar_colour}}" role="progressbar" style="width: {{user_rda_percent['fat']}}%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <small class="justify-content-center d-flex position-absolute w-100">{{user_rda_percent['fat']}}%</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% for fat in [['Monounsaturated', 'mono'], ['Polyunsaturated', 'poly']]%}
+                        <div class="row">
+                            <div class="col-1">
+                            </div>
+                            <div class="col-4">
+                                {{fat[0]}}
+                            </div>
+                            <div class="col-2">
+                                {{total_recipe_nutrition[fat[1]]}}{{nutrient_units[fat[1]]}}
+                            </div>
+                            <div class="col">
+                                <div class="progress position-relative" style="height: 20px;">
+                                    <div class="progress-bar" role="progressbar" style="width: {{user_rda_percent['mono']}}%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <small class="justify-content-center d-flex position-absolute w-100">{{user_rda_percent[fat[1]]}}%</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                
+                        {% for poly_fats in [['Omega-3', 'n_3'],['Omega-6', 'n_6']]%}
+                        <div class="row">
+                            <div class="col-2">
+                            </div>
+                            <div class="col-3">
+                                {{poly_fats[0]}}
+                            </div>
+                            <div class="col-2 pr-0">
+                                {{total_recipe_nutrition[poly_fats[1]]}}{{nutrient_units[poly_fats[1]]}}
+    
+                                {% if 0 <= user_rda_percent[poly_fats[1]]|float < 50 %} 
+                                {% set bar_colour = "bg-danger" %} 
+                                {% elif 50 <= user_rda_percent[poly_fats[1]] < 100 %} 
+                                {% set bar_colour = "bg-warning" %} 
+                                {% elif user_rda_percent[poly_fats[1]] >= 100 %} 
+                                {% set bar_colour = "bg-success" %} 
+                                {% else %}
+                                {% set bar_colour = "bg-secondary" %}
+                                {% endif %}
+                            </div>
+                            <div class="col">
+                                <div class="progress position-relative" style="height: 20px;">
+                                    <div class="progress-bar {{bar_colour}}" role="progressbar" style="width: {{user_rda_percent[poly_fats[1]]}}%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <small class="justify-content-center d-flex position-absolute w-100">{{user_rda_percent[poly_fats[1]]}}%</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                        {% for fat in [['Saturated', 'satd'], ['Cholesterol', 'cholesterol']]%}
+                        {% if 0 <= user_rda_percent[fat[1]]|float < 50 %} 
+                        {% set bar_colour = "bg-danger" %} 
+                        {% elif 50 <= user_rda_percent[fat[1]] < 100 %} 
+                        {% set bar_colour = "bg-warning" %} 
+                        {% elif user_rda_percent[fat[1]] >= 100 %} 
+                        {% set bar_colour = "bg-success" %} 
+                        {% else %}
+                        {% set bar_colour = "bg-secondary" %}
+                        {% endif %}
+                        <div class="row">
+                            <div class="col-1"></div>
+                            <div class="col-4">
+                                {{fat[0]}}
+                            </div>
+                            <div class="col-2">
+                                {{total_recipe_nutrition[fat[1]]}}{{nutrient_units[fat[1]]}}
+                            </div>
+                            <div class="col">
+                                <div class="progress position-relative" style="height: 20px;">
+                                    <div class="progress-bar {{bar_colour}}" role="progressbar" style="width: {{user_rda_percent[fat[1]]}}%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <small class="justify-content-center d-flex position-absolute w-100">{{user_rda_percent[fat[1]]}}%</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+    
+                    <div class="p-2 my-2 bg-light">
+                        <h5>Protein</h5>
+                        <div class="row">
+                            <div class="col-5">
+                                Protein
+                            </div>
+                            <div class="col-2">
+                                {{total_recipe_nutrition['protein']}}{{nutrient_units['protein']}}
+    
+                                {% if 0 <= user_rda_percent['protein']|float < 50 %} 
+                                {% set bar_colour = "bg-danger" %} 
+                                {% elif 50 <= user_rda_percent['protein'] < 100 %} 
+                                {% set bar_colour = "bg-warning" %} 
+                                {% elif user_rda_percent['protein'] >= 100 %} 
+                                {% set bar_colour = "bg-success" %} 
+                                {% else %}
+                                {% set bar_colour = "bg-secondary" %}
+                                {% endif %}
+                            </div>
+                            <div class="col">
+                                <div class="progress position-relative" style="height: 20px;">
+                                    <div class="progress-bar {{bar_colour}}" role="progressbar" style="width: {{user_rda_percent['protein']}}%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <small class="justify-content-center d-flex position-absolute w-100">{{user_rda_percent['protein']}}%</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="p-2 my-2 bg-light">
+                        <h5>Essential amino acids</h5>
+                        {% for amino in ['phenylalanine', 'valine', 'threonine', 'tryptophan', 'methionine', 'leucine', 
+                        'isoleucine', 'lysine', 'histidine']%}
+                        <div class="row">
+                            <div class="col-5" style="text-transform: capitalize;">
+                                {{amino}}
+                            </div>
+                            <div class="col-2">
+                                {{total_recipe_nutrition[amino]}}{{nutrient_units[amino]}}
+                            </div>
+                            <div class="col">
+                                <div class="progress position-relative" style="height: 20px;">
+                                    <div class="progress-bar" role="progressbar" style="width: {{user_rda_percent[amino]}}%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <small class="justify-content-center d-flex position-absolute w-100">{{user_rda_percent[amino]}}%</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+    
+                    <div class="p-2 my-2 bg-light">
+                        <h5>Phytochemicals</h5>
+                        {% for phytochemical in ['lypocene', 'lutein and zeaxanthin', 'quarcetin', 'flavonoids', 'resveratrol', 'myricetin']%}
+                        <div class="row">
+                            <div class="col-5" style="text-transform: capitalize;">
+                                {{phytochemical}}
+                            </div>
+                            <div class="col-2">
+                                {{total_recipe_nutrition[phytochemical]}}{{nutrient_units[phytochemical]}}
+                            </div>
+                            <div class="col">
+                                <div class="progress position-relative" style="height: 20px;">
+                                    <div class="progress-bar" role="progressbar" style="width: {{user_rda_percent[phytochemical]}}%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <small class="justify-content-center d-flex position-absolute w-100">{{user_rda_percent[phytochemical]}}%</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+
                 </div>
 
-                <div class="p-2 my-2 bg-light">
-                    <h5>Lipids</h5>
-                    <div class="row">
-                        <div class="col-6">
-                            Total fat
-                        </div>
-                        <div class="col-2">
-                            {{total_recipe_nutrition['fat']}}{{nutrient_units['fat']}}
-                        </div>
-                        <div class="col">
-                            <div class="progress position-relative" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                <small class="justify-content-center d-flex position-absolute w-100">20%</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-1">
-                        </div>
-                        <div class="col-5">
-                            Mono
-                        </div>
-                        <div class="col-2">
-                            {{total_recipe_nutrition['mono']}}{{nutrient_units['mono']}}
-                        </div>
-                        <div class="col">
-                            <div class="progress position-relative" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                <small class="justify-content-center d-flex position-absolute w-100">20%</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-1">
-                        </div>
-                        <div class="col-5">
-                            Poly
-                        </div>
-                        <div class="col-2">
-                            {{total_recipe_nutrition['poly']}}g
-                        </div>
-                        <div class="col">
-                            <div class="progress position-relative" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                <small class="justify-content-center d-flex position-absolute w-100">20%</small>
-                            </div>
-                        </div>
-                    </div>
-                    {% for poly_fats in [['Omega-3', 'n_3'],['Omega-6', 'n_6']]%}
-                    <div class="row">
-                        <div class="col-2">
-                        </div>
-                        <div class="col-4">
-                            {{poly_fats[0]}}
-                        </div>
-                        <div class="col-2">
-                            {{total_recipe_nutrition[poly_fats[1]]}}{{nutrient_units[poly_fats[1]]}}
-                        </div>
-                        <div class="col">
-                            <div class="progress position-relative" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                <small class="justify-content-center d-flex position-absolute w-100">20%</small>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="col-5">
-                            Saturated
-                        </div>
-                        <div class="col-2">
-                            {{total_recipe_nutrition['satd']}}{{nutrient_units['satd']}}
-                        </div>
-                        <div class="col-4">
-                            <div class="progress position-relative" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                <small class="justify-content-center d-flex position-absolute w-100">20%</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-1"></div>
-                        <div class="col-5">
-                            Cholesterol
-                        </div>
-                        <div class="col-2">
-                            {{total_recipe_nutrition['cholesterol']}}{{nutrient_units['cholesterol']}}
-                        </div>
-                        <div class="col-4">
-                            <div class="progress position-relative" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                <small class="justify-content-center d-flex position-absolute w-100">20%</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-2 my-2 bg-light">
-                    <h5>Protein</h5>
-                    <div class="row">
-                        <div class="col-6">
-                            Protein
-                        </div>
-                        <div class="col-2">
-                            {{total_recipe_nutrition['protein']}}{{nutrient_units['protein']}}
-                        </div>
-                        <div class="col">
-                            <div class="progress position-relative" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                <small class="justify-content-center d-flex position-absolute w-100">20%</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="p-2 my-2 bg-light">
-                    <h5>Essential amino acids</h5>
-                    {% for amino in ['phenylalanine', 'valine', 'threonine', 'tryptophan', 'methionine', 'leucine', 
-                                    'isoleucine', 'lysine', 'histidine']%}
-                    <div class="row">
-                        <div class="col-6" style="text-transform: capitalize;">
-                            {{amino}}
-                        </div>
-                        <div class="col-2">
-                            {{total_recipe_nutrition[amino]}}{{nutrient_units[amino]}}
-                        </div>
-                        <div class="col">
-                            <div class="progress position-relative" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                <small class="justify-content-center d-flex position-absolute w-100">20%</small>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-
-                <div class="p-2 my-2 bg-light">
-                    <h5>Phytochemicals</h5>
-                    {% for phytochemical in ['lypocene', 'lutein and zeaxanthin', 'quarcetin', 'flavonoids', 'resveratrol', 'myricetin']%}
-                    <div class="row">
-                        <div class="col-6" style="text-transform: capitalize;">
-                            {{phytochemical}}
-                        </div>
-                        <div class="col-2">
-                            {{total_recipe_nutrition[phytochemical]}}{{nutrient_units[phytochemical]}}
-                        </div>
-                        <div class="col">
-                            <div class="progress position-relative" style="height: 20px;">
-                                <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                <small class="justify-content-center d-flex position-absolute w-100">20%</small>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
+                
 
             </div>
                 <div class="col">
                     <div class="p-2 my-2 bg-light">
                         <h5>Vitamins</h5>
-                        {% for b_vitamin in [['B1', 'b1'], ['B2', 'b2'], ['B3', 'b3'], ['B5', 'b5'], ['B6', 'b6'], ['B12', 'b12'], ['Choline', 'choline'], ['Folate', 'folate'], ['Pantothenate', 'pantothenate'], 
-                                            ['Vitamin A', 'a'], ['Vitamin C', 'c'], ['Vitamin D', 'd'], ['Vitamin E', 'e'], ['Vitamin K', 'k']]%}
+                        {% for b_vitamin in [['B1', 'thiamin'], ['B2', 'riboflavin'], ['B3', 'niacin'], ['B5', 'pantothenate'], ['B6', 'b6'], ['B12', 'b12'], ['Choline', 'choline'], ['Folate', 'folate'], 
+                        ['Vitamin A', 'retinol'], ['Vitamin C', 'c'], ['Vitamin D', 'd'], ['Vitamin E', 'e'], ['Vitamin K', 'k']]%}
+
+                        {% if 0 <= user_rda_percent[b_vitamin[1]]|float < 50 %} 
+                        {% set bar_colour = "bg-danger" %} 
+                        {% elif 50 <= user_rda_percent[b_vitamin[1]] < 100 %} 
+                        {% set bar_colour = "bg-warning" %} 
+                        {% elif user_rda_percent[b_vitamin[1]] >= 100 %} 
+                        {% set bar_colour = "bg-success" %} 
+                        {% else %}
+                        {% set bar_colour = "bg-secondary" %}
+                        {% endif %}
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-4">
                                 {{b_vitamin[0]}}
                             </div>
-                            <div class="col-2">
+                            <div class="col-3">
                                 {{total_recipe_nutrition[b_vitamin[1]]}}{{nutrient_units[b_vitamin[1]]}}
                             </div>
                             <div class="col">
                                 <div class="progress position-relative" style="height: 20px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                    <small class="justify-content-center d-flex position-absolute w-100">20%</small>
+                                    <div class="progress-bar {{ bar_colour }}" role="progressbar" style="width: {{user_rda_percent[b_vitamin[1]]}}%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <small class="justify-content-center d-flex position-absolute w-100">{{user_rda_percent[b_vitamin[1]]}}%</small>
                                 </div>
                             </div>
                         </div>
@@ -298,18 +338,28 @@
                     <div class="p-2 my-2 bg-light">
                         <h5>Minerals</h5>
                         {% for mineral in ['calcium', 'chloride', 'chromium', 'copper', 'fluoride', 'iodine', 'iron', 'magnesium', 
-                                            'manganese', 'molybdenum', 'phosphorus', 'potassium', 'selenium', 'sodium', 'zinc' ]%}
+                        'manganese', 'molybdenum', 'phosphorus', 'potassium', 'selenium', 'sodium', 'zinc' ]%}
+
+                        {% if 0 <= user_rda_percent[mineral]|float < 50 %} 
+                        {% set bar_colour = "bg-danger" %} 
+                        {% elif 50 <= user_rda_percent[mineral] < 100 %} 
+                        {% set bar_colour = "bg-warning" %} 
+                        {% elif user_rda_percent[mineral] >= 100 %} 
+                        {% set bar_colour = "bg-success" %} 
+                        {% else %}
+                        {% set bar_colour = "bg-secondary" %}
+                        {% endif %}
                         <div class="row">
-                            <div class="col-6" style="text-transform: capitalize;">
+                            <div class="col-4" style="text-transform: capitalize;">
                                 {{mineral}}
                             </div>
-                            <div class="col-2">
+                            <div class="col-3">
                                 {{total_recipe_nutrition[mineral]}}{{nutrient_units[mineral]}}
                             </div>
                             <div class="col">
                                 <div class="progress position-relative" style="height: 20px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 20%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                    <small class="justify-content-center d-flex position-absolute w-100">20%</small>
+                                    <div class="progress-bar {{ bar_colour }}" role="progressbar" style="width: {{user_rda_percent[mineral]}}%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <small class="justify-content-center d-flex position-absolute w-100">{{user_rda_percent[mineral]}}%</small>
                                 </div>
                             </div>
                         </div>
