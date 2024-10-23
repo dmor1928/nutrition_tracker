@@ -35,11 +35,7 @@
                             <button type="submit" name="view-or-edit" value="view" class="btn btn-lg btn-primary">View</button>
                             <input type="hidden" name="recipe-id" value="{{recipe.id}}">
                             <input type="hidden" name="recipe-name" value="{{recipe.formatted_name}}">
-                          </form>
-                          <form method="POST">
-                            <button type="button" name="view-or-edit" value="edit" class="btn btn-outline-primary">Edit</button>
-                            <input type="hidden" name="recipe-id" value="{{recipe.id}}">
-                            <input type="hidden" name="recipe-name" value="{{recipe.formatted_name}}">
+                            <button type="submit" name="view-or-edit" value="edit" class="btn btn-outline-primary">Edit</button>
                           </form>
                         </div>
                     </div>

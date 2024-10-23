@@ -52,15 +52,15 @@ def createRecipePage():
 
         keys = request.form.keys()  # request form keys
         
-        def isValidAmountInput(amount):
-            try:
-                amount_float = float(amount)
-                if amount_float >= 0:
-                    return True
-                else:
-                    return False
-            except ValueError:
-                return False
+        # def isValidAmountInput(amount):
+        #     try:
+        #         amount_float = float(amount)
+        #         if amount_float >= 0:
+        #             return True
+        #         else:
+        #             return False
+        #     except ValueError:
+        #         return False
         
         def RecipeURLName(recipe_name):
                 # Format name so that it's a valid URL makeURLRecipeName
@@ -164,16 +164,38 @@ def createRecipePage():
             user=current_user, 
             foods=db.session.query(Foods).all())
 
+@views.route('/my-recipes/<formatted_recipe_name>/edit')
+@login_required
+def editRecipePage(formatted_recipe_name):
+    recipe_id = request.args.get('recipe_id')
+    print(recipe_id)
+    old_recipe_ingredients = db.session.query(RecipeIngredient).filter(RecipeIngredient.recipe_id == recipe_id).all()
+
+    if request.method != "POST":
+        return render_template(
+            "edit-recipe.html", 
+            user=current_user, 
+            recipe = db.session.query(Recipe).filter(Recipe.id == recipe_id).first(),
+            recipe_ingredients=old_recipe_ingredients,
+            foods=db.session.query(Foods).all())
+
+    else:  # Save recipe
+        # Similar checks to createRecipePage but delete any ingredients no longer included and add any that are now included
+        pass
+
 @views.route('/my-recipes', methods=['GET', 'POST'])
 @login_required
 def myRecipesPage():
     if request.method == "POST":
         formatted_recipe_name = request.form['recipe-name']
         recipe_id = request.form['recipe-id']
-        if request.form["view-or-edit"] == "view":
+        print("myRecipesPage() recipe_id: ", recipe_id)
+        view_or_edit = request.form["view-or-edit"]
+        print("view_or_edit", view_or_edit)
+        if view_or_edit == "view":
             return redirect(url_for("views.viewRecipePage", formatted_recipe_name=formatted_recipe_name, recipe_id=recipe_id))
-        if request.form["view-or-edit"] == "edit":  # TO-DO: Redirect to create recipe page, with list and amounts prefilled with recipe data
-            return redirect(url_for)
+        if view_or_edit == "edit":  # TO-DO: Redirect to create recipe page, with list and amounts prefilled with recipe data
+            return redirect(url_for("views.editRecipePage", formatted_recipe_name=formatted_recipe_name, recipe_id=recipe_id))
         
     return render_template(
             "my-recipes.html",  # If you click on an 'open recipe' button in my-recipes.html it sends you to /my-recipes/<recipe_name>
