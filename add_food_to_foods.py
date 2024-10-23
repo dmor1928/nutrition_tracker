@@ -49,7 +49,7 @@ class Foods(Base):  # type: ignore
     retinol_equivalent = Column(Float)
     d = Column(Float)
     e = Column(Float)
-    k1 = Column(Float)
+    k = Column(Float)
     thiamin = Column(Float)
     riboflavin = Column(Float)
     niacin = Column(Float)
@@ -83,7 +83,7 @@ class Foods(Base):  # type: ignore
             self.cholesterol, self.sodium, self.potassium, self.calcium, self.magnesium, 
             self.phosphorus, self.iron, self.copper, self.zinc, self.chloride, 
             self.manganese, self.selenium, self.iodine, self.retinol, self.carotene, 
-            self.retinol_equivalent, self.d,  self.e, self.k1, self.thiamin, 
+            self.retinol_equivalent, self.d,  self.e, self.k, self.thiamin, 
             self.riboflavin, self.niacin, self.tryptophan_60, self.niacin_equivalent,  
             self.b6, self.b12, self.folate, self.pantothenate, self.biotin, self.c, 
             self.alpha_carotene, self.beta_carotene, self.lutein, self.lycopene)
