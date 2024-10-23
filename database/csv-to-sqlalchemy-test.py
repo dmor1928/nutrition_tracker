@@ -47,7 +47,7 @@ class Foods(Base):
     retinol_equivalent = Column(Float)
     d = Column(Float)
     e = Column(Float)
-    k1 = Column(Float)
+    k = Column(Float)
     thiamin = Column(Float)
     riboflavin = Column(Float)
     niacin = Column(Float)
@@ -71,7 +71,7 @@ class Foods(Base):
         sodium='{14}', potassium='{15}', calcium='{16}', magnesium='{17}', 
         phosphorus='{18}', iron='{19}', copper='{20}', zinc='{21}', chloride='{22}', 
         manganese='{23}', selenium='{24}', iodine='{25}', retinol='{26}', 
-        carotene='{27}', retinol_equivalent='{28}', d='{29}', e='{30}', k1='{31}', 
+        carotene='{27}', retinol_equivalent='{28}', d='{29}', e='{30}', k='{31}', 
         thiamin='{32}', riboflavin='{33}', niacin='{34}', tryptophan_60='{35}', 
         niacin_equivalent='{36}', b6='{37}', b12='{38}', folate='{39}', 
         pantothenate='{40}', biotin='{41}', c='{42}', alpha_carotene='{43}', 
@@ -81,7 +81,7 @@ class Foods(Base):
             self.cholesterol, self.sodium, self.potassium, self.calcium, self.magnesium, 
             self.phosphorus, self.iron, self.copper, self.zinc, self.chloride, 
             self.manganese, self.selenium, self.iodine, self.retinol, self.carotene, 
-            self.retinol_equivalent, self.d,  self.e, self.k1, self.thiamin, 
+            self.retinol_equivalent, self.d,  self.e, self.k, self.thiamin, 
             self.riboflavin, self.niacin, self.tryptophan_60, self.niacin_equivalent,  
             self.b6, self.b12, self.folate, self.pantothenate, self.biotin, self.c, 
             self.alpha_carotene, self.beta_carotene, self.lutein, self.lycopene)

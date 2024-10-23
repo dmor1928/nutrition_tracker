@@ -104,7 +104,11 @@ for n, column_name in enumerate(column_names):
     new_name_split = new_name.split()
 
     if new_name_split[0] == "vitamin":  # Set name to the vitamin type (e.g. 'vitamin c' --> 'c')
-        new_name = new_name_split[1]
+        if new_name_split[1] == 'k1':  # Changed k1 to k
+            new_name = "k"
+            print(f"vitamin {new_name_split[1]} changed to {new_name}")
+        else:
+            new_name = new_name_split[1]
     elif new_name_split[0] == "food":
         new_name = "name"
     elif new_name_split[1] == "equivalent":
@@ -140,7 +144,7 @@ outdir = './clean-tables'
 if not os.path.exists(outdir):
     os.mkdir(outdir)
 
-# complete_nutritional_data.to_csv(outdir + '/complete_nutritional_data.csv', index=False)
+complete_nutritional_data.to_csv(outdir + '/complete_nutritional_data.csv', index=False)
 nutrients_units.to_csv(outdir + '/nutrients_units.csv', index=False)
 
 
@@ -150,4 +154,4 @@ nutrients_units.to_csv(outdir + '/nutrients_units.csv', index=False)
 
 # Adding primary key ID_column to complete_nutritonal_data
 
-print(f'Nutritional information successfully extracted to {outdir}/nutrients_units.csv')
+print(f'Nutritional information successfully extracted to {outdir}')
