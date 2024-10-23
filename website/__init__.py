@@ -23,7 +23,7 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
-    from .models import User, Note, Foods, Recipe, RecipeIngredient, RDA
+    from .models import User, Note, Foods, Recipe, RecipeIngredient, RDADefault
 
     create_database(app)
 
@@ -53,7 +53,7 @@ def create_database(app):
         print('Created Database')
 
          # Importing csv data to models
-        from .models import Foods, RDA, User, NutrientUnit
+        from .models import Foods, RDADefault, User, NutrientUnit
         engine = db.create_engine('sqlite:///instance/database.db', echo=False)
         Base = declarative_base()
         Base.metadata.create_all(engine)
@@ -62,13 +62,13 @@ def create_database(app):
         df = pd.read_csv(file_dir + 'complete_nutritional_data.csv')
         df.to_sql(con=engine, name=Foods.__tablename__, if_exists='replace', index=False)
         
-        df = pd.read_csv(file_dir + 'RDA.csv')
-        df.to_sql(con=engine, name=RDA.__tablename__, if_exists='replace', index=False)
+        df = pd.read_csv(file_dir + 'RDA_defaults.csv')
+        df.to_sql(con=engine, name=RDADefault.__tablename__, if_exists='replace', index=False)
 
         df = pd.read_csv(file_dir + 'nutrients_units.csv')
         df.to_sql(con=engine, name=NutrientUnit.__tablename__, if_exists='replace', index=False)
 
-        print("Imported food and RDA data")
+        print("Imported food and default RDA data")
 
         import datetime
         from dateutil.relativedelta import relativedelta
@@ -88,7 +88,8 @@ def create_database(app):
             sex='male',
             isPregnant = False,
             isLactating = False,
-            rda_id = rda_id)
+            RDADefault_id = rda_id,
+            isCustomRDA = False)
         
         with app.app_context():
             db.session.add(sample_user)
