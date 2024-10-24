@@ -41,6 +41,28 @@ def delete_note():
 def productPage():
     return render_template("my-landing-page/my-product-page.html")
 
+def validRecipeName(recipe_name):
+    if recipe_name is None:
+        flash('Error: No recipe name added', category='error')
+        return False
+    elif len(recipe_name) < 5:
+        flash('Error: Recipe name is too short (minimum length 5)', category='error')
+        return False
+    elif len(recipe_name) > 64:
+        flash('Error: Recipe name too long (64 limit max)', category='error')
+        return False
+    else:
+        return True
+
+def RecipeURLName(recipe_name):
+    # Format name so that it's a valid URL makeURLRecipeName
+    formatted_name = recipe_name.lower()
+    for character in [" ", "    "]:
+        formatted_name = formatted_name.replace(character, "-")
+    for character in ["'", '"', "<", ">", "!", "?", "=", "/", "\\"]:
+        formatted_name = formatted_name.replace(character, "")
+    return formatted_name
+
 @views.route('/create-recipe', methods=['GET', 'POST'])
 @login_required
 def createRecipePage():
@@ -51,39 +73,7 @@ def createRecipePage():
         recipe_dietary_restrictions = request.form.get('recipe-dietary-restrictions')
 
         keys = request.form.keys()  # request form keys
-        
-        # def isValidAmountInput(amount):
-        #     try:
-        #         amount_float = float(amount)
-        #         if amount_float >= 0:
-        #             return True
-        #         else:
-        #             return False
-        #     except ValueError:
-        #         return False
-        
-        def RecipeURLName(recipe_name):
-                # Format name so that it's a valid URL makeURLRecipeName
-                formatted_name = recipe_name.lower()
-                for character in [" ", "    "]:
-                    formatted_name = formatted_name.replace(character, "-")
-                for character in ["'", '"', "<", ">", "!", "?", "=", "/", "\\"]:
-                    formatted_name = formatted_name.replace(character, "")
-                return formatted_name
-
-        # for key in keys:
-        #     if not key.startswith("recipe-"):  
-        #         # If key doesn't start with "-recipe" i.e not recipe-dietary-restrictions, name, or description
-        #         # Implies filters to keys that are grams inputs name=food_id since they're the only names not starting with recipe-
-        #         print(key)
-        #         grams = int(request.form.get(key))  # <input> has name=food_id, value=amount in grams
-        #         if grams == None:  # If there's no inputted grams i.e. invalid input
-        #             food_id = int(key)
-        #             food_name = db.session.get(Foods, food_id).name
-        #             break
-                # Summary: it looks at ingredient inputs which have food_id as name and value as amount in grams
-                #          and then checks if grams is None i.e. invalid input
-        
+    
         ingredient_inputs = []
         for key in keys:
             if not key.startswith("recipe-"):
@@ -91,29 +81,12 @@ def createRecipePage():
                 food_name = db.session.get(Foods, food_id).name
                 food_amount = int(request.form.get(key))
                 ingredient_inputs.append((food_id, food_name, food_amount))
-
+        
         if len(ingredient_inputs) == 0:
             flash('Error: No ingredients added', category='error')
             return redirect(url_for('views.createRecipePage'))
         
-        # for id, name, amount in ingredient_inputs:  # Form already ensures inputs are valid
-        #     print("name: ", name)
-        #     print("amount: ", amount)
-
-        #     if not isValidAmountInput(amount):
-        #         flash(f'Error: {name} ingredient has invalid amount {amount}', category='error')
-        #         return redirect(url_for('views.createRecipePage'))
-        
-        if recipe_name is None:
-            flash('Error: No recipe name added', category='error')
-            return redirect(url_for('views.createRecipePage'))
-
-        elif len(recipe_name) < 5:
-            flash('Error: Recipe name is too short (minimum length 5)', category='error')
-            return redirect(url_for('views.createRecipePage'))
-
-        elif len(recipe_name) > 64:
-            flash('Error: Recipe name too long (64 limit max)', category='error')
+        if not validRecipeName(recipe_name):
             return redirect(url_for('views.createRecipePage'))
 
         else:
@@ -123,8 +96,10 @@ def createRecipePage():
 
             if recipe_dietary_restrictions != "vegan":
                 is_vegan = False
+
             if recipe_dietary_restrictions != "vegetarian":
                 is_vegetarian = False
+
             if recipe_dietary_restrictions != "pescatarian":
                 is_pescatarian = False
             
@@ -154,17 +129,19 @@ def createRecipePage():
                 print("amount: ", amount)
                 new_ingredient = RecipeIngredient(amount=amount, food_id=id, food_name=name, recipe_id=new_recipe_id)
                 new_ingredients.append(new_ingredient)
-            
+
             db.session.add_all(new_ingredients)
             db.session.commit()
+
             flash('Recipe added', category='success')
             return redirect(url_for("views.viewRecipePage", formatted_recipe_name=recipe_name_formatted, recipe_id=new_recipe_id))  # Redirect to nutrition page
-    return render_template(
-            "create-recipe.html", 
-            user=current_user, 
-            foods=db.session.query(Foods).all())
+    else:
+        return render_template(
+                "create-recipe.html", 
+                user=current_user, 
+                foods=db.session.query(Foods).all())
 
-@views.route('/my-recipes/<formatted_recipe_name>/edit')
+@views.route('/my-recipes/<formatted_recipe_name>/edit', methods=['GET', 'POST'])
 @login_required
 def editRecipePage(formatted_recipe_name):
     recipe_id = request.args.get('recipe_id')
@@ -181,6 +158,120 @@ def editRecipePage(formatted_recipe_name):
 
     else:  # Save recipe
         # Similar checks to createRecipePage but delete any ingredients no longer included and add any that are now included
+        new_recipe_name = request.form.get('recipe-name')
+        new_recipe_description = request.form.get('recipe-description')
+        new_recipe_dietary_restrictions = request.form.get('recipe-dietary-restrictions')
+
+        keys = request.form.keys()  # request form keys
+        new_ingredient_inputs = []
+        for key in keys:
+            if not key.startswith("recipe-"):
+                food_id = int(key)
+                food_name = db.session.get(Foods, food_id).name
+                food_amount = float(request.form.get(key))
+                new_ingredient_inputs.append((food_id, food_name, food_amount))
+        
+        if len(new_ingredient_inputs) == 0:
+            flash('Error: No ingredients added', category='error')
+            return redirect(url_for('views.createRecipePage'))
+        
+        if not validRecipeName(new_recipe_name):
+            return redirect(url_for('views.createRecipePage'))
+
+        else:
+
+            is_vegan = True
+            is_vegetarian = True
+            is_pescatarian = True
+
+            if new_recipe_dietary_restrictions != "vegan":
+                is_vegan = False
+
+            if new_recipe_dietary_restrictions != "vegetarian":
+                is_vegetarian = False
+
+            if new_recipe_dietary_restrictions != "pescatarian":
+                is_pescatarian = False
+            
+            recipe_name_formatted = RecipeURLName(new_recipe_name)
+
+            # new_recipe = Recipe(
+            #     name=new_recipe_name, 
+            #     formatted_name=recipe_name_formatted,
+            #     description=new_recipe_description, 
+            #     vegetarian=is_vegetarian,
+            #     vegan=is_vegan,
+            #     pescatarian=is_pescatarian,
+            #     user_id=current_user.id)
+            
+            old_recipe = db.session.query(Recipe).filter(Recipe.id == recipe_id).first()
+            
+            old_recipe.name = new_recipe_name
+            old_recipe.formatted_name = recipe_name_formatted
+            old_recipe.description = new_recipe_description
+            old_recipe.vegetarian = is_vegetarian
+            old_recipe.vegan = is_vegan
+            old_recipe.pescatarian = is_pescatarian
+            db.session.commit()
+            
+            print("recipe_id: ", recipe_id)
+            
+            current_database_ingredients = []
+            for ingredient in db.session.query(RecipeIngredient).filter(RecipeIngredient.recipe_id == recipe_id).all():
+                current_database_ingredients.append((ingredient.food_id, ingredient.food_name, ingredient.amount))
+            
+            ingredients_in_new_but_not_in_old = list(set(new_ingredient_inputs).difference(current_database_ingredients))
+            ingredients_in_old_but_not_in_new = list(set(current_database_ingredients).difference(new_ingredient_inputs))
+
+            print("current_database_ingredients: ", current_database_ingredients)
+            print("new_ingredient_inputs: ", new_ingredient_inputs)
+            print("ingredients_in_new_but_not_in_old: ", ingredients_in_new_but_not_in_old)
+            print("ingredients_in_old_but_not_in_new: ", ingredients_in_old_but_not_in_new)
+
+            def tupleListContains(list, given_char):
+                for tuple in list:
+                    for ch in tuple:
+                        if ch == given_char:
+                            return True
+                return False
+
+            # This will only work if there are NOT multiple entries for the same food_id
+            for food_id, name, amount in ingredients_in_old_but_not_in_new:
+                print("food_id: ", food_id)
+                if tupleListContains(ingredients_in_new_but_not_in_old, food_id):  # Then only change amount
+                    food_id_list = list(zip(*ingredients_in_new_but_not_in_old))[0]
+                    index_with_food_id = food_id_list.index(food_id)
+                    new_amount = ingredients_in_new_but_not_in_old[index_with_food_id][2]
+                    print("Amount of", food_id, "changed")
+                    print("old amount of", food_id,": ", amount)
+                    print("new amount of", food_id,": ", new_amount)
+                    db.session.query(RecipeIngredient).filter(RecipeIngredient.recipe_id == recipe_id, RecipeIngredient.food_id == food_id).first().amount = new_amount # Edit change
+                    ingredients_in_new_but_not_in_old.remove(ingredients_in_new_but_not_in_old[index_with_food_id]) # And then delete the tuple from ingredients_in_new_but_not_in_old
+                    # So that at end of for loop, remaining tuples in ingredients_in_new_but_not_in_old are only the newly added ingredients
+                else:  # if food_id isn't in 'ingredients_in_new_but_not_in_old' then it has been deleted
+                    # Delete food_id in RecipeIngredient
+                    deleted_ingredient = db.session.query(RecipeIngredient).filter(RecipeIngredient.recipe_id == recipe_id, RecipeIngredient.food_id == food_id).first()
+                    db.session.delete(deleted_ingredient)
+            
+            new_ingredients = []
+            for food_id, food_name, amount in ingredients_in_new_but_not_in_old:
+                new_ingredient = RecipeIngredient(amount=amount, food_id=food_id, food_name=food_name, recipe_id=recipe_id)
+                new_ingredients.append(new_ingredient)
+            db.session.add_all(new_ingredients)
+            db.session.commit()
+
+            # new_ingredients = []
+            # for food_id, name, amount in new_ingredient_inputs:  # Form already ensures inputs are valid
+            #     print("food name: ", name)
+            #     print("amount: ", amount)
+            #     new_ingredient = RecipeIngredient(amount=amount, food_id=id, food_name=name, recipe_id=new_recipe_id)
+            #     new_ingredients.append(new_ingredient)
+
+            # db.session.add_all(new_ingredients)
+            # db.session.commit()
+
+            flash('Recipe added', category='success')
+            return redirect(url_for("views.viewRecipePage", formatted_recipe_name=recipe_name_formatted, recipe_id=recipe_id))  # Redirect to nutrition page
         pass
 
 @views.route('/my-recipes', methods=['GET', 'POST'])

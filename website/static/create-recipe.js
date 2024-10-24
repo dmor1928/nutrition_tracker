@@ -98,7 +98,10 @@ document.getElementById("add_ingredient").onclick  = function() {
     PrintElem("recipe-ingredients")
 }
 
-
+function deleteIngredient(food_id) {
+    console.log("Deleted food_id " + food_id);
+    document.getElementById(food_id + "-li").parentNode.removeChild(document.getElementById(food_id + "-li"));
+}
 
 // form.addEventListener('submit', function(event) {
 //     event.preventDefault();    // prevent page from refreshing

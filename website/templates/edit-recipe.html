@@ -10,7 +10,7 @@
     <br/>
     <div input-group mb-3>
         <label for="recipe-description" class="form-label">Describe your recipe</label>
-        <textarea name="recipe-description" id="recipe-description" class="form-control" placeholder="'My favourite weekday fruit and yoghurt granola, goes well with my morning coffee'" aria-label="Recipe description" value="{{recipe.description}}"></textarea>
+        <textarea name="recipe-description" id="recipe-description" class="form-control" placeholder="'My favourite weekday fruit and yoghurt granola, goes well with my morning coffee'" aria-label="Recipe description">{{recipe.description}}</textarea>
     </div>
     <br/>
     <div input-group mb-3>
@@ -30,18 +30,8 @@
             </label>
             {% endif %}
             {% endfor %}
-            <!-- <label class="btn btn-secondary">
-                <input name="recipe-dietary-restrictions" value="vegan" autocomplete="off" type="radio"> Vegan 
-            </label> 
-            <label class="btn btn-secondary">
-                <input name="recipe-dietary-restrictions" value="vegetarian" autocomplete="off" type="radio"> Vegetarian 
-            </label> 
-            <label class="btn btn-secondary">
-                <input name="recipe-dietary-restrictions" value="pescatarian" autocomplete="off" type="radio"> Pescatarian 
-            </label> -->
         </div>
     </div>
-    
     <br/>
     <h3 align="center">Add ingredients</h3>
     <div class="input-group">
@@ -60,7 +50,7 @@
                     min="1" name="{{ingredient.food_id}}" value="{{ingredient.amount}}">
                     <span class="input-group-text"> grams of </span>
                     <input class="form-control" readonly="readonly" value="{{ingredient.food_name}}">
-                    <button type="button" class="btn close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="btn close" onclick="deleteIngredient({{ingredient.food_id}})"><span aria-hidden="true">&times;</span></button>
             </div>
         </li>
         {% endfor %}
