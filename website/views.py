@@ -155,6 +155,23 @@ def editRecipePage(formatted_recipe_name):
             recipe = db.session.query(Recipe).filter(Recipe.id == recipe_id).first(),
             recipe_ingredients=old_recipe_ingredients,
             foods=db.session.query(Foods).all())
+    
+    elif request.form.get('delete-recipe'):
+        print("DELETE-RECIPE: ", request.form.get('delete-recipe'))
+
+        recipe_ingredients = db.session.query(RecipeIngredient).filter(RecipeIngredient.recipe_id == recipe_id).all()
+        # For ingredient in recipe ingredients: 
+        for ingredient in recipe_ingredients:
+            db.session.delete(ingredient)
+        db.session.commit()
+
+        recipe = db.session.query(Recipe).filter(Recipe.id == recipe_id, Recipe.user_id == current_user.id).first()
+        db.session.delete(recipe)
+        db.session.commit()
+        
+        print("Recipe deleted")
+        return redirect(url_for('views.myRecipesPage'))
+
 
     else:  # Save recipe
         # Similar checks to createRecipePage but delete any ingredients no longer included and add any that are now included
@@ -205,7 +222,7 @@ def editRecipePage(formatted_recipe_name):
             #     user_id=current_user.id)
             
             old_recipe = db.session.query(Recipe).filter(Recipe.id == recipe_id).first()
-            
+
             old_recipe.name = new_recipe_name
             old_recipe.formatted_name = recipe_name_formatted
             old_recipe.description = new_recipe_description
