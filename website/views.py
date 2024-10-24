@@ -326,7 +326,7 @@ def viewRecipePage(formatted_recipe_name):
 
     def NutrientEntry():
         # missing_entries = ["water", "choline", "chromium", "fluoride", "molybdenum"]
-        if key in ["name", "_sa_instance_state", "age", "category", "sex"] or "_percent" in key:
+        if key in ["name", "_sa_instance_state", "age", "category", "sex", "id"] or "_percent" in key:
             return False
         # elif key in missing_entries:
         #     print(f"{key} is a missing entry")
@@ -349,6 +349,9 @@ def viewRecipePage(formatted_recipe_name):
         else:
             return False
     
+    ids_not_on_nutrition_breakdown = ["beta_carotene", "tryptophan_60", "lutein", "retinol_equivalent", "lycopene", "niacin_equivalent",
+                                      "alpha_carotene", "carotene", "trans", "water", "choline", "chromium", "fluoride", "molybdenum", "sugar"]
+    
     recipe_foods_nutrition = []
     total_recipe_nutrition = {}
     for ingredient in recipe_ingredients:
@@ -356,25 +359,36 @@ def viewRecipePage(formatted_recipe_name):
         recipe_ingredient_nutrition = {}
         ingredient_nutrition_per100g = db.session.get(Foods, ingredient.food_id).__dict__
 
+        
+        ingredient_nutrition_per100g_cleaned = {}
+        ingredient_nutrition_per100g_cleaned['food_id'] = ingredient.food_id
+
         for key in ingredient_nutrition_per100g:
 
             if NutrientEntry():
+
+                if key in ids_not_on_nutrition_breakdown:
+                    print("key continued: ", key)
+                    continue
 
                 if key not in total_recipe_nutrition:
                     total_recipe_nutrition[key] = 0
 
                 if NutrientEntryIsNone() or NutrientEntryIsTrace(): 
+                    ingredient_nutrition_per100g_cleaned[key] = 0.0
                     continue
-
+                
                 elif NutrientEntryIsUnknown():  # TO-DO: Track which nutrients have inaccuracies / unknown
+                    ingredient_nutrition_per100g_cleaned[key] = 0.0  # but for now just assume zero
                     pass
 
                 else:
                     recipe_ingredient_nutrition[key] = round(float(ingredient_nutrition_per100g[key]) * (ingredient.amount / 100), 2)
                     total_recipe_nutrition[key] += recipe_ingredient_nutrition[key]
+                    ingredient_nutrition_per100g_cleaned[key] = float(ingredient_nutrition_per100g[key])
         
-        recipe_foods_nutrition.append(recipe_ingredient_nutrition)
-
+        recipe_foods_nutrition.append(ingredient_nutrition_per100g_cleaned)
+        
     
     # Calculate percentages before rounding total_recipe_nutrition to avoid rounding errors
     if current_user.isCustomRDA:
@@ -386,7 +400,7 @@ def viewRecipePage(formatted_recipe_name):
         for key in user_rda:
             if NutrientEntry():
 
-                if key in ["water", "choline", "chromium", "fluoride", "molybdenum", "sugar"]:  # Missing entry
+                if key in ids_not_on_nutrition_breakdown:  # Missing entries and not on nutritional breakdown
                     user_rda_percent[key] = -1
 
                 elif user_rda[key] != 0:
@@ -399,17 +413,32 @@ def viewRecipePage(formatted_recipe_name):
                         user_rda_percent[key] = 100
     
     for key in total_recipe_nutrition:
-        total_recipe_nutrition[key] = round(total_recipe_nutrition[key], 2)
+        if key != 'id':
+            total_recipe_nutrition[key] = round(total_recipe_nutrition[key], 2)
     
-    print(user_rda_percent)
+    print("recipe_foods_nutrition: ", recipe_foods_nutrition)
+    # print(user_rda_percent)
+
+    import json
+
+    print("recipe_foods_nutrition: ", recipe_foods_nutrition)
+
+    recipe_foods_nutrition_json = json.dumps([ob for ob in recipe_foods_nutrition])
+
+    total_recipe_nutrition_json = json.dumps(total_recipe_nutrition)
 
     # food_name = db.session.get(Foods, food_id).name
+
     return render_template(
         "view-recipe.html", 
         user=current_user, 
         recipe=recipe,  # Recipe name, description
         recipe_ingredients = recipe_ingredients,  # Full name ingredients list and amount
         recipe_foods_nutrition=recipe_foods_nutrition,
+
         total_recipe_nutrition=total_recipe_nutrition,
+        total_recipe_nutrition_json=total_recipe_nutrition_json,
+
+        recipe_foods_nutrition_json=recipe_foods_nutrition_json,
         nutrient_units=nutrient_units,
         user_rda_percent=user_rda_percent)  # Goes to view-recipe.html
