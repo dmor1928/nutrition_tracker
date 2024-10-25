@@ -368,7 +368,6 @@ def viewRecipePage(formatted_recipe_name):
             if NutrientEntry():
 
                 if key in ids_not_on_nutrition_breakdown:
-                    print("key continued: ", key)
                     continue
 
                 if key not in total_recipe_nutrition:
@@ -396,36 +395,37 @@ def viewRecipePage(formatted_recipe_name):
     else:
         # print(total_recipe_nutrition)
         user_rda = db.session.get(RDADefault, current_user.RDADefault_id).__dict__
-        user_rda_percent = {}
+        user_rda_cleaned = {}
+        total_recipe_user_rda_percent = {}
         for key in user_rda:
             if NutrientEntry():
 
+                user_rda_cleaned[key] = user_rda[key]
+
                 if key in ids_not_on_nutrition_breakdown:  # Missing entries and not on nutritional breakdown
-                    user_rda_percent[key] = -1
+                    total_recipe_user_rda_percent[key] = -1
 
                 elif user_rda[key] != 0:
                     percentage = 100 * total_recipe_nutrition[key] / float(user_rda[key])
-                    user_rda_percent[key] = round(percentage, 2)
+                    total_recipe_user_rda_percent[key] = round(percentage, 2)
                 else:
                     if total_recipe_nutrition[key] == 0:
-                        user_rda_percent[key] = 0
+                        total_recipe_user_rda_percent[key] = 0
                     else:
-                        user_rda_percent[key] = 100
+                        total_recipe_user_rda_percent[key] = 100
     
     for key in total_recipe_nutrition:
         if key != 'id':
             total_recipe_nutrition[key] = round(total_recipe_nutrition[key], 2)
     
-    print("recipe_foods_nutrition: ", recipe_foods_nutrition)
-    # print(user_rda_percent)
 
     import json
 
-    print("recipe_foods_nutrition: ", recipe_foods_nutrition)
-
     recipe_foods_nutrition_json = json.dumps([ob for ob in recipe_foods_nutrition])
-
+    print(user_rda_cleaned)
+    user_rda_json = json.dumps(user_rda_cleaned)
     total_recipe_nutrition_json = json.dumps(total_recipe_nutrition)
+    total_recipe_user_rda_percent_json = json.dumps(total_recipe_user_rda_percent)
 
     # food_name = db.session.get(Foods, food_id).name
 
@@ -441,4 +441,6 @@ def viewRecipePage(formatted_recipe_name):
 
         recipe_foods_nutrition_json=recipe_foods_nutrition_json,
         nutrient_units=nutrient_units,
-        user_rda_percent=user_rda_percent)  # Goes to view-recipe.html
+        user_rda_json=user_rda_json,
+        total_recipe_user_rda_percent=total_recipe_user_rda_percent,
+        total_recipe_user_rda_percent_json=total_recipe_user_rda_percent_json)  # Goes to view-recipe.html
