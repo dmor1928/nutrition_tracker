@@ -1,6 +1,7 @@
 venv/*
 .venv/*
 .vscode/settings.json
+./fdc-database/FoodData_Central_csv_2024-04-18/*
 
 landing-page/startbootstrap-new-age-gh-pages/
 
@@ -115,3 +116,39 @@ database/FoodData_Central_2024-04-18/sub_sample_food.csv
 database/FoodData_Central_2024-04-18/sub_sample_result.csv
 database/FoodData_Central_2024-04-18/survey_fndds_food.csv
 database/FoodData_Central_2024-04-18/wweia_food_category.csv
+fdc-database/FoodData_Central_csv_2024-04-18/acquisition_samples.csv
+fdc-database/FoodData_Central_csv_2024-04-18/agricultural_samples.csv
+fdc-database/FoodData_Central_csv_2024-04-18/branded_food.csv
+fdc-database/FoodData_Central_csv_2024-04-18/Download API Field Descriptions.xlsx
+fdc-database/FoodData_Central_csv_2024-04-18/fndds_derivation.csv
+fdc-database/FoodData_Central_csv_2024-04-18/fndds_ingredient_nutrient_value.csv
+fdc-database/FoodData_Central_csv_2024-04-18/food_attribute_type.csv
+fdc-database/FoodData_Central_csv_2024-04-18/food_attribute.csv
+fdc-database/FoodData_Central_csv_2024-04-18/food_calorie_conversion_factor.csv
+fdc-database/FoodData_Central_csv_2024-04-18/food_category.csv
+fdc-database/FoodData_Central_csv_2024-04-18/food_component.csv
+fdc-database/FoodData_Central_csv_2024-04-18/food_nutrient_conversion_factor.csv
+fdc-database/FoodData_Central_csv_2024-04-18/food_nutrient_derivation.csv
+fdc-database/FoodData_Central_csv_2024-04-18/food_nutrient_source.csv
+fdc-database/FoodData_Central_csv_2024-04-18/food_nutrient.csv
+fdc-database/FoodData_Central_csv_2024-04-18/food_portion.csv
+fdc-database/FoodData_Central_csv_2024-04-18/food_protein_conversion_factor.csv
+fdc-database/FoodData_Central_csv_2024-04-18/food_update_log_entry.csv
+fdc-database/FoodData_Central_csv_2024-04-18/food.csv
+fdc-database/FoodData_Central_csv_2024-04-18/foundation_food.csv
+fdc-database/FoodData_Central_csv_2024-04-18/input_food.csv
+fdc-database/FoodData_Central_csv_2024-04-18/lab_method_code.csv
+fdc-database/FoodData_Central_csv_2024-04-18/lab_method_nutrient.csv
+fdc-database/FoodData_Central_csv_2024-04-18/lab_method.csv
+fdc-database/FoodData_Central_csv_2024-04-18/market_acquisition.csv
+fdc-database/FoodData_Central_csv_2024-04-18/measure_unit.csv
+fdc-database/FoodData_Central_csv_2024-04-18/microbe.csv
+fdc-database/FoodData_Central_csv_2024-04-18/nutrient_incoming_name.csv
+fdc-database/FoodData_Central_csv_2024-04-18/nutrient.csv
+fdc-database/FoodData_Central_csv_2024-04-18/retention_factor.csv
+fdc-database/FoodData_Central_csv_2024-04-18/sample_food.csv
+fdc-database/FoodData_Central_csv_2024-04-18/sr_legacy_food.csv
+fdc-database/FoodData_Central_csv_2024-04-18/sub_sample_food.csv
+fdc-database/FoodData_Central_csv_2024-04-18/sub_sample_result.csv
+fdc-database/FoodData_Central_csv_2024-04-18/survey_fndds_food.csv
+fdc-database/FoodData_Central_csv_2024-04-18/wweia_food_category.csv

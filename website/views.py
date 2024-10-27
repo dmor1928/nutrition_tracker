@@ -6,6 +6,7 @@ Note than the login page will NOT be in here and will isntead be in auth.py, sin
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user # type: ignore
 from .models import Note, Foods, Recipe, RecipeIngredient, NutrientUnit, RDADefault
+from .fdc_models import FDCFood, FDCFoodNutrition, FDCFoodPortion, FDCFoodPreparationOptions, FDCFoodPreparationFactors
 from . import db  # type: ignore
 import json
 
@@ -139,7 +140,8 @@ def createRecipePage():
         return render_template(
                 "create-recipe.html", 
                 user=current_user, 
-                foods=db.session.query(Foods).all())
+                # foods=db.session.query(Foods).all())
+                foods = db.session.query(FDCFood).all())
 
 @views.route('/my-recipes/<formatted_recipe_name>/edit', methods=['GET', 'POST'])
 @login_required

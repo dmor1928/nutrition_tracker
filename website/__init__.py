@@ -23,7 +23,8 @@ def create_app():
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
-    from .models import User, Note, Foods, Recipe, RecipeIngredient, RDADefault
+    from .models import User, Note, Recipe, RecipeIngredient, RDADefault#, Foods
+   #  from .fdc_models import FDCFood, FDCFoodNutrition, FDCFoodPortion#, FDCFoodPreparationOptions, FDCFoodPreparationFactors
 
     create_database(app)
 
@@ -53,37 +54,33 @@ def create_database(app):
         print('Created Database')
 
          # Importing csv data to models
-        from .models import Foods, RDADefault, User, NutrientUnit
+        from .models import User
         engine = db.create_engine('sqlite:///instance/database.db', echo=False)
         Base = declarative_base()
         Base.metadata.create_all(engine)
-        file_dir = 'database/clean-tables/'
+        cofid_file_dir = 'database/clean-tables/'
 
-        df = pd.read_csv(file_dir + 'complete_nutritional_data.csv')
-        df.to_sql(con=engine, name=Foods.__tablename__, if_exists='replace', index=False)
-        
-        df = pd.read_csv(file_dir + 'RDA_defaults.csv')
-        df.to_sql(con=engine, name=RDADefault.__tablename__, if_exists='replace', index=False)
+        # addCoFID(engine, cofid_file_dir)
+        # addRDADefaults(engine, cofid_file_dir)
 
-        df = pd.read_csv(file_dir + 'nutrients_units.csv')
-        df.to_sql(con=engine, name=NutrientUnit.__tablename__, if_exists='replace', index=False)
+        fdc_file_dir = 'fdc-database/fdc-reduced/'
 
-        print("Imported food and default RDA data")
+        addFDC(engine, fdc_file_dir)
 
         import datetime
         from dateutil.relativedelta import relativedelta
         from werkzeug.security import generate_password_hash
 
-        dob = datetime.datetime(2002, 8, 15)
+        birthDate = datetime.datetime(2002, 8, 15)
         today = datetime.date.today()
-        age = relativedelta(today, dob).years
+        age = relativedelta(today, birthDate).years
         rda_id = 7
 
         sample_user = User(
             email='david@gmail.com', 
             password=generate_password_hash('password123', method='pbkdf2:sha256'), 
             firstName='David', 
-            birthDate=dob,
+            birthDate=birthDate,
             age=age,
             sex='male',
             isPregnant = False,
@@ -94,3 +91,41 @@ def create_database(app):
         with app.app_context():
             db.session.add(sample_user)
             db.session.commit()
+
+def addCoFID(engine, cofid_file_dir):
+    from .models import Foods, NutrientUnit
+
+    df = pd.read_csv(cofid_file_dir + 'complete_nutritional_data.csv')
+    df.to_sql(con=engine, name=Foods.__tablename__, if_exists='replace', index=False)
+    
+    df = pd.read_csv(cofid_file_dir + 'nutrients_units.csv')
+    df.to_sql(con=engine, name=NutrientUnit.__tablename__, if_exists='replace', index=False)
+
+    print("Imported CoFID food data")
+
+def addRDADefaults(engine, rda_file_dir):
+    from .models import RDADefault
+    df = pd.read_csv(rda_file_dir + 'RDA_defaults.csv')
+    df.to_sql(con=engine, name=RDADefault.__tablename__, if_exists='replace', index=False)
+
+    print("Imported default RDA data")
+
+def addFDC(engine, FDC_file_dir):
+    from .fdc_models import FDCFood, FDCFoodNutrition, FDCNutrients#, FDCFoodPortion, FDCFoodPreparationOptions, FDCFoodPreparationFactors
+
+    df = pd.read_csv(FDC_file_dir + 'food.csv')
+    df.to_sql(con=engine, name=FDCFood.__tablename__, if_exists='replace', index=False)
+    
+    df = pd.read_csv(FDC_file_dir + 'food_nutrient.csv')
+    df.to_sql(con=engine, name=FDCFoodNutrition.__tablename__, if_exists='replace', index=False)
+
+    df = pd.read_csv(FDC_file_dir + 'nutrient.csv')
+    df.to_sql(con=engine, name=FDCNutrients.__tablename__, if_exists='replace', index=False)
+    
+    # df = pd.read_csv(FDC_file_dir + 'food_portion.csv')
+    # df.to_sql(con=engine, name=FDCFoodPortion.__tablename__, if_exists='replace', index=False)
+
+    # df = pd.read_csv(FDC_file_dir + 'food_nutrient.csv')
+    # df.to_sql(con=engine, name=FDCFoodPreparationFactors.__tablename__, if_exists='replace', index=False)
+
+    print("Imported FDC food, nutrients and portion data")

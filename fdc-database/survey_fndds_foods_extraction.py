@@ -18,7 +18,7 @@ fndds_foods = pd.read_csv(database_directory + "survey_fndds_food.csv")
 
 # 2. Print all fndds_foods containing 'almond' in name
 
-fndds_food_names = foods.loc[foods['data_type'].isin(['survey_fndds_food', 'foundation_food'])]
+fndds_food_names = foods.loc[foods['data_type'].isin(['survey_fndds_food'])]
 
 fndds_containing_almond = fndds_food_names.loc[
     (fndds_food_names['description'].str.contains('almond', case=False)) & 
