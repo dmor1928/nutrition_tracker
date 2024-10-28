@@ -1,0 +1,176 @@
+{
+
+    "asf_energy": 2048,
+
+    "water": 1051,
+
+    "carbohydrate_by_diff": 1005,
+
+    "carbohydrate_total": 2039,
+
+    "total_dietary_fibre": 1079,
+
+    "soluble_fibre": 1082,
+
+    "insoluble_fibre": 1084,
+
+    "total_sugar": 1063,
+
+    "added_sugars": 1235,
+
+
+    "total_lipid": 1004,
+
+    "total_monounsaturated": 1292,
+
+    "tota_polyunsaturated": 1293,
+
+    "omega_3_ALA": 1404,
+    "omega_3_EPA": 1278,
+    "omega_3_DHA": 1272,
+
+    "omega_6_20_2": 1313,
+    "omega_6_18_2": 1316,
+    "omega_6_18_3": 1321,
+    "omega_6_20_3": 1406,
+    "omega_6_20_4": 1408,
+
+    "total_saturated_fat": 1258,
+
+    "cholesterol": 1253,
+
+    "trans_fat": 1257,
+
+
+    "total_protein": 1003,
+
+
+    "phenylalanine": 1217,
+
+    "valine": 1219,
+
+    "threonine": 1211,
+    
+    "tryptophan": 1210,
+
+    "methionine": 1215,
+
+    "leucine": 1213,
+
+    "isoleucine": 1212,
+
+    "lysine": 1214,
+
+    "histidine": 1221,
+    
+
+    "thiamin": 1165,
+    "thiamin_added": 1243,
+
+    "riboflavin": 1166,
+    "riboflavin_added": 1244,
+
+    "niacin": 1167,
+    "niacin_from_tryptophan": 1168,
+
+    "pantothenic_acid": 1170,
+
+    "b6": 1175,
+
+    "b12": 1178,
+    "b12_added": 1246,
+    "choline": 1180,
+
+    "biotin": 1176,
+
+    "folate": 1177,
+
+    "vit_a_IU": 1104,
+    "vit_a_RAE": 1106,
+    "vit_a_RE": 1156,
+    "vit_a": 2067,
+
+    "vit_c": 1162,
+    "vit_c_added": 1241,
+
+    "vit_d2_d3_IU": 1110,
+    "vit_d2": 1111,
+    "vit_d3": 1112,
+    "vit_d2_d3_UG": 1114,
+
+    "vit_e_alpha_toco_mg": 1109,
+    "vit_e_mg_ATE": 1158,
+    "vit_e_added_mg": 1242,
+    "vit_e_mg": 2068,
+
+    "vit_k2": 1183,
+    "vit_k_dihydro": 1184,
+    "vit_k1": 1185,
+
+
+    "calcium": 1087,
+    "calcium_added": 1237,
+
+    "chlorine": 1088,
+
+    "magnesium": 1090,
+
+    "phosphorus": 1091,
+
+    "potassium": 1092,
+
+    "sodium": 1093,
+
+    "sulfur": 1094,
+
+
+    "chromium": 1096,
+
+    "copper": 1098,
+
+    "iodine": 1100,
+
+    "iron": 1089,
+    "iron_heme": 1141,
+    "iron_non_heme": 1142,
+    "iron_added": 1238,
+
+    "manganese": 1101,
+
+    "molybdenum": 1102,
+
+    "selenium": 1103,
+
+    "zinc": 1095,
+
+
+    "bromine": 1138,
+
+    "Arsenic": 1134,
+
+    "nickel": 1146,
+
+    "fluoride": 1099, 
+
+    "boron": 1137,
+
+    "lithium": 1144,
+
+    "strontium": 1152,
+
+    "silicon": 1150,
+
+    "vanadium": 1155,
+
+
+    "lycopene": 1122,
+
+    "lutein_zeaxanthin": 1123,
+
+    "quercetin": 1391,
+
+    "flavonoids": 1347,
+
+    "myricetin": 1390
+
+}

@@ -1,0 +1,542 @@
+{
+    "Energy": {
+        "energy": [
+            [
+                2048,
+                "Energy (Atwater Specific Factors)"
+            ]
+        ]
+    },
+    "Water": {
+        "water": [
+            [
+                1051,
+                "Water"
+            ]
+        ]
+    },
+    "Carbohydrates": {
+        "carbohydrate": [
+            [
+                1005,
+                "Carbohydrate, by difference"
+            ],
+            [
+                2039,
+                "Carbohydrates"
+            ]
+        ],
+        "fiber": [
+            [
+                1079,
+                "Fiber, total dietary"
+            ],
+            [
+                1082,
+                "Fiber, soluble"
+            ],
+            [
+                1084,
+                "Fiber, insoluble"
+            ]
+        ],
+        "sugar": [
+            [
+                1063,
+                "Sugars, Total"
+            ]
+        ],
+        "sugars, added": [
+            [
+                1235,
+                "Sugars, added"
+            ]
+        ]
+    },
+    "Lipids": {
+        "fat": [
+            [
+                1004,
+                "Total lipid (fat)"
+            ]
+        ],
+        "monounsaturated": [
+            [
+                1292,
+                "Fatty acids, total monounsaturated"
+            ]
+        ],
+        "polyunsaturated": [
+            [
+                1293,
+                "Fatty acids, total polyunsaturated"
+            ]
+        ],
+        "ALA": [
+            [
+                1404,
+                "PUFA 18:3 n-3 c,c,c (ALA)"
+            ]
+        ],
+        "EPA": [
+            [
+                1278,
+                "PUFA 20:5 n-3 (EPA)"
+            ]
+        ],
+        "DHA": [
+            [
+                1272,
+                "PUFA 22:6 n-3 (DHA)"
+            ]
+        ],
+        "n-6": [
+            [
+                1313,
+                "PUFA 20:2 n-6 c,c"
+            ],
+            [
+                1316,
+                "PUFA 18:2 n-6 c,c"
+            ],
+            [
+                1321,
+                "PUFA 18:3 n-6 c,c,c"
+            ],
+            [
+                1406,
+                "PUFA 20:3 n-6"
+            ],
+            [
+                1408,
+                "PUFA 20:4 n-6"
+            ]
+        ],
+        "saturated": [
+            [
+                1258,
+                "Fatty acids, total saturated"
+            ]
+        ],
+        "cholesterol": [
+            [
+                1253,
+                "Cholesterol"
+            ]
+        ],
+        " trans": [
+            [
+                1257,
+                "Fatty acids, total trans"
+            ]
+        ]
+    },
+    "Protein": {
+        "protein": [
+            [
+                1003,
+                "Protein"
+            ]
+        ]
+    },
+    "Amino acids": {
+        "phenylalanine": [
+            [
+                1217,
+                "Phenylalanine"
+            ]
+        ],
+        "valine": [
+            [
+                1219,
+                "Valine"
+            ]
+        ],
+        "threonine": [
+            [
+                1211,
+                "Threonine"
+            ]
+        ],
+        "tryptophan": [
+            [
+                1210,
+                "Tryptophan"
+            ]
+        ],
+        "methionine": [
+            [
+                1215,
+                "Methionine"
+            ]
+        ],
+        "leucine": [
+            [
+                1213,
+                "Leucine"
+            ]
+        ],
+        "isoleucine": [
+            [
+                1212,
+                "Isoleucine"
+            ]
+        ],
+        "lysine": [
+            [
+                1214,
+                "Lysine"
+            ]
+        ],
+        "histidine": [
+            [
+                1221,
+                "Histidine"
+            ]
+        ]
+    },
+    "Vitamins": {
+        "thiamin": [
+            [
+                1165,
+                "Thiamin"
+            ],
+            [
+                1243,
+                "Thiamin, added"
+            ]
+        ],
+        "riboflavin": [
+            [
+                1166,
+                "Riboflavin"
+            ],
+            [
+                1244,
+                "Riboflavin, added"
+            ]
+        ],
+        "niacin": [
+            [
+                1167,
+                "Niacin"
+            ],
+            [
+                1168,
+                "Niacin from tryptophan, determined"
+            ]
+        ],
+        "pantothenate": [
+            [
+                1170, 
+                "Pantothenic acid"
+            ]
+        ],
+        "B-6": [
+            [
+                1175,
+                "Vitamin B-6"
+            ]
+        ],
+        "B-12": [
+            [
+                1178,
+                "Vitamin B-12"
+            ],
+            [
+                1246,
+                "Vitamin B-12, added"
+            ]
+        ],
+        "choline": [
+            [
+                1180,
+                "Choline, total"
+            ]
+        ],
+        "biotin": [
+            [
+                1176,
+                "Biotin"
+            ]
+        ],
+        "folate": [
+            [
+                1177,
+                "Folate, total"
+            ]
+        ],
+        "Vitamin A": [
+            [
+                1104,
+                "Vitamin A, IU"
+            ],
+            [
+                1106,
+                "Vitamin A, RAE"
+            ],
+            [
+                1156,
+                "Vitamin A, RE"
+            ],
+            [
+                2067,
+                "Vitamin A"
+            ]
+        ],
+        "Vitamin C": [
+            [
+                1162,
+                "Vitamin C, total ascorbic acid"
+            ],
+            [
+                1241,
+                "Vitamin C, added"
+            ]
+        ],
+        "Vitamin D": [
+            [
+                1110,
+                "Vitamin D (D2 + D3), International Units"
+            ],
+            [
+                1111,
+                "Vitamin D2 (ergocalciferol)"
+            ],
+            [
+                1112,
+                "Vitamin D3 (cholecalciferol)"
+            ],
+            [
+                1114,
+                "Vitamin D (D2 + D3)"
+            ]
+        ],
+        "Vitamin E": [
+            [
+                1109,
+                "Vitamin E (alpha-tocopherol)"
+            ],
+            [
+                1158,
+                "Vitamin E"
+            ],
+            [
+                1242,
+                "Vitamin E, added"
+            ],
+            [
+                2068,
+                "Vitamin E"
+            ]
+        ],
+        "Vitamin K": [
+            [
+                1183,
+                "Vitamin K (Menaquinone-4)"
+            ],
+            [
+                1184,
+                "Vitamin K (Dihydrophylloquinone)"
+            ],
+            [
+                1185,
+                "Vitamin K (phylloquinone)"
+            ]
+        ]
+    },
+    "Macrominerals": {
+        "calcium": [
+            [
+                1087,
+                "Calcium, Ca"
+            ],
+            [
+                1237,
+                "Calcium, added"
+            ]
+        ],
+        "chlorine": [
+            [
+                1088,
+                "Chlorine, Cl"
+            ]
+        ],
+        "magnesium": [
+            [
+                1090,
+                "Magnesium, Mg"
+            ]
+        ],
+        "phosphorus": [
+            [
+                1091,
+                "Phosphorus, P"
+            ]
+        ],
+        "potassium": [
+            [
+                1092,
+                "Potassium, K"
+            ]
+        ],
+        "sodium": [
+            [
+                1093,
+                "Sodium, Na"
+            ]
+        ],
+        "sulfur": [
+            [
+                1094,
+                "Sulfur, S"
+            ]
+        ]
+    },
+    "Microminerals": {
+        "chromium": [
+            [
+                1096,
+                "Chromium, Cr"
+            ]
+        ],
+        "copper": [
+            [
+                1098,
+                "Copper, Cu"
+            ]
+        ],
+        "iodine": [
+            [
+                1100,
+                "Iodine, I"
+            ]
+        ],
+        "iron": [
+            [
+                1089,
+                "Iron, Fe"
+            ],
+            [
+                1141,
+                "Iron, heme"
+            ],
+            [
+                1142,
+                "Iron, non-heme"
+            ],
+            [
+                1238,
+                "Iron, added"
+            ]
+        ],
+        "manganese": [
+            [
+                1101,
+                "Manganese, Mn"
+            ]
+        ],
+        "molybdenum": [
+            [
+                1102,
+                "Molybdenum, Mo"
+            ]
+        ],
+        "selenium": [
+            [
+                1103,
+                "Selenium, Se"
+            ]
+        ],
+        "zinc": [
+            [
+                1095,
+                "Zinc, Zn"
+            ]
+        ]
+    },
+    "Ultraminerals": {
+        "Bromine": [
+            [
+                1138,
+                "Bromine, Br"
+            ]
+        ],
+        "Arsenic": [
+            [
+                1134,
+                "Arsenic, As"
+            ]
+        ],
+        "Nickel": [
+            [
+                1146,
+                "Nickel, Ni"
+            ]
+        ],
+        "Fluorine": [],
+        "Boron": [
+            [
+                1137,
+                "Boron, B"
+            ]
+        ],
+        "Lithium": [
+            [
+                1144,
+                "Lithium, Li"
+            ]
+        ],
+        "Strontium": [
+            [
+                1152,
+                "Strontium, Sr"
+            ]
+        ],
+        "Silicon": [
+            [
+                1150,
+                "Silicon, Si"
+            ]
+        ],
+        "Vanadium": [
+            [
+                1155,
+                "Vanadium, V"
+            ]
+        ]
+    },
+    "Phytochemicals": {
+        "lycopene": [
+            [
+                1122,
+                "Lycopene"
+            ]
+        ],
+        "Lutein + zeaxanthin": [
+            [
+                1123,
+                "Lutein + zeaxanthin"
+            ]
+        ],
+        "quercetin": [
+            [
+                1391,
+                "Quercetin"
+            ]
+        ],
+        "flavonoids": [
+            [
+                1347,
+                "Flavonoids, total"
+            ]
+        ],
+        "resveratrol": [],
+        "myricetin": [
+            [
+                1390,
+                "Myricetin"
+            ]
+        ]
+    }
+}
