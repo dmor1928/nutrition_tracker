@@ -4,22 +4,18 @@ database_directory = "./FoodData_Central_csv_2024-04-18/"
 
 nutrients = pd.read_csv(database_directory + "nutrient.csv")
 
-nutrients_list = []
-for nutrient_name in nutrients['name']:
-    nutrients_list.append(nutrient_name)
-
-print(nutrients_list)
+energy = ['energy']
 
 water = ['water']
 
-carbohydrates = [ 'total carbohydrates', 'fiber', 'sugar', 'added sugar']
+carbohydrates = [ 'carbohydrate', 'fiber', 'sugar', 'sugars, added']
 # Soluble and insoluble fiber?
 
 carbohydrate_monosaccharides = ['glucose', 'fructose', 'galactose']
 carbohydrate_polysaccharides = ['starch', 'glycogen']
 
-fats = ['total_fat', 'monounsaturated fat', 'polyunsaturated fat', 'omega-3 ALA', 
-        'omega-3 EPA/DHA', 'omega-6', 'saturated fat', 'cholesterol']
+fats = ['fat', 'monounsaturated', 'polyunsaturated', 'ALA', 
+        'EPA', 'DHA', 'n-6', 'saturated', 'cholesterol', ' trans']
 
 protein = ['protein']
 
@@ -32,7 +28,10 @@ amino_acids = ['phenylalanine', 'valine', 'threonine', 'tryptophan', 'methionine
 # Methionine and cysteine are grouped together because one of them can be synthesized from 
 # the other using the enzyme methionine S-methyltransferase and the catalyst methionine synthase
 
-vitamins = [['B1', 'thiamin'], ['B2', 'riboflavin'], ['B3', 'niacin'], ['B5', 'pantothenate'], 
+vitamins = ['thiamin', 'riboflavin', 'niacin', 'pantothenate', 'B-6', 'B-12', 'choline', 'biotin', 
+              'folate', 'Vitamin A', 'retinol', 'Vitamin C', 'Vitamin D', 'Vitamin E', 'Vitamin K']
+
+vitamins_easier_naming_for_html = [['B1', 'thiamin'], ['B2', 'riboflavin'], ['B3', 'niacin'], ['B5', 'pantothenate'], 
               ['B6', 'b6'], ['B12', 'b12'], ['Choline', 'choline'], ['Biotin', 'biotin'], 
               ['Folate', 'folate'], ['Vitamin A', 'retinol'], ['Vitamin C', 'c'], 
               ['Vitamin D', 'd'], ['Vitamin E', 'e'], ['Vitamin K', 'k']]
@@ -49,7 +48,7 @@ ultratrace = ['Bromine', 'Arsenic', 'Nickel', 'Fluorine', 'Boron', 'Lithium', 'S
 # Tolerable Uppr Intake Levels for minerals (elements) from Food and Nutrition Board (USA)
 # https://www.ncbi.nlm.nih.gov/books/NBK545442/table/appJ_tab9/?report=objectonly
 
-phytochemicals = ['lypocene', 'lutein and zeaxanthin', 'quarcetin', 'flavonoids', 'resveratrol', 
+phytochemicals = ['lycopene', 'lutein + zeaxanthin', 'quercetin', 'flavonoids', 'resveratrol', 
                   'myricetin']
 # Others: Isoflavones, Pro-anthocyanidins, Purines
 
@@ -61,3 +60,26 @@ phytochemicals = ['lypocene', 'lutein and zeaxanthin', 'quarcetin', 'flavonoids'
 
 # CoQ 10?
 # Beta alanine
+
+
+nutrients_to_display = {}
+
+for category in [energy, water, carbohydrates, fats, protein, amino_acids, vitamins, 
+                 macrominerals, traceminerals, ultratrace, phytochemicals]:
+    nutrient_category = {}
+    for nutrient in category:
+        filtered_row = nutrients[nutrients['name'].str.contains(nutrient, case=False, na=False)][['id', 'name']].values.tolist()
+        matching_names = []
+        for row in filtered_row:
+            matching_names.append(row)
+        nutrient_category[nutrient] = matching_names
+    nutrients_to_display[f'{category}'] = nutrient_category
+
+
+import json
+
+print(json.dumps(nutrients_to_display, indent=4))
+
+out_file = open("matching_nutrients.json", "w")
+
+json.dump(nutrients_to_display, out_file, indent=4)

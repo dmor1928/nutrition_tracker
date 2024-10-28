@@ -79,7 +79,8 @@ def createRecipePage():
         for key in keys:
             if not key.startswith("recipe-"):
                 food_id = int(key)
-                food_name = db.session.get(Foods, food_id).name
+                # food_name = db.session.get(Foods, food_id).name
+                food_name = db.session.get(FDCFood, food_id).name
                 food_amount = int(request.form.get(key))
                 ingredient_inputs.append((food_id, food_name, food_amount))
         
@@ -321,6 +322,8 @@ def viewRecipePage(formatted_recipe_name):
 
     # user_rda = db.session.get(RDA, rda_id)
     # print(user_rda)
+
+    nutrients_to_display = []
     
     nutrient_units = {}
     for row in NutrientUnit.query.all():
