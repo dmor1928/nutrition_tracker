@@ -1,6 +1,7 @@
 {
 
     "asf_energy": 2048,
+    "energy": 1008,
 
     "water": 1051,
 
@@ -19,11 +20,11 @@
     "added_sugars": 1235,
 
 
-    "total_lipid": 1004,
+    "total_fat": 1004,
 
     "total_monounsaturated": 1292,
 
-    "tota_polyunsaturated": 1293,
+    "total_polyunsaturated": 1293,
 
     "omega_3_ALA": 1404,
     "omega_3_EPA": 1278,
@@ -46,6 +47,7 @@
 
 
     "phenylalanine": 1217,
+    "tyrosine": 1218,
 
     "valine": 1219,
 
@@ -54,6 +56,7 @@
     "tryptophan": 1210,
 
     "methionine": 1215,
+    "cysteine": 1232,
 
     "leucine": 1213,
 
