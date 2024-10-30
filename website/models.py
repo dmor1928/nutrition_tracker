@@ -23,32 +23,15 @@ class User(db.Model, UserMixin):  # type: ignore
     # For getting the default/recommended RDA
     birthDate = db.Column(db.Date)
     age = db.Column(db.Float)
+    weight_kg = db.Column(db.Float)
     sex = db.Column(db.String(8)) # male or female
     isPregnant = db.Column(db.Boolean)
     isLactating = db.Column(db.Boolean)
 
-    RDADefault_id = db.Column(db.Integer, db.ForeignKey('rda_default.id'))
+    # RDADefault_id = db.Column(db.Integer, db.ForeignKey('rda_default.id'))
+    rda_profile_id = db.Column(db.Integer, db.ForeignKey('rda_profile.id'))
     isCustomRDA = db.Column(db.Boolean)
 
-# Database model for recipe ingredients
-class RecipeIngredient(db.Model):  # type: ignore
-    id = db.Column(db.Integer, primary_key=True)  # The id uniquely identifying each instance of an ingredient in a recipe (various amounts etc.)
-    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))  # Links the instance of an ingredient to its recipe
-    food_id = db.Column(db.Integer, db.ForeignKey('foods.id'))
-    food_name = db.Column(db.String(250), db.ForeignKey('foods.name'))
-    amount = db.Column(db.Float)  # In grams
-
-# Database model for recipes containing descriptive information for recipe, and the user who created it
-# Recipe --> RecipeIngredient is one-to-many
-class Recipe(db.Model):  # type: ignore
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64))
-    formatted_name = db.Column(db.String(64))  # For html and URLs
-    description = db.Column(db.String(1000))
-    vegetarian = db.Column(db.Boolean)  # Dietary requirements
-    vegan = db.Column(db.Boolean)
-    pescatarian = db.Column(db.Boolean)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # Which user created the recipe
 
 # Database model for food nutritional information (same as in add-food-to-database.py)
 class Foods(db.Model):  # type: ignore
@@ -129,63 +112,104 @@ class NutrientUnit(db.Model):  # type: ignore
     nutrient = db.Column(db.String(32))
     unit = db.Column(db.String(8))
 
-
-# Nutrients
-class RDADefault(db.Model):  # type: ignore
+# New RDA model for choosing the RDA profile in profile sign up / settings
+class RDAProfile(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
-    age = db.Column(db.Integer)
-    category = db.Column(db.String(32))
+    age_min = db.Column(db.Float)
+    age_max = db.Column(db.Float)
     sex = db.Column(db.String(8))
+    isPregnant = db.Column(db.Boolean)
+    isLactating = db.Column(db.Boolean)
 
-    # TO-DO: Make more complete list of RDA for all nutrients
-    # TO-DO: implement pregnancy and lactating RDAs
+class RDAValues(db.Model):  # type: ignore
+    id = db.Column(db.Integer, primary_key=True)
+    rda_profile_id = db.Column(db.Integer, db.ForeignKey('user.rda_profile_id'))
+    nutrient_name = db.Column(db.String(64))
+    value = db.Column(db.Float)
+    unit = db.Column(db.String(16))
 
-    b12 = db.Column(db.Integer)
-    b6 = db.Column(db.Integer)
-    biotin = db.Column(db.Integer)
-    c = db.Column(db.Integer)
-    calcium = db.Column(db.Integer)
-    carbohydrate = db.Column(db.Integer)
-    carbohydrate_max_percent = db.Column(db.Integer)
-    carbohydrate_min_percent = db.Column(db.Integer)
-    chloride = db.Column(db.Integer)
-    cholesterol = db.Column(db.Integer)
-    choline = db.Column(db.Integer)
-    chromium = db.Column(db.Integer)
-    copper = db.Column(db.Integer)
-    d = db.Column(db.Integer)
-    e = db.Column(db.Integer)
-    fat = db.Column(db.Integer)
-    fat_max_percent = db.Column(db.Integer)
-    fat_min_percent = db.Column(db.Integer)
-    fibre = db.Column(db.Integer)
-    fluoride = db.Column(db.Integer)
-    folate = db.Column(db.Integer)
-    iodine = db.Column(db.Integer)
-    iron = db.Column(db.Integer)
-    k = db.Column(db.Integer)
-    magnesium = db.Column(db.Integer)
-    manganese = db.Column(db.Integer)
-    molybdenum = db.Column(db.Integer)
-    n_3 = db.Column(db.Integer)
-    n_3_max_percent = db.Column(db.Integer)
-    n_3_min_percent = db.Column(db.Integer)
-    n_6 = db.Column(db.Integer)
-    n_6_max_percent = db.Column(db.Integer)
-    n_6_min_percent = db.Column(db.Integer)
-    niacin = db.Column(db.Integer)  # b3
-    pantothenate = db.Column(db.Integer)  # b5
-    phosphorus = db.Column(db.Integer)
-    potassium = db.Column(db.Integer)
-    protein = db.Column(db.Integer)
-    protein_max_percent = db.Column(db.Integer)
-    protein_min_percent = db.Column(db.Integer)
-    retinol = db.Column(db.Integer)
-    riboflavin = db.Column(db.Integer)  # b2
-    satd = db.Column(db.Integer)
-    selenium = db.Column(db.Integer)
-    sodium = db.Column(db.Integer)
-    thiamin = db.Column(db.Integer)  # b1
-    trans = db.Column(db.Integer)
-    water = db.Column(db.Integer)
-    zinc = db.Column(db.Integer)
+class UserPersonalRDA(db.Model):  # type: ignore
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    nutrient = db.Column(db.String(64))
+    rda = db.Column(db.Float)
+
+# Database model for recipe ingredients
+class RecipeIngredient(db.Model):  # type: ignore
+    id = db.Column(db.Integer, primary_key=True)  # The id uniquely identifying each instance of an ingredient in a recipe (various amounts etc.)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))  # Links the instance of an ingredient to its recipe
+    food_id = db.Column(db.Integer, db.ForeignKey('foods.id'))
+    food_name = db.Column(db.String(250), db.ForeignKey('foods.name'))
+    amount = db.Column(db.Float)  # In grams
+
+# Database model for recipes containing descriptive information for recipe, and the user who created it
+# Recipe --> RecipeIngredient is one-to-many
+class Recipe(db.Model):  # type: ignore
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+    formatted_name = db.Column(db.String(64))  # For html and URLs
+    description = db.Column(db.String(1000))
+    vegetarian = db.Column(db.Boolean)  # Dietary requirements
+    vegan = db.Column(db.Boolean)
+    pescatarian = db.Column(db.Boolean)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))  # Which user created the recipe
+
+# RDA of Nutrients
+# class RDADefault(db.Model):  # type: ignore
+#     id = db.Column(db.Integer, primary_key=True)
+#     age = db.Column(db.Integer)
+#     category = db.Column(db.String(32))
+#     sex = db.Column(db.String(8))
+
+#     # TO-DO: Make more complete list of RDA for all nutrients
+#     # TO-DO: implement pregnancy and lactating RDAs
+
+#     b12 = db.Column(db.Integer)
+#     b6 = db.Column(db.Integer)
+#     biotin = db.Column(db.Integer)
+#     vit_c = db.Column(db.Integer)
+#     calcium = db.Column(db.Integer)
+#     carbohydrate_total = db.Column(db.Integer)
+#     carbohydrate_max_percent = db.Column(db.Integer)
+#     carbohydrate_min_percent = db.Column(db.Integer)
+#     chlorine = db.Column(db.Integer)
+#     cholesterol = db.Column(db.Integer)
+#     choline = db.Column(db.Integer)
+#     chromium = db.Column(db.Integer)
+#     copper = db.Column(db.Integer)
+#     vit_d = db.Column(db.Integer)
+#     vit_e = db.Column(db.Integer)
+#     total_fat = db.Column(db.Integer)
+#     fat_max_percent = db.Column(db.Integer)
+#     fat_min_percent = db.Column(db.Integer)
+#     total_dietary_fibre = db.Column(db.Integer)
+#     fluoride = db.Column(db.Integer)
+#     folate = db.Column(db.Integer)
+#     iodine = db.Column(db.Integer)
+#     iron = db.Column(db.Integer)
+#     vit_k = db.Column(db.Integer)
+#     magnesium = db.Column(db.Integer)
+#     manganese = db.Column(db.Integer)
+#     molybdenum = db.Column(db.Integer)
+#     omega_3 = db.Column(db.Integer)
+#     omega_3_max_percent = db.Column(db.Integer)
+#     omega_3_min_percent = db.Column(db.Integer)
+#     omega_6 = db.Column(db.Integer)
+#     omega_6_max_percent = db.Column(db.Integer)
+#     omega_6_min_percent = db.Column(db.Integer)
+#     niacin = db.Column(db.Integer)  # b3
+#     pantothenic_acid = db.Column(db.Integer)  # b5
+#     phosphorus = db.Column(db.Integer)
+#     potassium = db.Column(db.Integer)
+#     total_protein = db.Column(db.Integer)
+#     protein_max_percent = db.Column(db.Integer)
+#     protein_min_percent = db.Column(db.Integer)
+#     vit_a = db.Column(db.Integer)
+#     riboflavin = db.Column(db.Integer)  # b2
+#     total_saturated_fat = db.Column(db.Integer)
+#     selenium = db.Column(db.Integer)
+#     sodium = db.Column(db.Integer)
+#     thiamin = db.Column(db.Integer)  # b1
+#     trans_fat = db.Column(db.Integer)
+#     water = db.Column(db.Integer)
+#     zinc = db.Column(db.Integer)
