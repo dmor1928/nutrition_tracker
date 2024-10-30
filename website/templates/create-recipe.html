@@ -37,7 +37,7 @@
         <select class="form-select" id="ingredient" aria-label="Select ingredient">
             <option selected>Choose...</option>
             {% for food in foods %}
-            <option id="{{food.id}}" value="{{food.name}}">{{food.name}}</option>
+            <option id="{{food.fdc_id}}" value="{{food.name}}">{{food.name}}</option>
             {% endfor %}
         </select>
         <input type="button" value="&plus;" class="btn btn-outline-secondary" id="add_ingredient"/>
