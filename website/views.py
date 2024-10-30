@@ -5,10 +5,10 @@ Note than the login page will NOT be in here and will isntead be in auth.py, sin
 
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for
 from flask_login import login_required, current_user # type: ignore
-from .models import Note, Foods, Recipe, RecipeIngredient, NutrientUnit, RDADefault
-from .fdc_models import FDCFood, FDCFoodNutrition, FDCFoodPortion, FDCFoodPreparationOptions, FDCFoodPreparationFactors
+from .models import Note, Foods, Recipe, RecipeIngredient, NutrientUnit, RDAValues, UserPersonalRDA#, RDADefault
+from .fdc_models import FDCFood, FDCFoodNutrition, FDCNutrients, FDCFoodPortion, FDCFoodPreparationOptions, FDCFoodPreparationFactors
 from . import db  # type: ignore
-import json
+import pandas as pd
 
 views = Blueprint('views', __name__)
 
@@ -68,7 +68,6 @@ def RecipeURLName(recipe_name):
 @login_required
 def createRecipePage():
     if request.method == "POST":  # If recieved "POST"
-
         recipe_name = request.form.get('recipe-name')
         recipe_description = request.form.get('recipe-description')
         recipe_dietary_restrictions = request.form.get('recipe-dietary-restrictions')
@@ -81,6 +80,7 @@ def createRecipePage():
                 food_id = int(key)
                 # food_name = db.session.get(Foods, food_id).name
                 food_name = db.session.get(FDCFood, food_id).name
+                print(food_name)
                 food_amount = int(request.form.get(key))
                 ingredient_inputs.append((food_id, food_name, food_amount))
         
@@ -318,16 +318,41 @@ def myRecipesPage():
 def viewRecipePage(formatted_recipe_name):
     recipe_id=request.args.get('recipe_id')
     recipe = db.session.get(Recipe, recipe_id)  # TO-DO: Add authentication for user before viewing view-recipe page
-    recipe_ingredients = db.session.query(RecipeIngredient).filter_by(recipe_id=recipe_id)
-
-    # user_rda = db.session.get(RDA, rda_id)
-    # print(user_rda)
+    recipe_ingredients = db.session.query(RecipeIngredient).filter_by(recipe_id=recipe_id).all()
 
     nutrients_to_display = []
     
     nutrient_units = {}
     for row in NutrientUnit.query.all():
         nutrient_units[row.nutrient] = row.unit
+    
+    # New code for FDC:
+    import json
+    file = open('fdc-database/clean_fdc_nutrients_dictionary.json')
+    nutrient_name_from_id = dict((v,k) for k,v in json.load(file).items())
+    # print("nutrients dictionary: ", nutrient_name_from_id)
+
+    relevant_nutrition_from_fdc = db.session.query(FDCFoodNutrition).filter(
+        FDCFoodNutrition.nutrient_id.in_(list(nutrient_name_from_id.keys())))
+
+    total_recipe_nutrient_data = {}
+    for name in nutrient_name_from_id.values():
+        total_recipe_nutrient_data[name] = 0
+    
+    individual_ingredients_nutrient_data_per100g = []
+    for ingredient in recipe_ingredients:
+
+        individual_ingredient_nutrient_data = {}
+        individual_ingredient_nutrient_data['food_id'] = ingredient.food_id
+        
+        for entry in relevant_nutrition_from_fdc.filter(FDCFoodNutrition.fdc_id == ingredient.food_id).all():
+
+            nutrient_name = nutrient_name_from_id[entry.nutrient_id]
+
+            individual_ingredient_nutrient_data[nutrient_name] = entry.amount
+            total_recipe_nutrient_data[nutrient_name] += entry.amount
+
+        individual_ingredients_nutrient_data_per100g.append(individual_ingredient_nutrient_data)
 
     def NutrientEntry():
         # missing_entries = ["water", "choline", "chromium", "fluoride", "molybdenum"]
@@ -338,114 +363,218 @@ def viewRecipePage(formatted_recipe_name):
         #     return False
         else:
             return True
-    def NutrientEntryIsNone():
+    def NutrientEntryIsNone(ingredient_nutrition_per100g):
         if ingredient_nutrition_per100g[key] == None or ingredient_nutrition_per100g[key] == "NULL":
             return True
         else:
             return False
-    def NutrientEntryIsUnknown():  # Not zero but not known
+    def NutrientEntryIsUnknown(ingredient_nutrition_per100g):  # Not zero but not known
         if ingredient_nutrition_per100g[key] == "N":
             return True
         else:
             return False
-    def NutrientEntryIsTrace():
+    def NutrientEntryIsTrace(ingredient_nutrition_per100g):
         if ingredient_nutrition_per100g[key] == "Tr":
             return True
         else:
             return False
     
-    ids_not_on_nutrition_breakdown = ["beta_carotene", "tryptophan_60", "lutein", "retinol_equivalent", "lycopene", "niacin_equivalent",
-                                      "alpha_carotene", "carotene", "trans", "water", "choline", "chromium", "fluoride", "molybdenum", "sugar"]
+    # ids_not_on_nutrition_breakdown = ["beta_carotene", "tryptophan_60", "lutein", "retinol_equivalent", "lycopene", "niacin_equivalent",
+    #                                   "alpha_carotene", "carotene", "trans", "water", "choline", "chromium", "fluoride", "molybdenum", "sugar"]
     
-    recipe_foods_nutrition = []
-    total_recipe_nutrition = {}
-    for ingredient in recipe_ingredients:
+    # recipe_foods_nutrition = []
+    # total_recipe_nutrition = {}
+    # for ingredient in recipe_ingredients:
 
-        recipe_ingredient_nutrition = {}
-        ingredient_nutrition_per100g = db.session.get(Foods, ingredient.food_id).__dict__
+    #     recipe_ingredient_nutrition = {}
+    #     ingredient_nutrition_per100g = db.session.get(Foods, ingredient.food_id).__dict__
 
         
-        ingredient_nutrition_per100g_cleaned = {}
-        ingredient_nutrition_per100g_cleaned['food_id'] = ingredient.food_id
+    #     ingredient_nutrition_per100g_cleaned = {}
+    #     ingredient_nutrition_per100g_cleaned['food_id'] = ingredient.food_id
 
-        for key in ingredient_nutrition_per100g:
+    #     for key in ingredient_nutrition_per100g:
 
-            if NutrientEntry():
+    #         if NutrientEntry():
 
-                if key in ids_not_on_nutrition_breakdown:
-                    continue
+    #             if key in ids_not_on_nutrition_breakdown:
+    #                 continue
 
-                if key not in total_recipe_nutrition:
-                    total_recipe_nutrition[key] = 0
+    #             if key not in total_recipe_nutrition:
+    #                 total_recipe_nutrition[key] = 0
 
-                if NutrientEntryIsNone() or NutrientEntryIsTrace(): 
-                    ingredient_nutrition_per100g_cleaned[key] = 0.0
-                    continue
+    #             if NutrientEntryIsNone() or NutrientEntryIsTrace(): 
+    #                 ingredient_nutrition_per100g_cleaned[key] = 0.0
+    #                 continue
                 
-                elif NutrientEntryIsUnknown():  # TO-DO: Track which nutrients have inaccuracies / unknown
-                    ingredient_nutrition_per100g_cleaned[key] = 0.0  # but for now just assume zero
-                    pass
+    #             elif NutrientEntryIsUnknown():  # TO-DO: Track which nutrients have inaccuracies / unknown
+    #                 ingredient_nutrition_per100g_cleaned[key] = 0.0  # but for now just assume zero
+    #                 pass
 
-                else:
-                    recipe_ingredient_nutrition[key] = round(float(ingredient_nutrition_per100g[key]) * (ingredient.amount / 100), 2)
-                    total_recipe_nutrition[key] += recipe_ingredient_nutrition[key]
-                    ingredient_nutrition_per100g_cleaned[key] = float(ingredient_nutrition_per100g[key])
+    #             else:
+    #                 recipe_ingredient_nutrition[key] = round(float(ingredient_nutrition_per100g[key]) * (ingredient.amount / 100), 2)
+    #                 total_recipe_nutrition[key] += recipe_ingredient_nutrition[key]
+    #                 ingredient_nutrition_per100g_cleaned[key] = float(ingredient_nutrition_per100g[key])
         
-        recipe_foods_nutrition.append(ingredient_nutrition_per100g_cleaned)
+    #     recipe_foods_nutrition.append(ingredient_nutrition_per100g_cleaned)
         
-    
+    # Combining fdc total_recipe_nutrient_data and individual_ingredients_nutrient_data_per100g 
+    # into to_view_total_recipe_nutrient_data and individual_ingredients_nutrient_data_per100g
     # Calculate percentages before rounding total_recipe_nutrition to avoid rounding errors
     if current_user.isCustomRDA:
         pass
     else:
         # print(total_recipe_nutrition)
-        user_rda = db.session.get(RDADefault, current_user.RDADefault_id).__dict__
-        user_rda_cleaned = {}
+        user_rda_nutrients = db.session.query(UserPersonalRDA.nutrient).filter_by(user_id=current_user.id).all()
+        user_rda_nutrients = [x[0] for x in user_rda_nutrients]
+        user_rda_amounts = db.session.query(UserPersonalRDA.rda).filter_by(user_id=current_user.id).all()
+        user_rda_amounts = [x[0] for x in user_rda_amounts]
+        user_rda = dict(zip(user_rda_nutrients, user_rda_amounts))
+        print("user_rda_nutrients: ", user_rda_nutrients)
+        print("user_rda_amounts: ", user_rda_amounts)
+        print("user_rda before placeholders added: ", user_rda)
+
+        for nutrient in nutrient_name_from_id.values():
+            if nutrient not in user_rda:
+                if nutrient in ['lypocene', 'lutein_zeaxanthin', 'quercetin', 'flavonoids', 'resveratrol', 'myricetin']:
+                    print(f"{nutrient} is not in user_rda. Adding placeholder")
+                    user_rda[nutrient] = 9999
+                # elif nutrient in ['phenylalanine', 'valine', 'threonine', 'tryptophan', 'methionine', 'leucine', 'isoleucine', 'lysine', 'histidine']:
+                #     print(f"{nutrient} is not in user_rda. Adding placeholder")
+                #     user_rda[nutrient] = 9999
+                # elif nutrient in ['water']:
+                #     print(f"{nutrient} is not in user_rda. Adding placeholder")
+                #     user_rda[nutrient] = 2000
+                elif nutrient in ['energy']:
+                    print(f"{nutrient} is not in user_rda. Adding placeholder")
+                    user_rda[nutrient] = 2000
+                else:
+                    continue
+
         total_recipe_user_rda_percent = {}
+        to_view_total_recipe_nutrient_data = {}
         for key in user_rda:
             if NutrientEntry():
 
-                user_rda_cleaned[key] = user_rda[key]
+                # if key in ids_not_on_nutrition_breakdown:  # Missing entries and not on nutritional breakdown
+                #     total_recipe_user_rda_percent[key] = -1
 
-                if key in ids_not_on_nutrition_breakdown:  # Missing entries and not on nutritional breakdown
-                    total_recipe_user_rda_percent[key] = -1
+                if key == "vit_a":
+                    total_recipe_nutrient_amount = total_recipe_nutrient_data['vit_a_RAE']
 
-                elif user_rda[key] != 0:
-                    percentage = 100 * total_recipe_nutrition[key] / float(user_rda[key])
+                elif key == "vit_d":
+                    total_recipe_nutrient_amount = total_recipe_nutrient_data['vit_d2_d3_UG']
+
+                elif key == "vit_e":
+                    total_recipe_nutrient_amount = total_recipe_nutrient_data['vit_e_mg']
+                
+                elif key == "vit_k":
+                    total_recipe_nutrient_amount = total_recipe_nutrient_data['vit_k2'] + total_recipe_nutrient_data['vit_k1']
+                
+                elif key == "omega_3":
+                    total_recipe_nutrient_amount = sum(
+                        [total_recipe_nutrient_data[omega_3] 
+                         for omega_3 in ['omega_3_ALA', 'omega_3_EPA', 'omega_3_DHA']])
+                    
+                elif key == "omega_6":
+                    total_recipe_nutrient_amount = sum(
+                        [total_recipe_nutrient_data[omega_6] 
+                         for omega_6 in ['omega_6_20_2', 'omega_6_18_2', 'omega_6_18_3', 'omega_6_20_3', 'omega_6_20_4']])
+                
+                elif key == "carbohydrate_total":
+                    total_recipe_nutrient_amount = total_recipe_nutrient_data['carbohydrate_by_diff']
+                
+                elif key == "methionine_and_cysteine":
+                    total_recipe_nutrient_amount = total_recipe_nutrient_data['methionine'] + total_recipe_nutrient_data['cysteine']
+                
+                elif key == "phenylalanine_and_tyrosine":
+                    total_recipe_nutrient_amount = total_recipe_nutrient_data['phenylalanine'] + total_recipe_nutrient_data['tyrosine']
+                
+                else:
+                    total_recipe_nutrient_amount = total_recipe_nutrient_data[key]
+                
+                to_view_total_recipe_nutrient_data[key] = round(total_recipe_nutrient_amount, 1)
+
+                if user_rda[key] != 0:
+                    
+                    percentage = 100 * total_recipe_nutrient_amount / float(user_rda[key])
                     total_recipe_user_rda_percent[key] = round(percentage, 2)
                 else:
-                    if total_recipe_nutrition[key] == 0:
+                    if total_recipe_nutrient_data[key] == 0:
                         total_recipe_user_rda_percent[key] = 0
                     else:
                         total_recipe_user_rda_percent[key] = 100
     
-    for key in total_recipe_nutrition:
+    for key in total_recipe_nutrient_data:
         if key != 'id':
-            total_recipe_nutrition[key] = round(total_recipe_nutrition[key], 2)
+            total_recipe_nutrient_data[key] = round(total_recipe_nutrient_data[key], 2)
+    
+    print("to_view_total_recipe_nutrient_data: ", to_view_total_recipe_nutrient_data)
+
+
+    # total_recipe_nutrient_data.pop('asf_energy')
+    # total_recipe_nutrient_data.pop('water')
+    # total_recipe_nutrient_data.pop('carbohydrate_by_diff')
+    # total_recipe_nutrient_data.pop('carbohydrate_total')
+    # for key in to_view_total_recipe_nutrient_data:
+    #     if key in ['water']:
     
 
     import json
 
-    recipe_foods_nutrition_json = json.dumps([ob for ob in recipe_foods_nutrition])
-    print(user_rda_cleaned)
-    user_rda_json = json.dumps(user_rda_cleaned)
-    total_recipe_nutrition_json = json.dumps(total_recipe_nutrition)
+    recipe_foods_nutrition_json = json.dumps([ob for ob in individual_ingredients_nutrient_data_per100g])
+    user_rda_json = json.dumps(user_rda)
+    total_recipe_nutrition_json = json.dumps(to_view_total_recipe_nutrient_data)
     total_recipe_user_rda_percent_json = json.dumps(total_recipe_user_rda_percent)
 
-    # food_name = db.session.get(Foods, food_id).name
+    # print("total_recipe_nutrient_data: ", total_recipe_nutrient_data)
+    # print("individual_ingredients_nutrient_data_per100g: ", individual_ingredients_nutrient_data_per100g)
 
     return render_template(
         "view-recipe.html", 
         user=current_user, 
-        recipe=recipe,  # Recipe name, description
-        recipe_ingredients = recipe_ingredients,  # Full name ingredients list and amount
-        recipe_foods_nutrition=recipe_foods_nutrition,
+        recipe=recipe,  # Recipe information
+        recipe_ingredients = recipe_ingredients,  # Full name of ingredients list and amounts
 
-        total_recipe_nutrition=total_recipe_nutrition,
-        total_recipe_nutrition_json=total_recipe_nutrition_json,
-
-        recipe_foods_nutrition_json=recipe_foods_nutrition_json,
-        nutrient_units=nutrient_units,
-        user_rda_json=user_rda_json,
+        # The initial filled in data
+        total_recipe_nutrition=total_recipe_nutrient_data,
         total_recipe_user_rda_percent=total_recipe_user_rda_percent,
-        total_recipe_user_rda_percent_json=total_recipe_user_rda_percent_json)  # Goes to view-recipe.html
+
+        # For sending total recipe and ingredient data to javascript
+        total_recipe_nutrition_json=total_recipe_nutrition_json,
+        recipe_foods_nutrition_json=recipe_foods_nutrition_json,  # Per 100g
+        user_rda_json=user_rda_json,
+        total_recipe_user_rda_percent_json=total_recipe_user_rda_percent_json,
+
+        nutrient_units=nutrient_units,
+        )  # Goes to view-recipe.html
+
+@views.route('/add-rda')
+@login_required
+def addPersonalisedRDATest():
+    profile_rda_values = db.session.query(RDAValues).filter_by(rda_profile_id=current_user.rda_profile_id).all()
+
+    for row in profile_rda_values:
+        if '_per_kg' in row.unit:
+            weight_adjusted_value = row.value * current_user.weight_kg
+        else:
+            weight_adjusted_value = row.value
+        exists = db.session.query(UserPersonalRDA).filter_by(user_id=current_user.id, nutrient=row.nutrient_name).first() is not None
+        if not exists:
+            personal_rda = UserPersonalRDA(
+                user_id = current_user.id,
+                nutrient=row.nutrient_name,
+                rda = weight_adjusted_value
+            )
+            db.session.add(personal_rda)
+        else:
+            if db.session.query(UserPersonalRDA).filter_by(user_id=current_user.id, nutrient=row.nutrient_name).first().rda == weight_adjusted_value:
+                continue
+            else:
+                db.session.query(UserPersonalRDA).filter_by(user_id=current_user.id, nutrient=row.nutrient_name).first().rda = weight_adjusted_value
+    db.session.commit()
+
+    return render_template(
+        "base.html",
+        user=current_user
+        )
