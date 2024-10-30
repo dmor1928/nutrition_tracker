@@ -12,7 +12,7 @@ var selected_appended_class = 'table-primary';
 var selected_nutrition_information = {};
 
 for (let key in total_recipe_nutrition) {  // Initialise empty selected_nutrition_information
-    if (key != "food_id") {
+    if (key != "fdc_id") {
         selected_nutrition_information[key] = 0.0;
     }
 }
@@ -32,7 +32,7 @@ function clickRow(clicked_id){  // Highlights the row
     var new_food_id = clicked_id.split("-")[0];
 
     for (let key in total_recipe_nutrition) {  // Initialise selected_nutrition_information to zero
-        if (key != "food_id") {
+        if (key != "fdc_id") {
             selected_nutrition_information[key] = 0.0;
             selected_nutrients_rda_percent[key] = 0.0;
         }
@@ -101,6 +101,7 @@ function clickRow(clicked_id){  // Highlights the row
 
         for (let key in selected_nutrition_information) {
             selected_nutrition_information[key] = Math.round((parseFloat(selected_nutrition_information[key]) + parseFloat(ingredient_to_add[key]) * ingredients_to_add_amount[i]) * 100) / 100;
+            console.log("key: " + key.toString());
             console.log("selected_nutrition_information[key]");
             console.log(selected_nutrition_information[key]);
         }
@@ -119,7 +120,7 @@ function clickRow(clicked_id){  // Highlights the row
     // console.log(new_food_id);
     var nutrient_rda = 0;
     for (let key in selected_nutrition_information) {
-        if (key != "food_id") {
+        if (key != "fdc_id") {
             // console.log("key: " + key +"-nutrientAmount");
             // console.log(selected_nutrition_information[key]);
             
@@ -138,7 +139,7 @@ function clickRow(clicked_id){  // Highlights the row
             try {
                 document.getElementById(key.concat("-", "progressbar")).style.width = limited_selected_nutrients_rda_percent.toString() + "%";
                 document.getElementById(key.concat("-", "percentage")).innerHTML = selected_nutrients_rda_percent[key].toString() + "%";
-                console.log("key: " + key);
+                console.log("key: " + key.toString());
                 console.log("selected_nutrients_rda_percent[" + key + "].toString() + '%': ");
                 console.log(selected_nutrients_rda_percent[key].toString() + "%");
 
@@ -152,6 +153,7 @@ function clickRow(clicked_id){  // Highlights the row
                 console.log(selected_nutrition_information[key]);
             }
             finally {
+                console.log("key: " + key.toString());
                 document.getElementById(key.concat("-", "nutrientAmount")).innerHTML = selected_nutrition_information[key];
             }
             
