@@ -78,4 +78,4 @@ fndds_ingredient_nutrient_value.index.name = 'id'
 
 fndds_ingredient_nutrient_value = fndds_ingredient_nutrient_value.drop(fndds_ingredient_nutrient_value.loc[fndds_ingredient_nutrient_value['fdc_id'].isin([0, np.nan])].index)
 
-fndds_ingredient_nutrient_value[['fdc_id', 'nutrient_id', 'amount']].to_csv('fdc-reduced/fndds_food_nutrient.csv')
+fndds_ingredient_nutrient_value[['fdc_id', 'nutrient_id', 'amount']].to_csv('fdc-reduced/sr_legacy_food_nutrient.csv')
