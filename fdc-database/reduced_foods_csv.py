@@ -7,7 +7,7 @@ sr_legacy_food
 survey_fndds_food
 
 UPDATE 27/10/24:
-sr_legacy doesn't have food category, therefore we will only be usinv survey_fndds_food
+sr_legacy doesn't have food category, therefore we will only be using survey_fndds_food
 
 """
 import numpy as np
