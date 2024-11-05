@@ -320,17 +320,22 @@ def viewRecipePage(formatted_recipe_name):
     recipe = db.session.get(Recipe, recipe_id)  # TO-DO: Add authentication for user before viewing view-recipe page
     recipe_ingredients = db.session.query(RecipeIngredient).filter_by(recipe_id=recipe_id).all()
 
-    nutrients_to_display = []
-    
-    nutrient_units = {}
-    for row in NutrientUnit.query.all():
-        nutrient_units[row.nutrient] = row.unit
-    
     # New code for FDC:
     import json
     file = open('fdc-database/clean_fdc_nutrients_dictionary.json')
     nutrient_name_from_id = dict((v,k) for k,v in json.load(file).items())
     # print("nutrients dictionary: ", nutrient_name_from_id)
+
+    nutrient_units = {}
+    for row in FDCNutrients.query.all():
+        if row.id in nutrient_name_from_id.keys():
+            if row.unit_name in ['G', 'MG', 'UG']:
+                unit = row.unit_name.lower()
+            elif row.unit_name in ['KCAL']:
+                unit = row.unit_name.title()
+            else:
+                unit = row.unit_name
+            nutrient_units[nutrient_name_from_id[row.id]] = unit
 
     relevant_nutrition_from_fdc = db.session.query(FDCFoodNutrition).filter(
         FDCFoodNutrition.nutrient_id.in_(list(nutrient_name_from_id.keys())))
