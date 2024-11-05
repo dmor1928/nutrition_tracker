@@ -553,6 +553,8 @@ def viewRecipePage(formatted_recipe_name):
 @login_required
 def addPersonalisedRDATest():
     profile_rda_values = db.session.query(RDAValues).filter_by(rda_profile_id=current_user.rda_profile_id).all()
+    amino_acids = ['histidine','isoleucine','leucine','lysine','methionine_and_cysteine', 
+                   'phenylalanine_and_tyrosine','threonine','tryptophan','valine']
 
     for row in profile_rda_values:
         if '_per_kg' in row.unit:
