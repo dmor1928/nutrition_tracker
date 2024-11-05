@@ -504,6 +504,8 @@ def viewRecipePage(formatted_recipe_name):
                         total_recipe_user_rda_percent[key] = 0
                     else:
                         total_recipe_user_rda_percent[key] = 100
+                
+                to_view_total_recipe_nutrient_data[key] = round(total_recipe_nutrient_amount, 2)
     
     for key in total_recipe_nutrient_data:
         if key != 'id':
