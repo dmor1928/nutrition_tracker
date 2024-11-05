@@ -107,7 +107,7 @@
                                 Water
                             </div>
                             <div class="col-2">
-                                <span id="water-nutrientAmount">{{total_recipe_nutrition['water']}}</span>{{nutrient_units['carbohydrate_total']}}
+                                <span id="water-nutrientAmount">{{total_recipe_nutrition['water']}}</span>{{nutrient_units['water']}}
                             </div>
                             <div class="col">
                                 {{ progress_bar('water', total_recipe_user_rda_percent['water']) }}
@@ -260,6 +260,15 @@
                         <h5>Essential amino acids</h5>
                         {% for amino in ['phenylalanine_and_tyrosine', 'valine', 'threonine', 'tryptophan', 'methionine_and_cysteine', 'leucine', 
                         'isoleucine', 'lysine', 'histidine']%}
+                        {% if 0 <= total_recipe_user_rda_percent[amino]|float < 50 %} 
+                                {% set bar_colour = "bg-danger" %} 
+                                {% elif 50 <= total_recipe_user_rda_percent[amino] < 100 %} 
+                                {% set bar_colour = "bg-warning" %} 
+                                {% elif total_recipe_user_rda_percent[amino] >= 100 %} 
+                                {% set bar_colour = "bg-success" %} 
+                                {% else %}
+                                {% set bar_colour = "bg-secondary" %}
+                                {% endif %}
                         <div class="row">
                             <div class="col-5" style="text-transform: capitalize;">
                                 {{amino}}
