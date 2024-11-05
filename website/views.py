@@ -368,7 +368,10 @@ def viewRecipePage(formatted_recipe_name):
 
     # NutrientIs functions moved to CoFID-functions/nutrient-entry.py
 
-    def macroPercent(key):
+    def nutrientRDAisPercent(key):
+        """
+        Returns if the key for a nutrient is for a percent key e.g. carbohydrate_max_percent --> True
+        """
         if "_percent" in key:
             return True
         else:
@@ -404,7 +407,7 @@ def viewRecipePage(formatted_recipe_name):
         print(f"total_recipe_nutrient_data: ", total_recipe_nutrient_data)
 
         for key in user_rda:
-            if macroPercent(key):
+            if nutrientRDAisPercent(key):
                 print(f"{key} is not yet implemented")
             else:
 
