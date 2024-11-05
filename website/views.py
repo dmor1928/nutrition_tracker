@@ -453,6 +453,8 @@ def viewRecipePage(formatted_recipe_name):
                 elif nutrient in ['energy']:
                     print(f"{nutrient} is not in user_rda. Adding placeholder")
                     user_rda[nutrient] = 2000
+                elif nutrient in ['total_polyunsaturated', 'total_monounsaturated']:
+                    user_rda[nutrient] = 20
                 else:
                     continue
 
