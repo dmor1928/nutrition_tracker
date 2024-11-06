@@ -24,7 +24,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-5">
-            <h3>Ingredients list</h3>
+            <h2>Ingredients list</h2>
             <table id="ingredients-table" class="table table-striped" id="ingredients-table">
                 <thead>
                     <th class="col-3" scope="col">Amount (g)</th>
@@ -43,7 +43,7 @@
             <p>{{recipe.description}}</p>
         </div>
         <div id="nutrient-breakdown" class="col">
-            <h3>Nutritional breakdown</h3>
+            <h2>Nutritional breakdown</h2>
             <div class="row justify-content-center d-flex"> <!-- 3 top macro nutrients -->
                 <div class="col-lg-4 col-md-4 col-sm-3 col-xs-3  justify-content-center d-flex height: 90%;">
                     <div class="my-4 position-relative">
@@ -63,13 +63,13 @@
                         </div>
                     </div>
                 </div>
-                {% for macro in ['total_dietary_fibre', 'total_protein']%}
+                {% for macro in [['total_dietary_fibre', 'Fibre'], ['total_protein', 'Protein']]%}
 
-                {% if 0 <= total_recipe_user_rda_percent[macro]|float < 30 %} 
+                {% if 0 <= total_recipe_user_rda_percent[macro[0]]|float < 30 %} 
                 {% set bar_colour = "red" %} 
-                {% elif 30 <= total_recipe_user_rda_percent[macro] < 100 %} 
+                {% elif 30 <= total_recipe_user_rda_percent[macro[0]] < 100 %} 
                 {% set bar_colour = "#ffcf00" %} 
-                {% elif total_recipe_user_rda_percent[macro] >= 100 %} 
+                {% elif total_recipe_user_rda_percent[macro[0]] >= 100 %} 
                 {% set bar_colour = "green" %} 
                 {% else %}
                 {% set bar_colour = "black" %}
@@ -77,31 +77,21 @@
                 <div class="col-lg-4 col-md-4 col-sm-3 col-xs-3 justify-content-center d-flex height: 90%;">
                     <div class="my-4 position-relative">
                         <div class="justify-content-center d-flex position-absolute w-100" style="display: flex; justify-content: center; align-items: center; flex-direction: column">
-                            <h5 class="fw-bold" style="line-height: 4em">{{macro.capitalize()}}</h5>
+                            <h5 class="fw-bold" style="line-height: 4em">{{macro[1]}}</h5>
                         </div>
                         <div class="container position-relative" style="display: flex; justify-content: center; ">
-                            <div class="pie" data-pie='{ "percent": {{total_recipe_user_rda_percent[macro]}}, "speed": "120", "textPosition": "20%", "fontWeight":"bold", "size":"120", "rotation": "0", "inverse": "true", "colorSlice":"{{bar_colour}}", "round":"true", "strokeBottom": 5, "colorCircle":"#f8f9fa" }'></div>
+                            <div class="pie" data-pie='{ "percent": {{total_recipe_user_rda_percent[macro[0]]}}, "speed": "120", "textPosition": "20%", "fontWeight":"bold", "size":"120", "rotation": "0", "inverse": "true", "colorSlice":"{{bar_colour}}", "round":"true", "strokeBottom": 5, "colorCircle":"#f8f9fa" }'></div>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
-
-                <!-- <div class="col">
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                </div> -->
-            </div>
-
             <div class="row small">
-                <div class="col">
+
+                <div class="col"> <!-- Left nutrition column -->
+
                     <div class="p-2 my-2 bg-light">
                         <h5>Water</h5>
+
                         <div class="row">
                             <div class="col-5">
                                 Water
@@ -113,66 +103,81 @@
                                 {{ progress_bar('water', total_recipe_user_rda_percent['water']) }}
                             </div>
                         </div>
+                    </div>
+                    
+                    <div class="p-2 my-2 bg-light">
                         <h5>Carbohydrates</h5>
+
                         <div class="row">
-                            <div class="col-5">
-                                Carbohydrates
-                            </div>
-                            <div class="col-2">
-                                <span id="carbohydrate_total-nutrientAmount">{{total_recipe_nutrition['carbohydrate_total']}}</span>{{nutrient_units['carbohydrate_total']}}
+                            <div class="col-5"> Carbohydrates </div>
+                            <div class="col-2" style="white-space: nowrap;">
+                                <span id="carbohydrate_total-nutrientAmount">{{total_recipe_nutrition['carbohydrate_total']}}</span>
+                                {{nutrient_units['carbohydrate_total']}}
                             </div>
                             <div class="col">
                                 {{ progress_bar('carbohydrate_total', total_recipe_user_rda_percent['carbohydrate_total']) }}
                             </div>
                         </div>
-                        {% for carb in ['total_dietary_fibre', 'total_sugar']%}
+
+                        {% for carb in [['total_dietary_fibre', 'Fibre'], ['total_sugar', 'Sugar']]%}
                         <div class="row">
-                            <div class="col-1">
-                            </div>
-                            <div class="col-4" style="text-transform: capitalize">
-                                {{carb}}
-                            </div>
+                            <div class="col-1"></div>
+                            <div class="col-4">{{carb[1]}}</div>
                             <div class="col-2">
-                                <span id="{{carb}}-nutrientAmount">{{total_recipe_nutrition[carb]}}</span>{{nutrient_units[carb]}}
+                                <span id="{{carb[0]}}-nutrientAmount">{{total_recipe_nutrition[carb[0]]}}</span>
+                                {{nutrient_units[carb[0]]}}
                             </div>
                             <div class="col">
-                                {{ progress_bar(carb, total_recipe_user_rda_percent[carb], bar_colour) }}
+                                {{ progress_bar(carb[0], total_recipe_user_rda_percent[carb[0]], bar_colour) }}
                             </div>
                         </div>
                         {% endfor %}
+                    </div> <!-- NEW DIV -->
+                    
+                    
                     <div class="p-2 my-2 bg-light">
                         <h5>Lipids</h5>
+
                         <div class="row">
-                            <div class="col-5">
-                                Total fat
-                            </div>
+                            <div class="col-5"> Total fat </div>
                             <div class="col-2">
-                                <span id="total_fat-nutrientAmount">{{total_recipe_nutrition['total_fat']}}</span>{{nutrient_units['fat']}}
-    
-                                {% if 0 <= total_recipe_user_rda_percent['total_fat']|float < 50 %} 
-                                {% set bar_colour = "bg-danger" %} 
-                                {% elif 50 <= total_recipe_user_rda_percent['total_fat'] < 100 %} 
-                                {% set bar_colour = "bg-warning" %} 
-                                {% elif total_recipe_user_rda_percent['total_fat'] >= 100 %} 
-                                {% set bar_colour = "bg-success" %} 
-                                {% else %}
-                                {% set bar_colour = "bg-secondary" %}
-                                {% endif %}
+                                <span id="total_fat-nutrientAmount">{{total_recipe_nutrition['total_fat']}}</span>
+                                {{nutrient_units['fat']}}
                             </div>
+    
+                            {% if 0 <= total_recipe_user_rda_percent['total_fat']|float < 50 %} 
+                            {% set bar_colour = "bg-danger" %} 
+                            {% elif 50 <= total_recipe_user_rda_percent['total_fat'] < 100 %} 
+                            {% set bar_colour = "bg-warning" %} 
+                            {% elif total_recipe_user_rda_percent['total_fat'] >= 100 %} 
+                            {% set bar_colour = "bg-success" %} 
+                            {% else %}
+                            {% set bar_colour = "bg-secondary" %}
+                            {% endif %}
+                            
                             <div class="col">
                                 {{ progress_bar('total_fat', total_recipe_user_rda_percent['total_fat'], bar_colour) }}
                             </div>
                         </div>
+
                         {% for fat in [['Monounsaturated', 'total_monounsaturated'], ['Polyunsaturated', 'total_polyunsaturated']]%}
                         <div class="row">
-                            <div class="col-1">
-                            </div>
-                            <div class="col-4">
-                                {{fat[0]}}
-                            </div>
+                            <div class="col-1"></div>
+                            <div class="col-4"> {{fat[0]}} </div>
                             <div class="col-2">
                                 <span id="{{fat[1]}}-nutrientAmount">{{total_recipe_nutrition[fat[1]]}}</span>{{nutrient_units[fat[1]]}}
                             </div>
+
+                            {% if 0 <= total_recipe_user_rda_percent['total_fat']|float < 50 %} 
+                            {% set bar_colour="bg-danger" %} 
+                            {% elif 50<=total_recipe_user_rda_percent['total_fat'] < 100 %} 
+                            {% set bar_colour="bg-warning" %} 
+                            {% elif total_recipe_user_rda_percent['total_fat']>= 100 %}
+                            {% set bar_colour = "bg-success" %}
+                            {% else %}
+                            {% set bar_colour = "bg-secondary" %}
+                            {% endif %}
+
                             <div class="col">
                                 {{ progress_bar(fat[1], total_recipe_user_rda_percent[fat[1]], bar_colour) }}
                             </div>
@@ -181,24 +186,21 @@
                 
                         {% for poly_fats in [['Omega-3', 'omega_3'],['Omega-6', 'omega_6']]%}
                         <div class="row">
-                            <div class="col-2">
-                            </div>
-                            <div class="col-3">
-                                {{poly_fats[0]}}
-                            </div>
+                            <div class="col-2"></div>
+                            <div class="col-3"> {{poly_fats[0]}} </div>
                             <div class="col-2 pr-0">
                                 <span id="{{poly_fats[1]}}-nutrientAmount">{{total_recipe_nutrition[poly_fats[1]]}}</span>{{nutrient_units[poly_fats[1]]}}
-    
-                                {% if 0 <= total_recipe_user_rda_percent[poly_fats[1]]|float < 50 %} 
-                                {% set bar_colour = "bg-danger" %} 
-                                {% elif 50 <= total_recipe_user_rda_percent[poly_fats[1]] < 100 %} 
-                                {% set bar_colour = "bg-warning" %} 
-                                {% elif total_recipe_user_rda_percent[poly_fats[1]] >= 100 %} 
-                                {% set bar_colour = "bg-success" %} 
-                                {% else %}
-                                {% set bar_colour = "bg-secondary" %}
-                                {% endif %}
                             </div>
+
+                            {% if 0 <= total_recipe_user_rda_percent[poly_fats[1]]|float < 50 %} 
+                            {% set bar_colour="bg-danger" %} {% elif 50<=total_recipe_user_rda_percent[poly_fats[1]] < 100 %} 
+                            {% set bar_colour="bg-warning" %} 
+                            {% elif total_recipe_user_rda_percent[poly_fats[1]]>= 100 %}
+                            {% set bar_colour = "bg-success" %}
+                            {% else %}
+                            {% set bar_colour = "bg-secondary" %}
+                            {% endif %}
+
                             <div class="col">
                                 {{ progress_bar(poly_fats[1], total_recipe_user_rda_percent[poly_fats[1]], bar_colour) }}
                             </div>
@@ -206,50 +208,49 @@
                         {% endfor %}
 
                         {% for fat in [['Saturated', 'total_saturated_fat'], ['Trans', 'trans_fat'], ['Cholesterol', 'cholesterol']]%}
-                        {% if 0 <= total_recipe_user_rda_percent[fat[1]]|float < 50 %} 
-                        {% set bar_colour = "bg-danger" %} 
-                        {% elif 50 <= total_recipe_user_rda_percent[fat[1]] < 100 %} 
-                        {% set bar_colour = "bg-warning" %} 
-                        {% elif total_recipe_user_rda_percent[fat[1]] >= 100 %} 
-                        {% set bar_colour = "bg-success" %} 
-                        {% else %}
-                        {% set bar_colour = "bg-secondary" %}
-                        {% endif %}
                         <div class="row">
                             <div class="col-1"></div>
-                            <div class="col-4">
-                                {{fat[0]}}
-                            </div>
+                            <div class="col-4"> {{fat[0]}} </div>
                             <div class="col-2">
                                 <span id="{{fat[1]}}-nutrientAmount">{{total_recipe_nutrition[fat[1]]}}</span>{{nutrient_units[fat[1]]}}
                             </div>
+
+                            {% if 0 <= total_recipe_user_rda_percent[fat[1]]|float < 50 %} 
+                            {% set bar_colour="bg-danger" %} 
+                            {% elif 50<=total_recipe_user_rda_percent[fat[1]] < 100 %} 
+                            {% set bar_colour="bg-warning" %} 
+                            {% elif total_recipe_user_rda_percent[fat[1]]>= 100 %}
+                            {% set bar_colour = "bg-success" %}
+                            {% else %}
+                            {% set bar_colour = "bg-secondary" %}
+                            {% endif %}
+                            
                             <div class="col">
                                 {{ progress_bar(fat[1], total_recipe_user_rda_percent[fat[1]], bar_colour) }}
                             </div>
                         </div>
                         {% endfor %}
-
                     </div>
     
                     <div class="p-2 my-2 bg-light">
                         <h5>Protein</h5>
                         <div class="row">
-                            <div class="col-5">
-                                Protein
+                            <div class="col-5"> Protein </div>
+                            <div class="col-2" style="white-space: nowrap;">
+                                <span id="total_protein-nutrientAmount">{{total_recipe_nutrition['total_protein']}}</span>
+                                {{nutrient_units['total_protein']}}
                             </div>
-                            <div class="col-2">
-                                <span id="total_protein-nutrientAmount">{{total_recipe_nutrition['total_protein']}}</span>{{nutrient_units['total_protein']}}
-    
-                                {% if 0 <= total_recipe_user_rda_percent['total_protein']|float < 50 %} 
-                                {% set bar_colour = "bg-danger" %} 
-                                {% elif 50 <= total_recipe_user_rda_percent['total_protein'] < 100 %} 
-                                {% set bar_colour = "bg-warning" %} 
-                                {% elif total_recipe_user_rda_percent['total_protein'] >= 100 %} 
-                                {% set bar_colour = "bg-success" %} 
-                                {% else %}
-                                {% set bar_colour = "bg-secondary" %}
-                                {% endif %}
-                            </div>
+
+                            {% if 0 <= total_recipe_user_rda_percent['total_protein']|float < 50 %} 
+                            {% set bar_colour="bg-danger" %} 
+                            {% elif 50<=total_recipe_user_rda_percent['total_protein'] < 100 %} 
+                            {% set bar_colour="bg-warning" %} 
+                            {% elif total_recipe_user_rda_percent['total_protein']>= 100 %}
+                            {% set bar_colour = "bg-success" %}
+                            {% else %}
+                            {% set bar_colour = "bg-secondary" %}
+                            {% endif %}
+
                             <div class="col">
                                 {{ progress_bar('total_protein', total_recipe_user_rda_percent['total_protein'], bar_colour) }}
                             </div>
@@ -258,26 +259,26 @@
     
                     <div class="p-2 my-2 bg-light">
                         <h5>Essential amino acids</h5>
-                        {% for amino in ['phenylalanine_and_tyrosine', 'valine', 'threonine', 'tryptophan', 'methionine_and_cysteine', 'leucine', 
-                        'isoleucine', 'lysine', 'histidine']%}
-                        {% if 0 <= total_recipe_user_rda_percent[amino]|float < 50 %} 
-                                {% set bar_colour = "bg-danger" %} 
-                                {% elif 50 <= total_recipe_user_rda_percent[amino] < 100 %} 
-                                {% set bar_colour = "bg-warning" %} 
-                                {% elif total_recipe_user_rda_percent[amino] >= 100 %} 
-                                {% set bar_colour = "bg-success" %} 
-                                {% else %}
-                                {% set bar_colour = "bg-secondary" %}
-                                {% endif %}
+                        {% for amino in [['phenylalanine_and_tyrosine', 'Phenylalanine/Tyrosine'], ['valine', 'Valine'], ['threonine', 'Threonine'], ['tryptophan', 'Tryptophan'], 
+                        ['methionine_and_cysteine', 'Methionine/Cysteine'], ['leucine', 'Leucine'], ['isoleucine', 'Isoleucine'], ['lysine', 'Lysine'], ['histidine', 'Histidine']]%}
                         <div class="row">
-                            <div class="col-5" style="text-transform: capitalize;">
-                                {{amino}}
+                            <div class="col-5" style="white-space: nowrap;"> {{amino[1]}} </div>
+                            <div class="col-2" style="white-space: nowrap;">
+                                <span id="{{amino}}-nutrientAmount">{{total_recipe_nutrition[amino[0]]}}</span>
+                                {{nutrient_units[amino[0]]}}
                             </div>
-                            <div class="col-2">
-                                <span id="{{amino}}-nutrientAmount">{{total_recipe_nutrition[amino]}}</span>{{nutrient_units[amino]}}
-                            </div>
+
+                            {% if 0 <= total_recipe_user_rda_percent[amino[0]]|float < 50 %} 
+                            {% set bar_colour="bg-danger" %} {% elif 50<=total_recipe_user_rda_percent[amino[0]] < 100 %} 
+                            {% set bar_colour="bg-warning" %} 
+                            {% elif total_recipe_user_rda_percent[amino[0]]>= 100 %}
+                            {% set bar_colour = "bg-success" %}
+                            {% else %}
+                            {% set bar_colour = "bg-secondary" %}
+                            {% endif %}
+
                             <div class="col">
-                                {{ progress_bar(amino, total_recipe_user_rda_percent[amino], bar_colour) }}
+                                {{ progress_bar(amino, total_recipe_user_rda_percent[amino[0]], bar_colour) }}
                             </div>
                         </div>
                         {% endfor %}
@@ -285,13 +286,23 @@
     
                     <div class="p-2 my-2 bg-light">
                         <h5>Phytochemicals</h5>
-                        {% for phytochemical in ['lycopene', 'lutein_zeaxanthin', 'quercetin', 'flavonoids', 'resveratrol', 'myricetin']%}
+                        {% for phytochemical in ['lycopene', 'lutein_zeaxanthin', 'quercetin', 'flavonoids', 'myricetin']%}
+                        {% if 0 <= total_recipe_user_rda_percent[phytochemical]|float < 50 %} 
+                        {% set bar_colour = "bg-danger" %} 
+                        {% elif 50 <= total_recipe_user_rda_percent[phytochemical] < 100 %} 
+                        {% set bar_colour = "bg-warning" %} 
+                        {% elif total_recipe_user_rda_percent[phytochemical] >= 100 %} 
+                        {% set bar_colour = "bg-success" %} 
+                        {% else %}
+                        {% set bar_colour = "bg-secondary" %}
+                        {% endif %}
                         <div class="row">
                             <div class="col-5" style="text-transform: capitalize;">
                                 {{phytochemical}}
                             </div>
-                            <div class="col-2">
-                                <span id="{{phytochemical}}-nutrientAmount">{{total_recipe_nutrition[phytochemical]}}</span>{{nutrient_units[phytochemical]}}
+                            <div class="col-2" style="white-space: nowrap">
+                                <span id="{{phytochemical}}-nutrientAmount">{{total_recipe_nutrition[phytochemical]}}</span>
+                                {{nutrient_units[phytochemical]}}
                             </div>
                             <div class="col">
                                 {{ progress_bar(phytochemical, total_recipe_user_rda_percent[phytochemical], bar_colour) }}
@@ -300,7 +311,6 @@
                         {% endfor %}
                     </div>
                 </div>
-            </div>
                 <div class="col">
                     <div class="p-2 my-2 bg-light">
                         <h5>Vitamins</h5>
@@ -356,6 +366,7 @@
                             </div>
                         </div>
                         {% endfor %}
+                    </div>
                     </div>
                 </div>
             </div>
