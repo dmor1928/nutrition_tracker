@@ -495,11 +495,6 @@ def addPersonalisedRDATest():
         
         if row.nutrient_name in amino_acids: # Convert amino acid RDAs from mg to g
             weight_adjusted_value = weight_adjusted_value / 1000
-        
-        # if row.nutrient_name == "carbohydrate_total":
-        #     nutrient_name = "carbohydrate_by_diff"
-        # else:
-        #     nutrient_name = row.nutrient_name
 
         exists = db.session.query(UserPersonalRDA).filter_by(user_id=current_user.id, nutrient=row.nutrient_name).first() is not None
         if not exists:
