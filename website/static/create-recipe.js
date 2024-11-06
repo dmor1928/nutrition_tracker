@@ -94,8 +94,6 @@ document.getElementById("add_ingredient").onclick  = function() {
 
     // Append li_element to the ul element ingredients_list
     document.getElementById("recipe-ingredients").appendChild(li_element);
-
-    PrintElem("recipe-ingredients")
 }
 
 function deleteIngredient(food_id) {
