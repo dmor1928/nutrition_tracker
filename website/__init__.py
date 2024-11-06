@@ -124,10 +124,12 @@ def addCoFID(engine, cofid_file_dir):
 def addFDC(engine, FDC_file_dir):
     from .fdc_models import FDCFood, FDCFoodNutrition, FDCNutrients#, FDCFoodPortion, FDCFoodPreparationOptions, FDCFoodPreparationFactors
 
-    df = pd.read_csv(FDC_file_dir + 'food.csv')
+    # df = pd.read_csv(FDC_file_dir + 'food.csv')
+    df = pd.read_csv(FDC_file_dir + 'sr_legacy_food.csv')
     df.to_sql(con=engine, name=FDCFood.__tablename__, if_exists='replace', index=False)
     
-    df = pd.read_csv(FDC_file_dir + 'food_nutrient.csv')
+    # df = pd.read_csv(FDC_file_dir + 'food_nutrient.csv')
+    df = pd.read_csv(FDC_file_dir + 'sr_legacy_food_nutrient.csv')
     df.to_sql(con=engine, name=FDCFoodNutrition.__tablename__, if_exists='replace', index=False)
 
     df = pd.read_csv(FDC_file_dir + 'nutrient.csv')
@@ -136,7 +138,7 @@ def addFDC(engine, FDC_file_dir):
     # df = pd.read_csv(FDC_file_dir + 'food_portion.csv')
     # df.to_sql(con=engine, name=FDCFoodPortion.__tablename__, if_exists='replace', index=False)
 
-    # df = pd.read_csv(FDC_file_dir + 'food_nutrient.csv')
+    # df = pd.read_csv(FDC_file_dir + '')
     # df.to_sql(con=engine, name=FDCFoodPreparationFactors.__tablename__, if_exists='replace', index=False)
 
     print("Imported FDC food, nutrients and portion data")
