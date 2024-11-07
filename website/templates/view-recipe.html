@@ -259,10 +259,16 @@
     
                     <div class="p-2 my-2 bg-light">
                         <h5>Essential amino acids</h5>
-                        {% for amino in [['phenylalanine_and_tyrosine', 'Phenylalanine/Tyrosine'], ['valine', 'Valine'], ['threonine', 'Threonine'], ['tryptophan', 'Tryptophan'], 
-                        ['methionine_and_cysteine', 'Methionine/Cysteine'], ['leucine', 'Leucine'], ['isoleucine', 'Isoleucine'], ['lysine', 'Lysine'], ['histidine', 'Histidine']]%}
+                        {% for amino in [['phenylalanine_and_tyrosine', 'Phenylalanine & Tyrosine'], ['valine', 'Valine'], ['threonine', 'Threonine'], ['tryptophan', 'Tryptophan'], 
+                        ['methionine_and_cysteine', 'Methionine & Cysteine'], ['leucine', 'Leucine'], ['isoleucine', 'Isoleucine'], ['lysine', 'Lysine'], ['histidine', 'Histidine']]%}
+                        
+                        {% if amino[0] in ['phenylalanine_and_tyrosine', 'methionine_and_cysteine'] %}
+                        {% set size_class='small'%}
+                        {% else %}
+                        {% set size_class=''%}
+                        {% endif %}
                         <div class="row">
-                            <div class="col-5" style="white-space: nowrap;"> {{amino[1]}} </div>
+                            <div class="col-5 {{size_class}}" style="white-space: nowrap;"> {{amino[1]}} </div>
                             <div class="col-2" style="white-space: nowrap;">
                                 <span id="{{amino}}-nutrientAmount">{{total_recipe_nutrition[amino[0]]}}</span>
                                 {{nutrient_units[amino[0]]}}
@@ -286,26 +292,27 @@
     
                     <div class="p-2 my-2 bg-light">
                         <h5>Phytochemicals</h5>
-                        {% for phytochemical in ['lycopene', 'lutein_zeaxanthin', 'quercetin', 'flavonoids', 'myricetin']%}
-                        {% if 0 <= total_recipe_user_rda_percent[phytochemical]|float < 50 %} 
-                        {% set bar_colour = "bg-danger" %} 
-                        {% elif 50 <= total_recipe_user_rda_percent[phytochemical] < 100 %} 
-                        {% set bar_colour = "bg-warning" %} 
-                        {% elif total_recipe_user_rda_percent[phytochemical] >= 100 %} 
-                        {% set bar_colour = "bg-success" %} 
+                        {% for phytochemical in [['lycopene', 'Lycopene'], ['lutein_zeaxanthin', 'Lutein & Zeaxanthin'], ['quercetin', 'Quercetin'], ['flavonoids', 'Flavonoids'], ['myricetin', 'Myricetin']]%}
+
+                        {% if 0 <= total_recipe_user_rda_percent[phytochemical[0]]|float < 50 %} {% set bar_colour="bg-danger" %} 
+                        {% elif 50<=total_recipe_user_rda_percent[phytochemical[0]] < 100 %} 
+                        {% set bar_colour="bg-warning" %} 
+                        {% elif total_recipe_user_rda_percent[phytochemical[0]]>= 100 %}
+                        {% set bar_colour = "bg-success" %}
                         {% else %}
                         {% set bar_colour = "bg-secondary" %}
                         {% endif %}
+                        
                         <div class="row">
-                            <div class="col-5" style="text-transform: capitalize;">
-                                {{phytochemical}}
+                            <div class="col-5 {{size_class}}" style="white-space: nowrap">
+                                {{phytochemical[1]}}
                             </div>
                             <div class="col-2" style="white-space: nowrap">
-                                <span id="{{phytochemical}}-nutrientAmount">{{total_recipe_nutrition[phytochemical]}}</span>
-                                {{nutrient_units[phytochemical]}}
+                                <span id="{{phytochemical[0]}}-nutrientAmount">{{total_recipe_nutrition[phytochemical[0]]}}</span>
+                                {{nutrient_units[phytochemical[0]]}}
                             </div>
                             <div class="col">
-                                {{ progress_bar(phytochemical, total_recipe_user_rda_percent[phytochemical], bar_colour) }}
+                                {{ progress_bar(phytochemical[0], total_recipe_user_rda_percent[phytochemical[0]], bar_colour) }}
                             </div>
                         </div>
                         {% endfor %}
@@ -326,6 +333,7 @@
                         {% else %}
                         {% set bar_colour = "bg-secondary" %}
                         {% endif %}
+                        
                         <div class="row">
                             <div class="col-4">
                                 {{b_vitamin[0]}}
