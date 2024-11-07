@@ -23,7 +23,7 @@
 <br/>
 <div class="container">
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-4">
             <h2>Ingredients list</h2>
             <table id="ingredients-table" class="table table-striped" id="ingredients-table">
                 <thead>
@@ -123,7 +123,7 @@
                         <div class="row">
                             <div class="col-1"></div>
                             <div class="col-4">{{carb[1]}}</div>
-                            <div class="col-2">
+                            <div class="col-2 small">
                                 <span id="{{carb[0]}}-nutrientAmount">{{total_recipe_nutrition[carb[0]]}}</span>
                                 {{nutrient_units[carb[0]]}}
                             </div>
@@ -141,8 +141,7 @@
                         <div class="row">
                             <div class="col-5"> Total fat </div>
                             <div class="col-2">
-                                <span id="total_fat-nutrientAmount">{{total_recipe_nutrition['total_fat']}}</span>
-                                {{nutrient_units['fat']}}
+                                <span id="total_fat-nutrientAmount">{{total_recipe_nutrition['total_fat']}}</span>{{nutrient_units['total_fat']}}
                             </div>
     
                             {% if 0 <= total_recipe_user_rda_percent['total_fat']|float < 50 %} 
@@ -164,7 +163,7 @@
                         <div class="row">
                             <div class="col-1"></div>
                             <div class="col-4"> {{fat[0]}} </div>
-                            <div class="col-2">
+                            <div class="col-2 small">
                                 <span id="{{fat[1]}}-nutrientAmount">{{total_recipe_nutrition[fat[1]]}}</span>{{nutrient_units[fat[1]]}}
                             </div>
 
@@ -188,7 +187,7 @@
                         <div class="row">
                             <div class="col-2"></div>
                             <div class="col-3"> {{poly_fats[0]}} </div>
-                            <div class="col-2 pr-0">
+                            <div class="col-2 small">
                                 <span id="{{poly_fats[1]}}-nutrientAmount">{{total_recipe_nutrition[poly_fats[1]]}}</span>{{nutrient_units[poly_fats[1]]}}
                             </div>
 
@@ -211,7 +210,7 @@
                         <div class="row">
                             <div class="col-1"></div>
                             <div class="col-4"> {{fat[0]}} </div>
-                            <div class="col-2">
+                            <div class="col-2 small">
                                 <span id="{{fat[1]}}-nutrientAmount">{{total_recipe_nutrition[fat[1]]}}</span>{{nutrient_units[fat[1]]}}
                             </div>
 
@@ -233,9 +232,13 @@
                     </div>
     
                     <div class="p-2 my-2 bg-light">
+
                         <h5>Protein</h5>
+
                         <div class="row">
+
                             <div class="col-5"> Protein </div>
+
                             <div class="col-2" style="white-space: nowrap;">
                                 <span id="total_protein-nutrientAmount">{{total_recipe_nutrition['total_protein']}}</span>
                                 {{nutrient_units['total_protein']}}
@@ -269,8 +272,8 @@
                         {% endif %}
                         <div class="row">
                             <div class="col-5 {{size_class}}" style="white-space: nowrap;"> {{amino[1]}} </div>
-                            <div class="col-2" style="white-space: nowrap;">
-                                <span id="{{amino}}-nutrientAmount">{{total_recipe_nutrition[amino[0]]}}</span>
+                            <div class="col-2 small" style="white-space: nowrap;">
+                                <span id="{{amino[0]}}-nutrientAmount">{{total_recipe_nutrition[amino[0]]}}</span>
                                 {{nutrient_units[amino[0]]}}
                             </div>
 
@@ -307,7 +310,7 @@
                             <div class="col-5 {{size_class}}" style="white-space: nowrap">
                                 {{phytochemical[1]}}
                             </div>
-                            <div class="col-2" style="white-space: nowrap">
+                            <div class="col-2 small" style="white-space: nowrap">
                                 <span id="{{phytochemical[0]}}-nutrientAmount">{{total_recipe_nutrition[phytochemical[0]]}}</span>
                                 {{nutrient_units[phytochemical[0]]}}
                             </div>
@@ -333,13 +336,16 @@
                         {% else %}
                         {% set bar_colour = "bg-secondary" %}
                         {% endif %}
-                        
+
                         <div class="row">
                             <div class="col-4">
                                 {{b_vitamin[0]}}
                             </div>
-                            <div class="col-3">
-                                <span id="{{b_vitamin[1]}}-nutrientAmount">{{total_recipe_nutrition[b_vitamin[1]]}}</span>{{nutrient_units[b_vitamin[1]]}}
+                            <div class="col-2 small">
+                                <span id="{{b_vitamin[1]}}-nutrientAmount">{{total_recipe_nutrition[b_vitamin[1]]}}</span>
+                            </div>
+                            <div class="col-1 small">
+                                <span style="float: right">{{nutrient_units[b_vitamin[1]]}}</span>
                             </div>
                             <div class="col">
                                 {{ progress_bar(b_vitamin[1], total_recipe_user_rda_percent[b_vitamin[1]], bar_colour) }}
@@ -366,8 +372,11 @@
                             <div class="col-4" style="text-transform: capitalize;">
                                 {{mineral}}
                             </div>
-                            <div class="col-3">
-                                <span id="{{mineral}}-nutrientAmount">{{total_recipe_nutrition[mineral]}}</span>{{nutrient_units[mineral]}}
+                            <div class="col-2 small">
+                                <span id="{{mineral}}-nutrientAmount">{{total_recipe_nutrition[mineral]}}</span>
+                            </div>
+                            <div class="col-1 small">
+                                <span style="float: right">{{nutrient_units[mineral]}}</span>
                             </div>
                             <div class="col">
                                 {{ progress_bar(mineral, total_recipe_user_rda_percent[mineral], bar_colour) }}
