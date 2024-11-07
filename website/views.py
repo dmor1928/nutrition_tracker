@@ -10,6 +10,7 @@ from .fdc_models import FDCFood, FDCFoodNutrition, FDCNutrients, FDCFoodPortion,
 from . import db  # type: ignore
 import pandas as pd
 import json
+from math import log10, floor
 
 views = Blueprint('views', __name__)
 
@@ -417,6 +418,8 @@ def viewRecipePage(formatted_recipe_name):
         
         ingredients_refined_data_per_100g.append(nutrition_per_100g)
     
+    def round_to_sf(x, sig_figures=1):
+        return round(x, -int(floor(log10(abs(float(x))))) + sig_figures - 1)
 
     total_recipe_nutrient_data = {}
     total_recipe_user_rda_percent = {}
@@ -428,38 +431,38 @@ def viewRecipePage(formatted_recipe_name):
         total_nutrient_amount = 0
         for ingredient_index, ingredient in enumerate(recipe_ingredients):
             nutrient_amount = ingredients_refined_data_per_100g[ingredient_index][key]
-            total_nutrient_amount += round(float(nutrient_amount / 100) * ingredient.amount, 2) 
+            total_nutrient_amount += float(nutrient_amount / 100) * ingredient.amount
             
         if user_rda[key] != 0:
             percentage = 100 * total_nutrient_amount / float(user_rda[key])
-            total_recipe_user_rda_percent[key] = round(percentage, 2)
+            total_recipe_user_rda_percent[key] = round(percentage, 1)
         else:
             if total_nutrient_amount == 0:
                 total_recipe_user_rda_percent[key] = 0
             else:
                 total_recipe_user_rda_percent[key] = 100
-    
-        total_recipe_nutrient_data[key] = round(total_nutrient_amount, 2)
+
+        if total_nutrient_amount != 0:
+            total_recipe_nutrient_data[key] = round_to_sf(total_nutrient_amount, 3)
 
     nutrient_units = {}
     for row in FDCNutrients.query.all():
         if row.id in nutrient_name_from_id.keys():
-            if row.unit_name in ['G', 'MG', 'UG']:
+            if row.unit_name in ['G', 'MG', 'UG', 'KCAL']:
                 unit = row.unit_name.lower()
-            elif row.unit_name in ['KCAL']:
-                unit = row.unit_name.title()
             else:
                 unit = row.unit_name
             nutrient_units[nutrient_name_from_id[row.id]] = unit
 
     
-    total_recipe_nutrition_json = json.dumps(ingredients_refined_data_per_100g)
-    ingredients_raw_data_per100g_json = json.dumps([ob for ob in ingredients_raw_data_per100g])
+    total_recipe_nutrition_json = json.dumps(total_recipe_nutrient_data)
+    ingredients_raw_data_per100g_json = json.dumps([ob for ob in ingredients_refined_data_per_100g])
     user_rda_json = json.dumps(user_rda)
     total_recipe_user_rda_percent_json = json.dumps(total_recipe_user_rda_percent)
 
     print("total_recipe_nutrient_data: ", total_recipe_nutrient_data)
-    print("recipe_foods_nutrition_json: ", ingredients_raw_data_per100g)
+    print("recipe_foods_nutrition_json: ", ingredients_refined_data_per_100g)
+    print("nutrient_units: ", nutrient_units)
 
     return render_template(
         "view-recipe.html", 
