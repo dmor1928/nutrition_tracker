@@ -38,7 +38,7 @@
     <br/>
     <h3 align="center">Ingredients</h3>
     <br/>
-    <p class="text-center" id="emptyListMessage">Ingredients list is empty. Add an ingredient using the dropdown below</p>
+    <p class="text-center elementToFadeIn" id="emptyListMessage">Ingredients list is empty. Add an ingredient using the dropdown below</p>
     <ul name="recipe-ingredients" id="recipe-ingredients" class="list-group list-group-flush"></ul>
     <br/>
     <h4 align="center">Add ingredients</h4>
@@ -50,16 +50,16 @@
         <div class="m-3">
             <input type="text" class="form-control" placeholder="Search..." id="searchInput">
         </div>
-        <ul class="list-group" id="foodsList" style="max-height: 50vh; overflow-y: scroll;">
+        <ul class="list-group" id="foodsList" style="max-height: 25vh; overflow-y: scroll;">
             {% for food in foods %}
-            <li class="list-group-item m-0 p-0">
-                <button type="button" class="list-group-item list-group-item-action" style="border-color: transparent;" id="{{food.fdc_id}}" value="{{food.name}}" onclick="clickOptionTest(this)">{{food.name}}</button>
+            <li class="list-group-item m-0 p-0" style="display: none;">
+                <button type="button" class="list-group-item list-group-item-action" style="border-color: transparent;" id="{{food.fdc_id}}" value="{{food.name}}" onclick="clickListOption(this)">{{food.name}}</button>
             </li>
             {% endfor %}
         </ul>
     </div>
     <br/>
-    <div align="center">
+    <div align="center" >
         <button type="submit" class="btn btn-primary">Add recipe</button>
     </div>
 </form>
