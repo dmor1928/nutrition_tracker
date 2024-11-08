@@ -98,20 +98,21 @@ function addToIngredientList(elt) {
     div_element.appendChild(ingredient_input);
     div_element.appendChild(deleteButton);
     
-    // Append the button element inside the list element li_element
     li_element.appendChild(div_element);
+
+    li_element.classList.add("elementToFadeIn");
 
     // Append li_element to the ul element ingredients_list
     document.getElementById("recipe-ingredients").appendChild(li_element);
 
     if (!(isEmpty('recipe-ingredients'))) {
         document.getElementById('emptyListMessage').style.display = 'none';
-        console.log("It's not empty!")
+        console.log("It's not empty!");
     }
 }
 
 function filterFunction() {
-    var input, input_value, filters, ul, button, li, i;
+    var input, input_value, filters, ul, button, li, i, j;
     input = document.getElementById("searchInput");
     ul = document.getElementById("foodsList");
     li = ul.getElementsByTagName("li");
@@ -125,27 +126,31 @@ function filterFunction() {
 
     console.log(filters);
 
-    if (filters[0] == '') {
-        for (i = 0; i < li.length; i++) {
-            li[i].style.display = "none";
+    if (!(filters[0])) {
+        console.log("search empty");
+        for (j = 0; j < li.length; j++) {
+            li[j].style.display = 'none';
         }
-    }
+    } else {
 
-    for (i = 0; i < li.length; i++) {
-        txtValue = li[i].getElementsByTagName("button")[0].textContent || li[i].getElementsByTagName("button")[0].value;
-        txtValue = txtValue.replace('-', '');
-        if (allFilters(filters, txtValue)) {
-            li[i].style.display = "";
-        } else {
-            li[i].style.display = "none";
+        foodsListWindow.style.display = '';
+
+        for (i = 0; i < li.length; i++) {
+            txtValue = li[i].getElementsByTagName("button")[0].textContent || li[i].getElementsByTagName("button")[0].value;
+            txtValue = txtValue.replace('-', '');
+            if (allFilters(filters, txtValue)) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
         }
     }
 }
 
 function allFilters(filters, txtValue) {
-    var j, filter;
-    for (j = 0; j < filters.length; j++) {
-        filter = filters[j];
+    var k, filter;
+    for (k = 0; k < filters.length; k++) {
+        filter = filters[k];
         if (!(txtValue.toUpperCase().indexOf(filter) > -1)) {
             return false;
         }
@@ -175,7 +180,7 @@ var searchInputArea = document.getElementById('searchInput');
 var foodsListWindow = document.getElementById('foodsList');
 var searchListWrapper = document.getElementById('searchListWrapper');
 
-function clickOptionTest(elt) {
+function clickListOption(elt) {
     console.log("Option clicked!");
     addToIngredientList(elt);
     searchInputArea.value = elt.value;

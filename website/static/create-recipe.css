@@ -16,3 +16,18 @@
     max-height: 200px;
     opacity: 1;
 }
+
+.elementToFadeIn {
+    -webkit-animation: fadein 0.2s linear forwards;
+    animation: fadein 0.2s linear forwards;
+}
+
+@-webkit-keyframes fadein {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadein {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
