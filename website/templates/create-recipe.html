@@ -1,5 +1,9 @@
 {% extends "base.html" %} {% block title %}Create Recipe - NutriMetrics{% endblock %}
 
+{% block inline_style %}
+<link rel="stylesheet" href="{{ url_for('static', filename='create-recipe.css')}}">
+{% endblock %}
+
 {% block content %}
 <h1 align="center">Create a recipe</h1>
 <form method="POST">
