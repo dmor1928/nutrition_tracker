@@ -1,5 +1,6 @@
 //Defining a listener for add_ingredient button (specifically, an onclick handler)
-document.getElementById("add_ingredient").onclick  = function() {
+// document.getElementById("add_ingredient").onclick
+function addToIngredientList(elt) {
 
     // Create list element
     var li_element = document.createElement("Li")
@@ -7,9 +8,10 @@ document.getElementById("add_ingredient").onclick  = function() {
 
     // Get the value of element selected by ingredient dropdown
 
-    var selected_ingredient = document.getElementById("ingredient");
-    var selected_ingredient_value = selected_ingredient.value;
-    var food_id = selected_ingredient.options[selected_ingredient.selectedIndex].id;
+    // var selected_ingredient = document.getElementById("ingredient");
+    var selected_ingredient_value = elt.value;
+    // var food_id = selected_ingredient.options[selected_ingredient.selectedIndex].id;
+    var food_id = elt.id;
 
     // Check if ingredient already in list by checking if "-li" element already exists
     if (!(Object.is(document.getElementById(food_id + "-li"), null))) {
@@ -80,6 +82,13 @@ document.getElementById("add_ingredient").onclick  = function() {
     deleteButton.onclick = function(){
         console.log("Deleted food_id " + food_id);
         document.getElementById(li_element.id).parentNode.removeChild(document.getElementById(li_element.id));
+        
+        if (isEmpty('recipe-ingredients')) {
+            console.log("it's empty!");
+            document.getElementById('emptyListMessage').style.display = '';
+        } else {
+            document.getElementById('emptyListMessage').style.display = 'none';
+        }
     }
 
     deleteButton.appendChild(delete_button_span_element);
@@ -94,18 +103,115 @@ document.getElementById("add_ingredient").onclick  = function() {
 
     // Append li_element to the ul element ingredients_list
     document.getElementById("recipe-ingredients").appendChild(li_element);
+
+    if (!(isEmpty('recipe-ingredients'))) {
+        document.getElementById('emptyListMessage').style.display = 'none';
+        console.log("It's not empty!")
+    }
 }
 
-function deleteIngredient(food_id) {
-    console.log("Deleted food_id " + food_id);
-    document.getElementById(food_id + "-li").parentNode.removeChild(document.getElementById(food_id + "-li"));
+function filterFunction() {
+    var input, input_value, filters, ul, button, li, i;
+    input = document.getElementById("searchInput");
+    ul = document.getElementById("foodsList");
+    li = ul.getElementsByTagName("li");
+
+    // For each word in input, run a filter
+    input_value = input.value.replaceAll(',', '');
+    input_value = input_value.replaceAll('-', ' ');
+    input_value = input_value.toUpperCase().trim();
+    filters = input_value.split(' ');
+    //filter = input.value.toUpperCase();
+
+    console.log(filters);
+
+    if (filters[0] == '') {
+        for (i = 0; i < li.length; i++) {
+            li[i].style.display = "none";
+        }
+    }
+
+    for (i = 0; i < li.length; i++) {
+        txtValue = li[i].getElementsByTagName("button")[0].textContent || li[i].getElementsByTagName("button")[0].value;
+        txtValue = txtValue.replace('-', '');
+        if (allFilters(filters, txtValue)) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
 }
 
-// form.addEventListener('submit', function(event) {
-//     event.preventDefault();    // prevent page from refreshing
-//     const formData = new FormData(form);  // grab the data inside the form fields
-//     fetch('/create-recipe', {   // assuming the backend is hosted on the same server
-//         method: 'POST',
-//         body: formData,
-//     })
-// });
+function allFilters(filters, txtValue) {
+    var j, filter;
+    for (j = 0; j < filters.length; j++) {
+        filter = filters[j];
+        if (!(txtValue.toUpperCase().indexOf(filter) > -1)) {
+            return false;
+        }
+    }
+    return true;
+};
+
+var typingTimer;
+var doneTypingInterval = 100;
+var input = document.getElementById('searchInput');
+
+input.onkeyup = function () {
+    clearTimeout(typingTimer);
+    typingTimer = setTimeout(doneTyping, doneTypingInterval);
+};
+
+input.onkeydown = function () {
+    clearTimeout(typingTimer);
+};
+
+function doneTyping () {
+    filterFunction();
+};
+
+
+var searchInputArea = document.getElementById('searchInput');
+var foodsListWindow = document.getElementById('foodsList');
+var searchListWrapper = document.getElementById('searchListWrapper');
+
+function clickOptionTest(elt) {
+    console.log("Option clicked!");
+    addToIngredientList(elt);
+    searchInputArea.value = elt.value;
+    foodsListWindow.style.display = 'none';
+};
+
+searchInputArea.onclick = function() {
+    foodsListWindow.style.display = '';
+};
+
+// searchListWrapper.onblur = function() {
+//     foodsListWindow.style.display = 'none';
+// };
+
+document.addEventListener("click", (evt) => {
+    const flyoutEl = document.getElementById("searchListWrapper");
+    const flyoutEl2 = document.getElementById("recipe-ingredients");
+    let targetEl = evt.target; // clicked element      
+    do {
+      if(targetEl == flyoutEl || targetEl == flyoutEl2) {
+        // This is a click inside, does nothing, just return.
+        // console.log("Clicked inside!");
+        return;
+      }
+      // Go up the DOM
+      targetEl = targetEl.parentNode;
+    } while (targetEl);
+    // This is a click outside.      
+    // console.log("Clicked outside!");
+    foodsListWindow.style.display = 'none';
+});
+
+
+var recipeIngredientsList = document.getElementById('recipe-ingredients');
+
+function isEmpty(id) {
+    console.log(document.getElementById(id).innerHTML.trim());
+    return document.getElementById(id).innerHTML.trim() == "";
+};
