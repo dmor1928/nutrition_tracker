@@ -25,6 +25,19 @@
 }
 
 
+/* Fading in innerHTML change for progress bars hover */
+.elementToFadeIn {
+    -webkit-transition: opacity .1s ease-in-out;
+   -moz-transition: opacity .1s ease-in-out;
+   -ms-transition: opacity .1s ease-in-out;
+   -o-transition: opacity .1s ease-in-out;
+   transition: opacity .1s ease-in-out;
+   cursor: default;
+}
+
+.fade { opacity: 0; }
+.reveal { opacity: 1; }
+
 /* @property --num {
 syntax: "<integer>";
 initial-value: 0;

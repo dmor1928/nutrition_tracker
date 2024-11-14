@@ -6,10 +6,11 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='view-recipe.css')}}">
 
 <script type="text/javascript">
-    var recipe_foods_nutrition = JSON.parse({{recipe_foods_nutrition_json|tojson}});
+    var recipe_ingredients_data = JSON.parse({{recipe_ingredients_data_json|tojson}});
     var total_recipe_nutrition = JSON.parse({{total_recipe_nutrition_json|tojson}});
     var user_rda = JSON.parse({{user_rda_json|tojson}});
     var total_recipe_user_rda_percent = JSON.parse({{total_recipe_user_rda_percent_json|tojson}});
+    var nutrient_units = JSON.parse({{nutrient_units_json|tojson}});
  </script>
  <script src="{{ url_for('static', filename='view-recipe.js')}}"></script>
 
@@ -18,8 +19,7 @@
 {% block content %}
 {% from 'view-recipe-macros.html' import progress_bar %}
 
-<h1 align="center">{{recipe.name}}</h1>
-<h4 align="center">View recipe</h4>
+<h1 class="display-2" align="center" style="text-transform: capitalize;">{{recipe.name}}</h1>
 <br/>
 <div class="container">
     <div class="row">
@@ -96,8 +96,9 @@
                             <div class="col-5">
                                 Water
                             </div>
-                            <div class="col-2">
-                                <span id="water-nutrientAmount">{{total_recipe_nutrition['water']}}</span>{{nutrient_units['water']}}
+                            <div class="col-2" style="white-space: nowrap;">
+                                <span id="water-nutrientAmount">{{total_recipe_nutrition['water']}}</span>
+                                {{nutrient_units['water']}}
                             </div>
                             <div class="col">
                                 {{ progress_bar('water', total_recipe_user_rda_percent['water']) }}
@@ -132,6 +133,17 @@
                             </div>
                         </div>
                         {% endfor %}
+                        <div class="row" style="white-space: nowrap;">
+                            <div class="col-2"></div>
+                            <div class="col-3">Added sugar</div>
+                            <div class="col-2 small">
+                                <span id="added_sugars-nutrientAmount">{{total_recipe_nutrition['added_sugars']}}</span>
+                                {{nutrient_units['added_sugars']}}
+                            </div>
+                            <div class="col">
+                                {{ progress_bar('added_sugars', total_recipe_user_rda_percent['added_sugars'], bar_colour) }}
+                            </div>
+                        </div>
                     </div> <!-- NEW DIV -->
                     
                     
@@ -287,7 +299,7 @@
                             {% endif %}
 
                             <div class="col">
-                                {{ progress_bar(amino, total_recipe_user_rda_percent[amino[0]], bar_colour) }}
+                                {{ progress_bar(amino[0], total_recipe_user_rda_percent[amino[0]], bar_colour) }}
                             </div>
                         </div>
                         {% endfor %}
