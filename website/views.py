@@ -501,6 +501,8 @@ def viewRecipePage(formatted_recipe_name):
     nutrient_units['methionine_and_cysteine'] = 'g'
     nutrient_units['omega_6'] = 'g'
     nutrient_units['omega_3'] = 'g'
+    nutrient_units['vit_d'] = 'ug'
+    nutrient_units['vit_e'] = 'mg'
 
     
     total_recipe_nutrition_json = json.dumps(total_recipe_nutrient_data)

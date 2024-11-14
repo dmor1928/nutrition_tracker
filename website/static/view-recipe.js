@@ -129,7 +129,7 @@ function showRDA(el) {
     setTimeout(function(){ 
         percent.innerHTML = "RDA: " + (Math.round(user_rda[nutrient_key] * 10) / 10).toString() + " " + nutrient_units[nutrient_key];
         percent.style.opacity = 1;
-    },100)
+    },100);
 }
 
 function showPercentage(el) {
@@ -140,5 +140,28 @@ function showPercentage(el) {
     setTimeout(function(){ 
         percent.innerHTML = selected_ingredients_rda_percent[nutrient_key].toString() + "%";
         percent.style.opacity = 1;
-    },100)
+    },100);
 }
+
+const showRDACheckbox = document.getElementById("flexSwitchCheckShowRDA");
+
+function toggleRDA(checkboxElem) {
+    var progress_bar_labels
+    if (checkboxElem.checked) {
+        console.log("Checkbox is checked..");
+        progress_bar_labels = document.getElementsByClassName("progress position-relative");
+        console.log(progress_bar_labels);
+        for (let i = 0; i < progress_bar_labels.length; i++) {
+            var el = progress_bar_labels[i]
+            showRDA(el);
+        }
+    } else {
+        console.log("Checkbox is not checked..");
+        progress_bar_labels = document.getElementsByClassName("progress position-relative");
+        console.log(progress_bar_labels);
+        for (let i = 0; i < progress_bar_labels.length; i++) {
+            var el = progress_bar_labels[i]
+            showPercentage(el);
+        }
+    }
+};
