@@ -94,14 +94,19 @@ function clickRow(clicked_id){  // Highlights the row
         try {
             document.getElementById(key.concat("-", "progressbar")).style.width = limited_selected_ingredients_rda_percent.toString() + "%";
             document.getElementById(key.concat("-", "progressbar")).ariaValueNow = selected_ingredients_rda_percent[key].toString();
-            document.getElementById(key.concat("-", "percentage")).innerHTML = selected_ingredients_rda_percent[key].toString() + "%";
+            
+            console.log(document.getElementById("flexSwitchCheckShowRDA").checked);
+            if (!(document.getElementById("flexSwitchCheckShowRDA").checked)) {
+                document.getElementById(key.concat("-", "percentage")).innerHTML = selected_ingredients_rda_percent[key].toString() + "%";
+            }
+            
             // console.log("key: " + key.toString());
             // console.log("selected_ingredients_rda_percent[" + key + "].toString() + '%': ");
             // console.log(selected_ingredients_rda_percent[key].toString() + "%");
         }
         catch(err) {
             // console.log("key-progressbar doesn't exist, which is fine: " + key);
-            // console.log("Error code: " + err);
+            console.log("Error code: " + err);
             // console.log("selected_ingredients_nutrition[key]: ");
             // console.log(selected_ingredients_nutrition[key]);
         }
@@ -143,25 +148,25 @@ function showPercentage(el) {
     },100);
 }
 
-const showRDACheckbox = document.getElementById("flexSwitchCheckShowRDA");
 
 function toggleRDA(checkboxElem) {
     var progress_bar_labels
     if (checkboxElem.checked) {
-        console.log("Checkbox is checked..");
         progress_bar_labels = document.getElementsByClassName("progress position-relative");
-        console.log(progress_bar_labels);
         for (let i = 0; i < progress_bar_labels.length; i++) {
             var el = progress_bar_labels[i]
             showRDA(el);
+            el.onmouseover = function() {showPercentage(this)};
+            el.onmouseout = function() {showRDA(this)};
+            
         }
     } else {
-        console.log("Checkbox is not checked..");
         progress_bar_labels = document.getElementsByClassName("progress position-relative");
-        console.log(progress_bar_labels);
         for (let i = 0; i < progress_bar_labels.length; i++) {
             var el = progress_bar_labels[i]
             showPercentage(el);
+            el.onmouseover = function() {showRDA(this)};
+            el.onmouseout = function() {showPercentage(this)};
         }
     }
 };

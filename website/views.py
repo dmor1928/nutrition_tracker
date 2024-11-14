@@ -377,8 +377,6 @@ def viewRecipePage(formatted_recipe_name):
             nutrient_name = nutrient_name_from_id[nutrient.nutrient_id]
             ingredient_nutrient_data[nutrient_name] = nutrient.amount
 
-        # ingredients_raw_data_per100g.append(ingredient_nutrient_data)
-
         nutrition_per_100g = {}
 
         for key in user_rda:
@@ -415,47 +413,6 @@ def viewRecipePage(formatted_recipe_name):
         
         refined_data_entry = {'food_id': ingredient.food_id, 'amount': ingredient.amount, 'nutrition_per_100g': nutrition_per_100g}
         recipe_ingredients_data.append(refined_data_entry)
-
-    # recipe_ingredients_data = []
-    # for ingredient in ingredients_raw_data_per100g:
-
-    #     nutrition_per_100g = {}
-    #     # nutrition_per_100g['food_id'] = ingredient['food_id']
-
-    #     for key in user_rda:
-
-    #         if nutrientRDAisPercent(key):
-    #             continue
-
-    #         elif key == "vit_a":
-    #             nutrition_per_100g[key] = ingredient['vit_a_RAE']
-
-    #         elif key == "vit_d":
-    #             nutrition_per_100g[key] = ingredient['vit_d2_d3_UG']
-
-    #         elif key == "vit_e":
-    #             nutrition_per_100g[key] = ingredient['vit_e_mg']
-
-    #         elif key == "vit_k":
-    #             nutrition_per_100g[key] = ingredient['vit_k2'] + ingredient['vit_k1']
-
-    #         elif key == "omega_3":
-    #             nutrition_per_100g[key] = sum([ingredient[o_3] for o_3 in ['omega_3_ALA', 'omega_3_EPA', 'omega_3_DHA']])
-
-    #         elif key == "omega_6":
-    #             nutrition_per_100g[key] = sum([ingredient[o_6] for o_6 in ['omega_6_20_2', 'omega_6_18_2', 'omega_6_18_3', 'omega_6_20_3', 'omega_6_20_4']])
-
-    #         elif key == "methionine_and_cysteine":
-    #             nutrition_per_100g[key] = ingredient['methionine'] # + ingredient['cysteine']
-
-    #         elif key == "phenylalanine_and_tyrosine":
-    #             nutrition_per_100g[key] = ingredient['phenylalanine'] + ingredient['tyrosine']
-
-    #         else:
-    #             nutrition_per_100g[key] = ingredient[key]
-        
-    #     refined_data_entry = {'food_id': ingredient['food_id'], 'amount': ingredient.amount, 'nutrition_per_100g': nutrition_per_100g}
-    #     recipe_ingredients_data.append(refined_data_entry)
     
     def round_to_sf(x, sig_figures=1):
         return round(x, -int(floor(log10(abs(float(x))))) + sig_figures - 1)
@@ -491,19 +448,17 @@ def viewRecipePage(formatted_recipe_name):
         if row.id in nutrient_name_from_id.keys():
             if row.unit_name in ['G', 'MG', 'UG', 'KCAL']:
                 unit = row.unit_name.lower()
-            elif row.name == 'water':
-                unit = "ml"
             else:
                 unit = row.unit_name
             nutrient_units[nutrient_name_from_id[row.id]] = unit
     
+    nutrient_units['water'] = "ml"
     nutrient_units['phenylalanine_and_tyrosine'] = 'g'
     nutrient_units['methionine_and_cysteine'] = 'g'
     nutrient_units['omega_6'] = 'g'
     nutrient_units['omega_3'] = 'g'
     nutrient_units['vit_d'] = 'ug'
     nutrient_units['vit_e'] = 'mg'
-
     
     total_recipe_nutrition_json = json.dumps(total_recipe_nutrient_data)
     recipe_ingredients_data = json.dumps([ob for ob in recipe_ingredients_data])
