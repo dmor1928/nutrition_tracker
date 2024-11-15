@@ -1,7 +1,87 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %}
 
+
 {% block content %}
-<h1 align="center">Notes</h1>
+<h1 class="display-2 m-2">Dashboard</h1>
+
+<div class="row">
+    <div class="col-3">
+        CALENDAR HERE?
+    </div>
+    <div class="col-9">
+        <table id="ingredients-table" class="table table-striped" id="ingredients-table">
+            <thead>
+                <th class="col-3" scope="col">Time</th>
+                <th scope="col">Meal</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>6:00</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>7:00</td>
+                    <td>600ml Water</td>
+                </tr>
+                <tr>
+                    <td>8:00</td>
+                    <td>Breakfast granola</td>
+                </tr>
+                <tr>
+                    <td>9:00</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>10:00</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>11:00</td>
+                    <td>Granola bar</td>
+                </tr>
+                <tr>
+                    <td>13:00</td>
+                    <td>Lentil pasta salad</td>
+                </tr>
+                <tr>
+                    <td>15:00</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>17:00</td>
+                    <td>Sweet potato curry and naan</td>
+                </tr>
+                <tr>
+                    <td>18:00</td>
+                    <td>Nutty pudding</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-4 p-3">
+        <div class="rounded p-4" style="background-color: lightgrey;">
+            <h2> RDA Performance</h2>
+            <canvas id="bigChart" style="max-height: 300px;"></canvas>
+        </div>
+      </div>
+      <div class="col-4 p-2">
+        <div class="row my-2 mb-2">
+            <div class="rounded p-3" style="background-color: lightgrey;">
+                <h3> Fibre</h3>
+                <canvas id="smallChart1" style="max-height: 150px;"></canvas>
+            </div>
+        </div>
+        <div class="row my-2 mt-2">
+            <div class="rounded p-3" style="background-color: lightgrey;">
+                <h3> Protein</h3>
+                <canvas id="smallChart2" style="max-height: 150px;"></canvas>
+            </div>
+        </div>
+        
+      </div>
+</div>
+
 <ul class="list-group list-group-flush" id="notes">
     {% for note in user.notes %}
     <li class="list-group-item">{{ note.data }}
@@ -12,10 +92,13 @@
     {% endfor %}
 </ul>
 <form method="POST">
-    <textarea name="note" id="note" class="form-control"></textarea>
-    <br/>
     <div align="center">
-        <button type="submit" class="btn btn-primary">Add Notes</button>
+        <button type="submit" class="btn btn-primary">Add to meal diary</button>
     </div>
 </form>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='home.js')}}"></script>
 {% endblock %}
