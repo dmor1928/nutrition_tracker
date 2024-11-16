@@ -3,6 +3,8 @@ venv/*
 .vscode/settings.json
 ./fdc-database/FoodData_Central_csv_2024-04-18/*
 
+website-tests/
+
 landing-page/startbootstrap-new-age-gh-pages/
 
 databases/FoodData_Central_csv_2024-04-18/.~lock.Download API Field Descriptions.xlsx#
