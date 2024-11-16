@@ -1,0 +1,8 @@
+{% macro nutrient_target_circular_progress(nutrient_name, percent, bar_colour) -%}
+<div class="justify-content-center d-flex position-absolute w-100" style="display: flex; justify-content: center; align-items: center; flex-direction: column">
+    <h5 class="fw-bold" style="margin-top: 20%; font-size:calc(10px + 0.28vmin);">{{nutrient_name}}</h5>
+</div>
+<div class="container position-relative" style="display: flex; justify-content: center; ">
+    <div class="pie" data-pie='{ "percent": "{{percent|string}}", "speed": "120", "textPosition": "20%", "fontWeight":"bold", "size":"90", "rotation": "0", "inverse": "true", "colorSlice":"{{bar_colour}}", "round":"true", "stroke": 7, "strokeBottom": 5, "colorCircle":"#f8f9fa" }'></div>
+</div>
+{%- endmacro %}

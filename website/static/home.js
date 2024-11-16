@@ -6,7 +6,7 @@ let delayed;
 new Chart(document.getElementById("bigChart"), {
     type: 'line',
     data: {
-        labels: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         datasets: [
             {
                 label: '<50%',
@@ -53,7 +53,7 @@ new Chart(document.getElementById("bigChart"), {
                 max: 100,
                 min: 0,
                 ticks: {
-                    stepSize: 10,
+                    stepSize: 20,
                     autoSkip: false
                 }
             },
@@ -79,17 +79,25 @@ new Chart(document.getElementById("bigChart"), {
 new Chart(document.getElementById("smallChart1"), {
     type: 'bar',
     data: {
-        labels: ['week 1', 'week 2', 'week 3', 'week 4', 'week 5', 'week 6'],
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         datasets: [{
         label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
+        data: [12, 19, 3, 5, 2, 3, 4],
         borderWidth: 1
         }]
     },
     options: {
+        plugins: {
+            legend: {
+               display: false
+            }
+         },
         scales: {
             y: {
                 beginAtZero: true
+            },
+            x: { 
+                grid : {display : false}
             }
         }
     }
@@ -98,17 +106,25 @@ new Chart(document.getElementById("smallChart1"), {
 new Chart(document.getElementById("smallChart2"), {
     type: 'bar',
     data: {
-        labels: ['week 1', 'week 2', 'week 3', 'week 4', 'week 5', 'week 6'],
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
         datasets: [{
         label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
+        data: [12, 19, 3, 5, 2, 3, 4],
         borderWidth: 1
         }]
     },
     options: {
+        plugins: {
+            legend: {
+               display: false
+            }
+         },
         scales: {
             y: {
                 beginAtZero: true
+            },
+            x: { 
+                grid : {display : false}
             }
         }
     }
