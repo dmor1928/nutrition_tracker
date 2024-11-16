@@ -1,9 +1,0 @@
-{% macro progress_bar(nutrient_key, total_recipe_percent, bar_colour_class="") -%}
-<div class="progress position-relative" style="height: 18px;" onmouseover="showRDA(this)" onmouseout="showPercentage(this)">
-    <div class="progress-bar opacity-50 {{bar_colour_class}}" role="progressbar" style="width: {{total_recipe_percent}}%" aria-valuenow="{{total_recipe_percent}}" aria-valuemin="0" aria-valuemax="100"></div>
-    <div class="progress d-flex position-absolute w-100 top-50 start-50 translate-middle" style="height: 20px;" >
-        <div id="{{nutrient_key}}-progressbar" class="progress-bar {{bar_colour_class}}" role="progressbar" style="width: {{total_recipe_percent}}%" aria-valuenow="{{total_recipe_percent}}" aria-valuemin="0" aria-valuemax="100"></div>
-    </div>
-    <small id="{{nutrient_key}}-percentage" class="justify-content-center elementToFadeIn d-flex position-absolute w-100">{{total_recipe_percent}}%</small>
-</div>
-{%- endmacro %}
