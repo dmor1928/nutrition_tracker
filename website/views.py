@@ -526,3 +526,10 @@ def addPersonalisedRDATest():
         "base.html",
         user=current_user
         )
+
+@views.route('/sidebar')
+def sidebar():
+    return render_template(
+        "sidebar.html",
+        user=current_user
+        )
