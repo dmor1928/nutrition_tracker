@@ -14,9 +14,9 @@ from math import log10, floor
 
 views = Blueprint('views', __name__)
 
-@views.route('/', methods=['GET', 'POST'])
-@login_required  # Home page not accessible unless logged in
-def home():
+@views.route('/dashboard', methods=['GET', 'POST'])
+@login_required  # Dashboard not accessible unless logged in
+def dashboard():
     if request.method == "POST":
         note = request.form.get('note')
         if len(note) < 1:
@@ -26,21 +26,26 @@ def home():
             db.session.add(new_note)
             db.session.commit()
             flash('Note added', category='success')
-    return render_template("home.html", user=current_user)  # current_user is passed into template to detect if a user is logged in and change the navbar accordingly
+    return render_template("dashboard.html", user=current_user)  # current_user is passed into template to detect if a user is logged in and change the navbar accordingly
 
-@views.route('/delete-note', methods=['POST'])
-def delete_note():
-    note = json.loads(request.data)  # Takesin data from a POST request
-    noteId = note['noteId']  # Loaded as json object and access the noteId attribute
-    note = Note.query.get(noteId)  # Search for note with noteId
-    if note:  # Checks if note with noteId exists
-        if note.user_id == current_user.id:  # Checks if user assigned to note is currently signed in 
-            db.session.delete(note)
-            db.session.commit()
+# @views.route('/delete-note', methods=['POST'])
+# def delete_note():
+#     note = json.loads(request.data)  # Takesin data from a POST request
+#     noteId = note['noteId']  # Loaded as json object and access the noteId attribute
+#     note = Note.query.get(noteId)  # Search for note with noteId
+#     if note:  # Checks if note with noteId exists
+#         if note.user_id == current_user.id:  # Checks if user assigned to note is currently signed in 
+#             db.session.delete(note)
+#             db.session.commit()
     
-    return jsonify({})
+#     return jsonify({})
 
-@views.route('/product-page')
+@views.route('/trends')
+@login_required
+def trends():
+    return render_template("trends.html", user=current_user)
+
+@views.route('/')
 def productPage():
     return render_template("my-landing-page/my-product-page.html")
 

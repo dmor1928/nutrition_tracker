@@ -1,0 +1,37 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="col">
+    CALENDAR HERE?
+    <h1 class="display-6 m-2">Weekly statistics</h1>
+    <div class="row py-3" style="border: 2px solid lightgray; border-radius: 5px;">
+        <div class="col">
+            <div class="m-1 px-2" style="background-color: lightgrey;  border-radius: 10px;">
+                <p class="mx-2 pt-2">RDA Targets reached <span class="text-muted"> ~86% /day</span></p>
+                <canvas id="bigChart" style="max-height: 300px;"></canvas>
+            </div>
+        </div>
+        <div class="col">
+            <div class=" m-1 mt-2 px-2" style="background-color: lightgrey;  border-radius: 10px;">
+                <p class="mx-2 pt-2"> Fibre <span class="text-muted"> ~40g /day</span></p>
+                <canvas id="smallChart1" style="max-height: 150px;"></canvas>
+            </div>
+        </div>
+        <div class="col">
+            <div class="m-1 mt-2 px-2" style="background-color: lightgrey; border-radius: 10px;">
+                <p class="mx-2 pt-2"> Protein <span class="text-muted"> ~93g /day</span></p>
+                <canvas id="smallChart2" style="max-height: 150px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='home.js')}}"></script>
+
+<script src='https://cdn.jsdelivr.net/gh/tomik23/circular-progress-bar@latest/docs/circularProgressBar.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js'></script>
+<script src="{{ url_for('static', filename='circle-progress-bar.js')}}"></script>
+{% endblock %}
