@@ -2,6 +2,7 @@ venv/*
 .venv/*
 .vscode/settings.json
 ./fdc-database/FoodData_Central_csv_2024-04-18/*
+**/__pycache__
 
 website-tests/
 
