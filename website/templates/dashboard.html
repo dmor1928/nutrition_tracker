@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %}
+{% extends "base.html" %} {% block title %}Dashboard · NutriMetrics{% endblock %}
 
 {% from 'nutrient-targets.html' import nutrient_target_circular_progress %}
 {% from 'progress-bar.html' import progress_bar, split_circle_progress_bar %}
@@ -24,255 +24,242 @@
 </div>
 
 <div class="row">
-        <div class="col">
-            <div class="mx-4">
-                <div class="row">
-                    <p class="display-6 m-2">Sat 16 Nov 2024</p>
-                    <table id="ingredients-table" class="table table-striped" id="ingredients-table">
-                        <thead>
-                            <th class="col-1" scope="col">Time</th>
-                            <th class="col-5" scope="col">Description</th>
-                            <th class="col-1" scope="col">Amount</th>
-                            <th class="col-2" scope="col">Unit</th>
-                            <th class="col-1" scope="col">Kcal</th>
-                        </thead>
-                        <tbody>
     
-                            <tr class="fw-bold">
-                                <td>8:00</td>
-                                <td>Breakfast</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>My breakfast granola</td>
-                                <td>1</td>
-                                <td>serving (453g)</td>
-                                <td>500</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>Water</td>
-                                <td>600</td>
-                                <td>ml</td>
-                                <td>0</td>
-                            </tr>
-    
-                            <tr class="fw-bold">
-                                <td>13:00</td>
-                                <td>Lunch</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-    
-                            <tr>
-                                <td></td>
-                                <td>Lentil pasta salad</td>
-                                <td>1</td>
-                                <td>serving (500g)</td>
-                                <td>590</td>
-                            </tr>
-    
-                            <tr class="fw-bold">
-                                <td>18:00</td>
-                                <td>Dinner</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-    
-                            <tr>
-                                <td></td>
-                                <td>Sweet potato curry</td>
-                                <td>1</td>
-                                <td>serving (600g)</td>
-                                <td>450</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>Pilau Rice</td>
-                                <td>1</td>
-                                <td>serving (125g)</td>
-                                <td>195</td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td>Garlic Naan bread</td>
-                                <td>1</td>
-                                <td>serving (90g)</td>
-                                <td>200</td>
-                            </tr>
-    
-                            <tr class="fw-bold">
-                                <td></td>
-                                <td>Snacks</td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold">11:00</td>
-                                <td>Granola bar</td>
-                                <td>1</td>
-                                <td>serving (453g)</td>
-                                <td>180</td>
-                            </tr>
-                            <tr>
-                                <td class="fw-bold">19:00</td>
-                                <td>Nutty pudding</td>
-                                <td>1/2</td>
-                                <td>serving (90g)</td>
-                                <td>250</td>
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="row my-2">
-                    <div class="col-12 col-md-6" style="border-width: 2px 1px 2px 2px; border-color: lightgray; border-style: solid; border-radius: 5px 0px 0px 5px; order 1;">
-                        <p class="fw-bold my-2 pb-2 mx-3" style="color: lightgray">Calories Summary</p>
-                        <div class="d-flex row" style="flex-wrap: wrap; justify-content: center; align-items: center;">
-                            <div class="col" style="display: flex; flex-direction: column; align-items: center;">
-                                <div class="my-2 container position-relative" style="translate: 0 -50px">
-                                    {{split_circle_progress_bar(bar_angles=[90, 90, 180], bar_colours=["red", "green", "blue"], size="110", stroke="14")}}
-                                </div>
-                                <p class="fw-bold" style="translate: 0 50px">CONSUMED</p>
-                            </div>
-                    
-                            <div class="col" style="display: flex; flex-direction: column; align-items: center;">
-                                <div class="my-2 container position-relative" style="translate: 0 -50px">
-                                    {{split_circle_progress_bar(bar_angles=[90, 90, 180], bar_colours=["red", "green", "blue"], size="110", stroke="14")}}
-                                </div>
-                                <p class="fw-bold" style="translate: 0 50px">BURNT</p>
-                            </div>
-    
-                            <div class="col">
-                                <div style="background-color: lightblue; border-radius: 5px; height: 120px; width: 140px;">
-                                    <p class="fw-bold" align="center" style="translate: 0 80px">DEFECIT</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col" style="border-width: 2px 2px 2px 1px; border-color: lightgray; border-style: solid; border-radius: 0 5px 5px 0; order: 2;">
-                        <p class="fw-bold my-2 mx-3" style="color: lightgray">Macronutrient targets</p>
-                        <div class="small mx-3">
-                            <div class="row">
-                                <div class="col-3"><p class="fw-bold">Energy</p></div>
-                                <div class="col">{{progress_bar('energy', "81", "bg-warning")}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3"><p class="fw-bold">Protein</p></div>
-                                <div class="col">{{progress_bar('protein', "78", "bg-warning")}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3" style="white-space: nowrap;"><p class="fw-bold">Net Carbs</p></div>
-                                <div class="col">{{progress_bar('carbohydrate_total', "130", "bg-success")}}</div>
-                            </div>
-                            <div class="row">
-                                <div class="col-3"><p class="fw-bold">Fat</p></div>
-                                <div class="col">{{progress_bar('total_fat', "47", "bg-danger")}}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="col">
+        <div class="px-4">
+            <div class="row">
+                <p class="display-6 m-2">Sat 16 Nov 2024</p>
+                <table id="ingredients-table" class="table table-striped" id="ingredients-table">
+                    <thead>
+                        <th class="col-1" scope="col">Time</th>
+                        <th class="col-5" scope="col">Description</th>
+                        <th class="col-1" scope="col">Amount</th>
+                        <th class="col-2" scope="col">Unit</th>
+                        <th class="col-1" scope="col">Kcal</th>
+                    </thead>
+                    <tbody>
 
-                <div class="row">
-                    <div style="border: 2px solid lightgray; border-radius: 5px;">
-                        <p class="fw-bold my-2 mx-3" style="color: lightgray">Nutrient Targets</p>
-                        <div class="d-flex flex-row mx-3" style="justify-content: space-between; flex-wrap: wrap;">
-                            <div class="justify-content-center d-flex col-6 col-md-3 col-lg-3 col-xxl-1">
-                                <div class="my-2 position-relative">
-                                    {{nutrient_target_circular_progress("TARGETS", "80", "#ba58c8")}}
-                                </div>
-                            </div>
-                    
-                            <div class="justify-content-center d-flex col-6 col-md-3 col-lg-3 col-xxl-1">
-                                <div class="my-2 position-relative">
-                                    {{nutrient_target_circular_progress("Potassium", "80", "#ffcf00")}}
-                                </div>
-                            </div>
-                    
-                            <div class="justify-content-center d-flex col-3 col-md-3 col-lg-3 col-xxl-1">
-                                <div class="my-2 position-relative">
-                                    {{nutrient_target_circular_progress("Fibre", "80", "#ffcf00")}}
-                                </div>
-                            </div>
-                    
-                            <div class="justify-content-center d-flex col col-md-3 col-lg-3 col-xxl-1">
-                                <div class="my-2 position-relative">
-                                    {{nutrient_target_circular_progress("Iron", "80", "#ffcf00")}}
-                                </div>
-                            </div>
-        
-                            <div class="justify-content-center d-flex col-3 col-md-3 col-lg-3 col-xxl-1">
-                                <div class="my-2 position-relative">
-                                    {{nutrient_target_circular_progress("Folate", "80", "#ffcf00")}}
-                                </div>
-                            </div>
-        
-                            <div class="justify-content-center d-flex col-3 col-md-3 col-lg-3 col-xxl-1">
-                                <div class="my-2 position-relative">
-                                    {{nutrient_target_circular_progress("Folate", "80", "#ffcf00")}}
-                                </div>
-                            </div>
-        
-                            <div class="justify-content-center d-flex col col-md-3 col-lg col-xxl-1">
-                                <div class="my-2 position-relative">
-                                    {{nutrient_target_circular_progress("Folate", "80", "#ffcf00")}}
-                                </div>
-                            </div>
-        
-                            <div class="justify-content-center d-flex col-3 col-md-3 col-lg col-xxl-1">
-                                <div class="my-2 position-relative">
-                                    {{nutrient_target_circular_progress("Folate", "80", "#ffcf00")}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-    
+                        <tr class="fw-bold">
+                            <td>8:00</td>
+                            <td>Breakfast</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>My breakfast granola</td>
+                            <td>1</td>
+                            <td>serving (453g)</td>
+                            <td>500</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Water</td>
+                            <td>600</td>
+                            <td>ml</td>
+                            <td>0</td>
+                        </tr>
+
+                        <tr class="fw-bold">
+                            <td>13:00</td>
+                            <td>Lunch</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>Lentil pasta salad</td>
+                            <td>1</td>
+                            <td>serving (500g)</td>
+                            <td>590</td>
+                        </tr>
+
+                        <tr class="fw-bold">
+                            <td>18:00</td>
+                            <td>Dinner</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td>Sweet potato curry</td>
+                            <td>1</td>
+                            <td>serving (600g)</td>
+                            <td>450</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Pilau Rice</td>
+                            <td>1</td>
+                            <td>serving (125g)</td>
+                            <td>195</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Garlic Naan bread</td>
+                            <td>1</td>
+                            <td>serving (90g)</td>
+                            <td>200</td>
+                        </tr>
+
+                        <tr class="fw-bold">
+                            <td></td>
+                            <td>Snacks</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">11:00</td>
+                            <td>Granola bar</td>
+                            <td>1</td>
+                            <td>serving (453g)</td>
+                            <td>180</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-bold">19:00</td>
+                            <td>Nutty pudding</td>
+                            <td>1/2</td>
+                            <td>serving (90g)</td>
+                            <td>250</td>
+                    </tbody>
+                </table>
             </div>
-
             
+            <div class="row my-2">
+                <div class="col-12 col-md-6" style="border-width: 2px 1px 2px 2px; border-color: lightgray; border-style: solid; border-radius: 5px 0px 0px 5px; order 1;">
+                    <p class="fw-bold my-2 pb-2 mx-3" style="color: lightgray">Calories Summary</p>
+                    <div class="d-flex row" style="flex-wrap: wrap; justify-content: center; align-items: center;">
+                        <div class="col" style="display: flex; flex-direction: column; align-items: center;">
+                            <div class="my-2 container position-relative" style="translate: 0 -50px">
+                                {{split_circle_progress_bar(bar_angles=[90, 90, 180], bar_colours=["red", "green", "blue"], size="110", stroke="14")}}
+                            </div>
+                            <p class="fw-bold" style="translate: 0 50px">CONSUMED</p>
+                        </div>
+                
+                        <div class="col" style="display: flex; flex-direction: column; align-items: center;">
+                            <div class="my-2 container position-relative" style="translate: 0 -50px">
+                                {{split_circle_progress_bar(bar_angles=[90, 90, 180], bar_colours=["red", "green", "blue"], size="110", stroke="14")}}
+                            </div>
+                            <p class="fw-bold" style="translate: 0 50px">BURNT</p>
+                        </div>
+
+                        <div class="col">
+                            <div style="background-color: lightblue; border-radius: 5px; height: 120px; width: 140px;">
+                                <p class="fw-bold" align="center" style="translate: 0 80px">DEFECIT</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col" style="border-width: 2px 2px 2px 1px; border-color: lightgray; border-style: solid; border-radius: 0 5px 5px 0; order: 2;">
+                    <p class="fw-bold my-2 mx-3" style="color: lightgray">Macronutrient targets</p>
+                    <div class="small mx-3">
+                        <div class="row">
+                            <div class="col-3"><p class="fw-bold">Energy</p></div>
+                            <div class="col">{{progress_bar('energy', "81", "bg-warning")}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3"><p class="fw-bold">Protein</p></div>
+                            <div class="col">{{progress_bar('protein', "78", "bg-warning")}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3" style="white-space: nowrap;"><p class="fw-bold">Net Carbs</p></div>
+                            <div class="col">{{progress_bar('carbohydrate_total', "130", "bg-success")}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3"><p class="fw-bold">Fat</p></div>
+                            <div class="col">{{progress_bar('total_fat', "47", "bg-danger")}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
-                <div class="col">
-
-                </div>
-                <div class="col">
-                    
+                <div style="border: 2px solid lightgray; border-radius: 5px;">
+                    <p class="fw-bold my-2 mx-3" style="color: lightgray">Nutrient Targets</p>
+                    <div class="d-flex flex-row mx-3" style="justify-content: space-between; flex-wrap: wrap;">
+                        <div class="justify-content-center d-flex col-6 col-md-3 col-lg-3 col-xxl-1">
+                            <div class="my-2 position-relative">
+                                {{nutrient_target_circular_progress("TARGETS", "80", "#ba58c8")}}
+                            </div>
+                        </div>
+                
+                        <div class="justify-content-center d-flex col-6 col-md-3 col-lg-3 col-xxl-1">
+                            <div class="my-2 position-relative">
+                                {{nutrient_target_circular_progress("Potassium", "80", "#ffcf00")}}
+                            </div>
+                        </div>
+                
+                        <div class="justify-content-center d-flex col-3 col-md-3 col-lg-3 col-xxl-1">
+                            <div class="my-2 position-relative">
+                                {{nutrient_target_circular_progress("Fibre", "80", "#ffcf00")}}
+                            </div>
+                        </div>
+                
+                        <div class="justify-content-center d-flex col col-md-3 col-lg-3 col-xxl-1">
+                            <div class="my-2 position-relative">
+                                {{nutrient_target_circular_progress("Iron", "80", "#ffcf00")}}
+                            </div>
+                        </div>
+    
+                        <div class="justify-content-center d-flex col-3 col-md-3 col-lg-3 col-xxl-1">
+                            <div class="my-2 position-relative">
+                                {{nutrient_target_circular_progress("Folate", "80", "#ffcf00")}}
+                            </div>
+                        </div>
+    
+                        <div class="justify-content-center d-flex col-3 col-md-3 col-lg-3 col-xxl-1">
+                            <div class="my-2 position-relative">
+                                {{nutrient_target_circular_progress("Folate", "80", "#ffcf00")}}
+                            </div>
+                        </div>
+    
+                        <div class="justify-content-center d-flex col col-md-3 col-lg col-xxl-1">
+                            <div class="my-2 position-relative">
+                                {{nutrient_target_circular_progress("Folate", "80", "#ffcf00")}}
+                            </div>
+                        </div>
+    
+                        <div class="justify-content-center d-flex col-3 col-md-3 col-lg col-xxl-1">
+                            <div class="my-2 position-relative">
+                                {{nutrient_target_circular_progress("Folate", "80", "#ffcf00")}}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="col">
-                CALENDAR HERE?
-                <h1 class="display-6 m-2">Weekly statistics</h1>
-                <div class="row py-3" style="border: 2px solid lightgray; border-radius: 5px;">
-                    <div class="col">
-                        <div class="m-1 px-2" style="background-color: lightgrey;  border-radius: 10px;">
-                            <p class="mx-2 pt-2">RDA Targets reached <span class="text-muted"> ~86% /day</span></p>
-                            <canvas id="bigChart" style="max-height: 300px;"></canvas>
-                        </div>
+            CALENDAR HERE?
+            <h1 class="display-6 m-2">Weekly statistics</h1>
+
+            <div class="row py-3" style="border: 2px solid lightgray; border-radius: 5px;">
+                <div class="col">
+                    <div class="m-1 px-2" style="background-color: lightgrey;  border-radius: 10px;">
+                        <p class="mx-2 pt-2">RDA Targets reached <span class="text-muted"> ~86% /day</span></p>
+                        <canvas id="bigChart" style="max-height: 300px;"></canvas>
                     </div>
-                    <div class="col">
-                        <div class=" m-1 mt-2 px-2" style="background-color: lightgrey;  border-radius: 10px;">
-                            <p class="mx-2 pt-2"> Fibre <span class="text-muted"> ~40g /day</span></p>
-                            <canvas id="smallChart1" style="max-height: 150px;"></canvas>
-                        </div>
+                </div>
+                <div class="col">
+                    <div class=" m-1 mt-2 px-2" style="background-color: lightgrey;  border-radius: 10px;">
+                        <p class="mx-2 pt-2"> Fibre <span class="text-muted"> ~40g /day</span></p>
+                        <canvas id="smallChart1" style="max-height: 150px;"></canvas>
                     </div>
-                    <div class="col">
-                        <div class="m-1 mt-2 px-2" style="background-color: lightgrey; border-radius: 10px;">
-                            <p class="mx-2 pt-2"> Protein <span class="text-muted"> ~93g /day</span></p>
-                            <canvas id="smallChart2" style="max-height: 150px;"></canvas>
-                        </div>
+                </div>
+                <div class="col">
+                    <div class="m-1 mt-2 px-2" style="background-color: lightgrey; border-radius: 10px;">
+                        <p class="mx-2 pt-2"> Protein <span class="text-muted"> ~93g /day</span></p>
+                        <canvas id="smallChart2" style="max-height: 150px;"></canvas>
                     </div>
                 </div>
             </div>
-
         </div>
+    </div>
 </div>
 {% endblock %}
 
