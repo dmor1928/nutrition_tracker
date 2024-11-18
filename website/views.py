@@ -26,7 +26,7 @@ def dashboard():
             db.session.add(new_note)
             db.session.commit()
             flash('Note added', category='success')
-    return render_template("dashboard.html", user=current_user)  # current_user is passed into template to detect if a user is logged in and change the navbar accordingly
+    return render_template("dashboard.html", user=current_user, user_name=current_user.firstName)  # current_user is passed into template to detect if a user is logged in and change the navbar accordingly
 
 # @views.route('/delete-note', methods=['POST'])
 # def delete_note():
@@ -43,11 +43,11 @@ def dashboard():
 @views.route('/trends')
 @login_required
 def trends():
-    return render_template("trends.html", user=current_user)
+    return render_template("trends.html", user=current_user, user_name=current_user.firstName,)
 
 @views.route('/')
 def productPage():
-    return render_template("my-landing-page/my-product-page.html")
+    return render_template("my-landing-page/my-product-page.html", user=current_user)
 
 def validRecipeName(recipe_name):
     if recipe_name is None:
@@ -148,6 +148,7 @@ def createRecipePage():
         return render_template(
                 "create-recipe.html", 
                 user=current_user, 
+                user_name=current_user.firstName,
                 # foods=db.session.query(Foods).all())
                 foods = db.session.query(FDCFood).all())
 
@@ -162,6 +163,7 @@ def editRecipePage(formatted_recipe_name):
         return render_template(
             "edit-recipe.html", 
             user=current_user, 
+            user_name=current_user.firstName,
             recipe = db.session.query(Recipe).filter(Recipe.id == recipe_id).first(),
             recipe_ingredients=old_recipe_ingredients,
             foods=db.session.query(FDCFood).all())
@@ -319,6 +321,7 @@ def myRecipesPage():
     return render_template(
             "my-recipes.html",  # If you click on an 'open recipe' button in my-recipes.html it sends you to /my-recipes/<recipe_name>
             user=current_user,
+            user_name=current_user.firstName,
             my_recipes=db.session.query(Recipe).filter(Recipe.user_id == current_user.id))
 
 @views.route('/my-recipes/<formatted_recipe_name>')
@@ -479,6 +482,7 @@ def viewRecipePage(formatted_recipe_name):
     return render_template(
         "view-recipe.html", 
         user=current_user, 
+        user_name=current_user.firstName,
         recipe=recipe,  # Recipe information
         recipe_ingredients = recipe_ingredients,  # Full name of ingredients list and amounts
 
@@ -529,12 +533,14 @@ def addPersonalisedRDATest():
 
     return render_template(
         "base.html",
-        user=current_user
+        user=current_user,
+        user_name=current_user.firstName,
         )
 
 @views.route('/sidebar')
 def sidebar():
     return render_template(
         "sidebar.html",
-        user=current_user
+        user=current_user,
+        user_name=current_user.firstName,
         )
