@@ -1,3 +1,96 @@
+{% macro sidebar(user_name) -%}
+<div class="side-bar d-flex flex-column flex-shrink-0 text-white bg-dark">
+    <div class="features-item logo-name-wrapper">
+        <div class="logo-name align-items-center text-white">
+            <svg class="logo" id="sidebar-logo" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <path d="M34 24L24 34C24 34 15.0002 25 14 24C12.9998 23 12.5 21 14 19C15.5 17 18.5 17 20 18C21.5001 19 22.0001 20 24 20C26 20 26.5001 19 28 18C29.5 17 32.5003 17 34.0003 19C35.5003 21 35 23 34 24Z" 
+                fill="#00d959" stroke="#00d959" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="fs-4 logo-name__text">NutriMetrics</span>
+        </div>
+        <button class="logo-name__button btn btn-toggle text-white" id="sidebar-collapse-button"  onclick="toggleSidebar()">
+            <i class="logo-name__icon bi bi-list"></i>
+        </button>
+    </div>
+    
+    <hr>
+    <ul class="features-list nav nav-pills flex-column mb-auto">
+
+        <li class="features-item nav-item d-grid mt-1">
+            <a type="button" href="/dashboard" class="features-item-btn btn btn-toggle nav-link text-white">
+                <i class="features-item-icon bi bi-ui-checks-grid"></i>
+                <span class="features-item-text">Dashboard</span>
+            </a>
+        </li>
+
+        <li class="features-item nav-item d-grid mt-1">
+            <a type="button" href="/trends" class="features-item-btn btn btn-toggle nav-link text-white">
+                <i class="features-item-icon bi bi-bar-chart-line-fill"></i>
+                <span class="features-item-text">Trends</span>
+            </a>
+        </li>
+
+        <li class="features-item nav-item d-grid mt-1">
+            <button class="features-item-btn btn btn-toggle rounded collapsed text-white" data-bs-toggle="collapse" data-bs-target="#foods-collapse" aria-expanded="true">
+                <svg style="vertical-align: middle;" class="features-item-icon text-white" height="1.25em" xmlns="http://www.w3.org/2000/svg" 
+                    viewBox="0 0 448 512">
+                    <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                    <path fill="#FFFFFF" stroke="#FFFFFF" d="M224 112c-8.8 0-16-7.2-16-16l0-16c0-44.2 35.8-80 80-80l16 0c8.8 0 16 7.2 16 16l0 16c0 44.2-35.8 80-80 80l-16 0zM0 288c0-76.3 35.7-160 112-160c27.3 0 59.7 10.3 82.7 19.3c18.8 7.3 39.9 7.3 58.7 0c22.9-8.9 55.4-19.3 82.7-19.3c76.3 0 112 83.7 112 160c0 128-80 224-160 224c-16.5 0-38.1-6.6-51.5-11.3c-8.1-2.8-16.9-2.8-25 0c-13.4 4.7-35 11.3-51.5 11.3C80 512 0 416 0 288z"/>
+                </svg>
+                <span class="features-item-text" style="vertical-align: middle;">Foods</span>
+            </button>
+            <div class="features-item-dropdown collapse" id="foods-collapse">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                    <li><a href="#" class="d-grid rounded text-white">Search Food</a></li>
+                    <li><a href="/my-recipes" class="d-grid rounded text-white">My Recipes</a></li>
+                    <li><a href="/create-recipe" class="d-grid rounded text-white">New Recipe</a></li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="features-item nav-item d-grid mt-1">
+            <a type="button" href="/my-recipes" class="features-item-btn btn btn-toggle nav-link text-white">
+                <i class="features-item-icon bi bi-journals"></i>
+                <span class="features-item-text">My Recipes</span>
+            </a>
+        </li>
+        
+        <li class="border-top my-3 "></li>
+
+        <li class="features-item nav-item d-grid mt-1">
+            <a type="button" href="/create-recipe" class="features-item-btn btn btn-toggle nav-link text-white">
+                <i class="features-item-icon bi bi-plus-circle"></i>
+                <span class="features-item-text">New Recipe</span>
+            </a>
+        </li>
+
+    </ul>
+    <ul class="nav nav-pills flex-column">
+        <li class="features-item nav-item d-grid mt-1">
+            <a type="button" href="/settings" class="features-item-btn btn btn-toggle nav-link text-white">
+                <i class="features-item-icon bi bi-gear-fill fa-lg fa-fw"></i>
+                <span class="features-item-text">Settings</span>
+            </a>
+        </li>
+
+        <hr>
+        <div class="dropdown">
+            <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                <strong class="features-item-text">{{user_name}}</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                <li><a class="dropdown-item" href="#">New project...</a></li>
+                <li><a class="dropdown-item" href="#">Settings</a></li>
+                <li><a class="dropdown-item" href="#">Profile</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Sign out</a></li>
+            </ul>
+        </div>
+    </ul>
+</div>
+{%- endmacro %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -25,9 +118,10 @@
             href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
             />
         
-        <link rel="stylesheet" href="{{ url_for('static', filename='sidebars.css')}}"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='sidebar.css')}}"/>
     
-        <style>
+        <!-- moved to sidebar.css -->
+        <!-- <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
             text-anchor: middle;
@@ -41,115 +135,27 @@
             font-size: 3.5rem;
             }
         }
-        </style>
+        </style> -->
     
-        
         <!-- Custom styles for this template -->
-        <!-- <link href="sidebars.css" rel="stylesheet"> -->
+        <!-- <link href="sidebar.css" rel="stylesheet"> -->
+
     </head>
     <body>
+
+        {{ sidebar("David") }}
+
         <main>
-            <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
-                <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                    <svg id="header-img" viewBox="0 0 48 48" width="50px" height="50px" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M34 24L24 34C24 34 15.0002 25 14 24C12.9998 23 12.5 21 14 19C15.5 17 18.5 17 20 18C21.5001 19 22.0001 20 24 20C26 20 26.5001 19 28 18C29.5 17 32.5003 17 34.0003 19C35.5003 21 35 23 34 24Z" fill="#00d959" stroke="#00d959" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>
-                    <span class="fs-4">NutriMetrics</span>
-                </a>
-                <hr>
-                <ul class="nav nav-pills flex-column mb-auto">
-            
-                    <li class="nav-item d-grid">
-                        <!-- <button class="btn btn-toggle align-items-center rounded text-white py-2 px-2" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true"> -->
-                            <a type="button" href="/dashboard" class="btn btn-toggle nav-link text-white py-3 px-2">
-                                <i class="bi bi-ui-checks-grid fa-lg me-3 fa-fw"></i>
-                                Dashboard
-                            </a>
-                        <!-- </button> -->
-                    </li>
-
-                    <li class="nav-item d-grid">
-                        <!-- <button class="btn btn-toggle py-2 px-2" aria-expanded="true"> -->
-                            <a type="button" href="/trends" class="btn btn-toggle nav-link text-white py-3 px-2">
-                                <i class="bi bi-bar-chart-line-fill fa-lg me-3 fa-fw"></i>
-                                Trends
-                            </a>
-                        <!-- </button> -->
-                    </li>
-            
-                    <li class="nav-item d-grid">
-                        <button class="btn btn-toggle align-items-center rounded collapsed text-white py-3 px-2" data-bs-toggle="collapse" data-bs-target="#foods-collapse" aria-expanded="true">
-                            <div>
-                                <i class="bi bi-egg-fried fa-lg me-3 fa-fw"></i>
-                                Foods
-                            </div>
-                            <!-- <div>
-                                <i class="bi bi-chevron-down fa-lg me-3 fa-fw" ></i>
-                            </div> -->
-                        </button>
-                        <div class="collapse show" id="foods-collapse">
-                            <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                                <li><a href="#" class="d-grid rounded text-white">Search Food</a></li>
-                                <li><a href="#" class="d-grid rounded text-white">My Recipes</a></li>
-                                <li><a href="#" class="d-grid rounded text-white">New Recipe</a></li>
-                            </ul>
-                        </div>
-                    </li>
-            
-                    <li class="nav-item d-grid">
-                        <!-- <button class="btn btn-toggle align-items-center rounded collapsed text-white py-2 px-2" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true"> -->
-                            <a type="button" href="/my-recipes" class="btn btn-toggle nav-link text-white py-3 px-2">
-                                <i class="bi bi-journals fa-lg me-3 fa-fw"></i>
-                                My Recipes
-                            </a>
-                        <!-- </button> -->
-                    </li>
-                    
-                    <li class="border-top my-3"></li>
-
-                    <li class="nav-item d-grid">
-                        <!-- <button class="btn btn-toggle align-items-center rounded collapsed text-white py-2 px-2" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true"> -->
-                            <a type="button" href="/create-recipe" class="btn btn-toggle nav-link text-white py-3 px-2">
-                                <i class="bi bi-plus-circle fa-lg me-3 fa-fw"></i>
-                                New Recipe
-                            </a>
-                        <!-- </button> -->
-                    </li>
-
-                </ul>
-                <ul class="nav nav-pills flex-column">
-                    <li class="nav-item d-grid">
-                        <!-- <button class="btn btn-toggle" aria-expanded="true"> -->
-                        <a type="button" href="/settings" class="btn btn-toggle nav-link text-white py-3 px-2">
-                            <i class="bi bi-gear-fill fa-lg me-3 fa-fw"></i>
-                            Settings
-                        </a>
-                        <!-- </button> -->
-                    </li>
-
-                    <hr>
-                    <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                        <strong>David</strong>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1" style="">
-                        <li><a class="dropdown-item" href="#">New project...</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
-                    </ul>
-                </div>
-            </div>
+            <h1> Test</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque nihil molestias magnam perferendis aspernatur, ducimus veritatis hic rerum excepturi corrupti harum temporibus omnis non in id assumenda nesciunt rem cumque!</p>
         </main>
 
         <script
             type="text/javascript"
             src="{{ url_for('static', filename='index.js')}}"
         ></script>
-    
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <script src="{{ url_for('static', filename='sidebars.js')}}"></script>
+
+        <script src="{{ url_for('static', filename='sidebar.js')}}"></script>
     </body>    
 </html>
