@@ -1,8 +1,10 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %}
+{% extends "base.html" %} {% block title %}{{recipe.name}} · NutriMetrics{% endblock %}
 
 {% block inline_style%}
 <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/styles/github.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
+
+<link rel="stylesheet" href="{{ url_for('static', filename='view-recipe.css')}}"/>
 
 <script type="text/javascript">
     var recipe_ingredients_data = JSON.parse({{recipe_ingredients_data_json|tojson}});
@@ -20,7 +22,7 @@
 
 <h1 class="display-2" align="center" style="text-transform: capitalize;">{{recipe.name}}</h1>
 <br/>
-<div class="container">
+<!-- <div class="container"> -->
     <div class="row">
         <div class="col-md-4">
             <h2>Ingredients list</h2>
@@ -408,7 +410,7 @@
             </div>
         </div>
     </div>
-</div>
+<!-- </div> -->
 <div class="flex progress-wrapper">
     <div class="progress">progress</div>
     <input type="range" value="75" min="0" max="100" step="1">
