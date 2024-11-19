@@ -19,11 +19,12 @@
         <!-- Sidebar stylesheets -->
         {% if user.is_authenticated %}
         <link rel="stylesheet" href="{{ url_for('static', filename='sidebar.css')}}"/>
-        <link
+        <!-- <link
             rel="stylesheet"
             href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
             crossorigin="anonymous"
-        /> <!-- for sidebar icon sizing (could be optimised?) -->
+        /> -->
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
         <!-- <link href="https://kit.fontawesome.com/a6dc5632bb.js" rel="stylesheet" crossorigin="anonymous"/> -->
         {% from 'logged-in/sidebar.html' import sidebar %}
         {% else %}
@@ -50,16 +51,9 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbar">
                     <div class="navbar-nav">
-                        <!-- {% if user.is_authenticated %} -->
-                        <!-- <a class="nav-item nav-link" id="home" href="/">Diary</a>
-                        <a class="nav-item nav-link" id="myRecipes" href="/my-recipes">Recipes</a>
-                        <a class="nav-item nav-link" id="createRecipe" href="/create-recipe">Add Recipe</a>
-                        <a class="nav-item nav-link" id="logout" href="/logout">Logout</a> -->
-                        <!-- {% else %} -->
                         <a class="nav-item nav-link" id="productPage" href="/">Product page</a>
                         <a class="nav-item nav-link" id="login" href="/login">Login</a>
                         <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
-                        <!-- {% endif %} -->
                     </div>
                 </div>
             </nav>
