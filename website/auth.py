@@ -30,7 +30,7 @@ def login():
         else:
             flash('Email is not registered', category='error')
     
-    if current_user:
+    if current_user.is_authenticated:
         # flash('Already logged in', category='warning')
         return redirect(url_for('views.dashboard'))
     else:
@@ -71,7 +71,7 @@ def signup():
             flash('Account registered', category='success')
             return redirect(url_for('views.dashboard'))
     
-    if current_user:
+    if current_user.is_authenticated:
         # flash('Already logged in', category='warning')
         return redirect(url_for('views.dashboard'))
     else:
