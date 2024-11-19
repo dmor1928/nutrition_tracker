@@ -29,7 +29,12 @@ def login():
                 flash('Incorrect password, try again', category='error')
         else:
             flash('Email is not registered', category='error')
-    return render_template("login.html", user=current_user)
+    
+    if current_user:
+        # flash('Already logged in', category='warning')
+        return redirect(url_for('views.dashboard'))
+    else:
+        return render_template("landing-page/login.html", user=current_user)
 
 @auth.route('/logout')
 @login_required  # Ensures this function is not accessible if you are not logged in
@@ -65,4 +70,9 @@ def signup():
             login_user(new_user, remember=True)
             flash('Account registered', category='success')
             return redirect(url_for('views.dashboard'))
-    return render_template("signup.html", user=current_user)
+    
+    if current_user:
+        # flash('Already logged in', category='warning')
+        return redirect(url_for('views.dashboard'))
+    else:
+        return render_template("landing-page/signup.html", user=current_user)

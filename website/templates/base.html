@@ -17,6 +17,7 @@
         />
 
         <!-- Sidebar stylesheets -->
+        {% if user.is_authenticated %}
         <link rel="stylesheet" href="{{ url_for('static', filename='sidebar.css')}}"/>
         <link
             rel="stylesheet"
@@ -24,7 +25,9 @@
             crossorigin="anonymous"
         /> <!-- for sidebar icon sizing (could be optimised?) -->
         <!-- <link href="https://kit.fontawesome.com/a6dc5632bb.js" rel="stylesheet" crossorigin="anonymous"/> -->
-        {% from 'sidebar.html' import sidebar %}
+        {% from 'logged-in/sidebar.html' import sidebar %}
+        {% else %}
+        {% endif %}
         
         <title>{% block title %}Home{% endblock %}</title>
 
@@ -53,7 +56,7 @@
                         <a class="nav-item nav-link" id="createRecipe" href="/create-recipe">Add Recipe</a>
                         <a class="nav-item nav-link" id="logout" href="/logout">Logout</a> -->
                         <!-- {% else %} -->
-                        <a class="nav-item nav-link" id="productPage" href="/product-page">Product page</a>
+                        <a class="nav-item nav-link" id="productPage" href="/">Product page</a>
                         <a class="nav-item nav-link" id="login" href="/login">Login</a>
                         <a class="nav-item nav-link" id="signUp" href="/sign-up">Sign Up</a>
                         <!-- {% endif %} -->
