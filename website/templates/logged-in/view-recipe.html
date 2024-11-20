@@ -1,20 +1,7 @@
 {% extends "base.html" %} {% block title %}{{recipe.name}} · NutriMetrics{% endblock %}
 
 {% block inline_style%}
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.1.0/styles/github.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> -->
-
 <link rel="stylesheet" href="{{ url_for('static', filename='view-recipe.css')}}"/>
-
-<script type="text/javascript">
-    var recipe_ingredients_data = JSON.parse({{recipe_ingredients_data_json|tojson}});
-    var total_recipe_nutrition = JSON.parse({{total_recipe_nutrition_json|tojson}});
-    var user_rda = JSON.parse({{user_rda_json|tojson}});
-    var total_recipe_user_rda_percent = JSON.parse({{total_recipe_user_rda_percent_json|tojson}});
-    var nutrient_units = JSON.parse({{nutrient_units_json|tojson}});
- </script>
- <script src="{{ url_for('static', filename='view-recipe.js')}}"></script>
-
 {% endblock %}
 
 {% block content %}
@@ -419,6 +406,17 @@
 {% endblock %}
 
 {% block scripts %}
+
+<script type="text/javascript">
+    var recipe_ingredients_data = JSON.parse({{recipe_ingredients_data_json|tojson}});
+    var total_recipe_nutrition = JSON.parse({{total_recipe_nutrition_json|tojson}});
+    var user_rda = JSON.parse({{user_rda_json|tojson}});
+    var total_recipe_user_rda_percent = JSON.parse({{total_recipe_user_rda_percent_json|tojson}});
+    var nutrient_units = JSON.parse({{nutrient_units_json|tojson}});
+ </script>
+ 
+ <script src="{{ url_for('static', filename='view-recipe.js')}}"></script>
+
 <script src='https://cdn.jsdelivr.net/gh/tomik23/circular-progress-bar@latest/docs/circularProgressBar.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.2.0/highlight.min.js'></script>
 <script src="{{ url_for('static', filename='circle-progress-bar.js')}}"></script>
