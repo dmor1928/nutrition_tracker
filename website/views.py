@@ -26,7 +26,11 @@ def dashboard():
             db.session.add(new_note)
             db.session.commit()
             flash('Note added', category='success')
-    return render_template("logged-in/dashboard.html", user=current_user, user_name=current_user.firstName)  # current_user is passed into template to detect if a user is logged in and change the navbar accordingly
+    return render_template(
+        "logged-in/dashboard.html", 
+        user=current_user, 
+        user_name=current_user.firstName,
+        user_recipes =db.session.query(Recipe).filter(Recipe.user_id == current_user.id))  # current_user is passed into template to detect if a user is logged in and change the navbar accordingly
 
 # @views.route('/delete-note', methods=['POST'])
 # def delete_note():
