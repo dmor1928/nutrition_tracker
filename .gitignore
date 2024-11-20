@@ -157,3 +157,4 @@ fdc-database/FoodData_Central_csv_2024-04-18/survey_fndds_food.csv
 fdc-database/FoodData_Central_csv_2024-04-18/wweia_food_category.csv
 website/__pycache__/auth.cpython-311.pyc
 website/__pycache__/views.cpython-311.pyc
+website/__pycache__/views.cpython-311.pyc
