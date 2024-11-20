@@ -119,7 +119,7 @@ html {
   border-radius: 0 20px 20px 0;
   position: fixed;
   padding: 1rem;
-  overflow-x: hidden;
+  overflow-x: visible;
   transition: 0.6s ease;
   top: 0;
   bottom: 0;
@@ -190,17 +190,70 @@ main {
   height: 3rem;
 }
 
+.side-bar.collapse .features-item-btn {
+  width: 4rem;
+}
+
+.side-bar.collapse .features-item-button {
+  width: 3.25rem;
+}
+
 
 .side-bar.collapse .features-item-text,
 .side-bar.collapse .logo,
-.side-bar.collapse .logo-name__text,
-.side-bar.collapse .features-item-dropdown {
+.side-bar.collapse .logo-name__text
+/* .side-bar.collapse .features-item-dropdown */ { 
   opacity: 0;
   pointer-events: none;
 }
 
 .side-bar.collapse .features-item-text {
   display: none;
+}
+
+.tooltip {
+  position: absolute;
+  white-space: nowrap;
+  top: -2.1rem;
+  left: 5rem;
+  background-color: black;
+  border-radius: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  font-size: 1.4rem;
+  transition: 0s;
+  opacity: 0;
+  display: none;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.tooltip-dropdown {
+  position: absolute;
+  white-space: nowrap;
+  left: 5rem;
+  background-color: black;
+  border-radius: 0.4rem;
+  padding: 0.5rem 0.9rem;
+  font-size: 1.4rem;
+  transition: 0s;
+  opacity: 0;
+  display: none;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.tooltip-dropdown:hover {
+  display: block;
+}
+
+.features-item:hover .tooltip,
+.features-item:hover .tooltip-dropdown {
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.5s ease;
+  opacity: 1;
+}
+
+.side-bar.collapse:hover .tooltip {
+  display: block;
 }
 
 .features-item-text {
@@ -213,6 +266,12 @@ main {
 
 .features-item-icon, .logo-name__icon {
   font-size: 1.4rem;
+  margin: 0;
+}
+
+.features-item-dropdown .features-item-icon * {
+  font-size: 1rem;
+  vertical-align: 10%;
   margin: 0;
 }
 
@@ -230,3 +289,8 @@ svg {
 .side-bar.collapse .features-item-btn-svg {
   width: 3.25rem;
 }
+
+/* .side-bar.collapse .features-item-dropdown {
+  background-color: #404040;
+  width: 3.25rem;
+} */

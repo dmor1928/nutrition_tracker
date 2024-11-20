@@ -20,6 +20,9 @@ function toggleSidebar() {
     myCollapse.hide();
   }) 
 
+  var foodsButton = document.getElementById("yoinkysploinky");
+  foodsButton.setAttribute("data-bs-target", (foodsButton.getAttribute("data-bs-target") == "#foods-collapse" ? "#foods-collapse-collapsed": "#foods-collapse"));
+
   document.querySelector('main')
     .classList.toggle('main-side-bar-closed');
 }
