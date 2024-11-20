@@ -1,6 +1,7 @@
 body {
   min-height: 100vh;
   min-height: -webkit-fill-available;
+  /* font-family: 'helvetica'; */
 }
 
 html {
@@ -116,7 +117,7 @@ html {
 .side-bar {
   width: 18rem; 
   height: 100%;
-  border-radius: 0 20px 20px 0;
+  border-radius: 0 20px 0 0;
   position: fixed;
   padding: 1rem;
   overflow-x: visible;
@@ -153,9 +154,10 @@ main {
   align-items: center;
 }
 .logo-name__text {
+  /* font-family: 'helvetica'; */
   transition: opacity 0.2s ease;
   opacity: 1;
-  margin-left: 0.9rem;
+  margin-left: 0rem;
   white-space: nowrap;
   cursor: default;
 }
@@ -177,6 +179,14 @@ main {
 .logo {
   transition: opacity 0.3s ease 0.15s;
   opacity: 1;
+  transform: scale(1.5) ;
+  -ms-transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+  transform-origin: 50% 80%;
+}
+
+hr {
+  margin-top: 0;
 }
 
 .features-item {
