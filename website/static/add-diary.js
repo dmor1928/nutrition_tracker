@@ -1,11 +1,11 @@
-var selectedRecipeFoodID = document.getElementById("my-recipes").id;
-function toggleRecipeFoods(id) {
-    if (id == selectedRecipeFoodID) {
+var selectedRecipeFoodID = "recipes-and-foods";
+function toggleRecipeFoods(new_id) {
+    if (new_id == selectedRecipeFoodID) {
         return 0;
     } else {
         document.getElementById(selectedRecipeFoodID + "-content").style.display = "none";
-        document.getElementById(id + "-content").style.display = "block";
-        selectedRecipeFoodID = id;
+        document.getElementById(new_id + "-content").style.display = "block";
+        selectedRecipeFoodID = new_id;
     }
 }
 

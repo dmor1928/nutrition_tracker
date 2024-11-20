@@ -1,80 +1,127 @@
-{% macro add_food_menu() -%}
+{% macro add_food_menu(user_recipes) -%}
 <div class="fluid-container">
-    <div id="recipes-foods-radio" class="btn-group d-flex" role="group" aria-label="Basic radio toggle button group">
-        <input type="radio" class="btn-check" name="entrycategory" id="my-recipes" autocomplete="off" checked onclick="toggleRecipeFoods(this.id)">
-        <label class="btn btn-outline-primary" for="my-recipes">My Recipes</label>
 
-        <input type="radio" class="btn-check" name="entrycategory" id="foods" autocomplete="off" onclick="toggleRecipeFoods(this.id)">
+    <div class="d-flex mb-2 form-control" style="font-size: large; width: 100%;">
+        <label for="searchAllInput" class="fs-4 mx-1" style="flex-shrink: 0"><i class="bi bi-search"></i></label>
+        <input type="text" class="form-control shadow-none mx-1 fs-5" style="border: none;" placeholder="Search all food & recipes..." id="searchAllInput" aria-label="Search all foods and recipes">
+    </div>
+    
+
+    <div id="recipes-foods-radio" class="btn-group d-flex" role="group" aria-label="Basic radio toggle button group">
+
+        <input type="radio" class="btn-check bg-gradient" name="entrycategory" id="recipes-and-foods" autocomplete="off" checked onclick="toggleRecipeFoods(this.id)">
+        <label class="btn btn-outline-primary" for="recipes-and-foods">All</label>
+
+        <input type="radio" class="btn-check bg-gradient" name="entrycategory" id="recipes" autocomplete="off" onclick="toggleRecipeFoods(this.id)">
+        <label class="btn btn-outline-primary" for="recipes">Recipes</label>
+
+        <input type="radio" class="btn-check bg-gradient" name="entrycategory" id="foods" autocomplete="off" onclick="toggleRecipeFoods(this.id)"> 
         <label class="btn btn-outline-primary" for="foods">Foods</label>
 
     </div>
-    <div id="my-recipes-content">
-        <!-- <h1>My Recipes</h1> -->
-         <div class="d-flex" style="font-size: large;">
-            <div class="m-2 px-4 align-self-center" style="background-color: lightgray; border-radius: 25px; height: 50px; line-height: 50px;">
-                <p style="font-size: x-large;">Breakfast</p>
-            </div>
-            <div class="m-2 px-4 align-self-center" style="background-color: lightgray; border-radius: 25px; height: 50px; line-height: 50px;">
-                <p style="font-size: larger;">Lunch</p>
-            </div>
-            <div class="m-2 px-4 align-self-center" style="background-color: lightgray; border-radius: 25px; height: 50px; line-height: 50px;">
-                <p style="font-size: larger;">Dinner</p>
-            </div>
-            <div class="m-2 px-4 align-self-center" style="background-color: lightgray; border-radius: 25px; height: 50px; line-height: 50px;">
-                <p style="font-size: larger;">Snack</p>
-            </div>
-         </div>
 
-        <div class="row">
+    <div id="content-specific-toolbar">
+        <div id="recipes-and-foods-content" style="display: block;">
+            <div class="my-2" style="visibility: hidden;">
+                <div class="d-flex my-2" style="width: 100%;">
+                
+                    <button type="button" data-bs-toggle="button" class="btn btn-primary bg-gradient mx-1 active" style="border-radius: 16px;" aria-pressed="true">All</button>
+                    <button type="button" data-bs-toggle="button" class="btn btn-primary bg-gradient mx-1" style="border-radius: 16px;">Breakfast</button>
+                    <button type="button" data-bs-toggle="button" class="btn btn-primary bg-gradient mx-1" style="border-radius: 16px;">Lunch</button>
+                    <button type="button" data-bs-toggle="button" class="btn btn-primary bg-gradient mx-1" style="border-radius: 16px;">Dinner</button>
+                    <button type="button" data-bs-toggle="button" class="btn btn-primary bg-gradient ms-1" style="border-radius: 16px;">Snack</button>
+        
+                    <!-- <input type="text" class="form-control ms-3 me-1" placeholder="Search..." id="searchRecipesInput"> -->
+                 </div>
+            </div>
+        </div>
+    
+        <div id="recipes-content" style="display: none;">
+            <!-- <h1>My Recipes</h1> -->
+             <div class="d-flex my-2" style="width: 100%;">
+                
+                <span class="fs-5 mx-1 fw-bold my-auto">Recipe Category</span>
+                <button type="button" data-bs-toggle="button" class="btn btn-primary bg-gradient mx-1 active" style="border-radius: 16px;" aria-pressed="true">All</button>
+                <button type="button" data-bs-toggle="button" class="btn btn-primary bg-gradient mx-1" style="border-radius: 16px;">Breakfast</button>
+                <button type="button" data-bs-toggle="button" class="btn btn-primary bg-gradient mx-1" style="border-radius: 16px;">Lunch</button>
+                <button type="button" data-bs-toggle="button" class="btn btn-primary bg-gradient mx-1" style="border-radius: 16px;">Dinner</button>
+                <button type="button" data-bs-toggle="button" class="btn btn-primary bg-gradient ms-1" style="border-radius: 16px;">Snack</button>
+    
+                <!-- <input type="text" class="form-control ms-3 me-1" placeholder="Search..." id="searchRecipesInput"> -->
+             </div>
+        </div>
+    
+        <div id="foods-content" style="display: none;">
             
-            <div class="col m-2">
-                <div class="row rounded" style="background-color: lightgray;">
+            <!-- <h1>Foods</h1> -->
+            
+            <div class="d-flex my-2 justify-content-between" style="font-size: large; width: 100%;">
+    
+                <label for="selectFoodCategory" class="fs-5 mx-1 fw-bold my-auto" style="flex-shrink: 0;">Food Category</label>
+                <select class="form-select mx-2" id="selectFoodCategory" aria-label="Filter food category">
+                    <option value selected>All</option>
+                    <option value="1">Nuts and seeds</option>
+                    <option value="2">Fruit</option>
+                    <option value="3">Vegetables</option>
+                </select>
+                
+                <!-- <label for="searchFoodsInput" class="fs-4 mx-1" style="flex-shrink: 0">Search food</label> -->
+                <!-- <input type="text" class="form-control mx-2" style="max-width: 30%;" placeholder="Search..." id="searchFoodsInput" aria-label="Search foods"> -->
+            </div>
+        </div>
+    </div>
 
-                    <div class="col-2 align-self-center">
-                        <img src="https://github.com/dmor1928.png" alt="" width="64" height="64" class="rounded-circle me-2">
-                    </div>
-                    
-                    
-                    <div class="col">
-                        <div class="row">
-                            <p class="col me-auto fw-bold" style="font-size: x-large;">Recipe Name</p>
-                        </div>
-                        <div class="row">
-                            <p class="col ingredients fw-light">banana, oats, soya milk, peanut butter</p>
-                            <p class="col-2" style="white-space: nowrap;">475 Kcal</p>
-                        </div>
-                    </div>
-                    <div class="col-1 flex-row align-self-center" align="center" onclick="favouriteItem(this.children[0])">
-                        <i class=" bi bi-star-fill" style="font-size: x-large; color: #ffcf00;" ></i>
-                    </div>
+    
+    <table class="table table-striped" id="items-table">
+        <thead>
+            <th class="col-10">Description</th>
+            <th class="col">Source</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Banana Porridge
+                    <span>
+                        <span class="badge rounded-pill ms-2 text-bg-primary">Breakfast</span>
+                        <span class="badge rounded-pill text-bg-primary">Snack</span>
+                    </span>
+                </td>
+                <td class="custom-recipe-source">Custom recipe</td>
+            </tr>
+            {% for recipe in user_recipes %}
+            <tr>
+                <td>{{recipe.name}}</td>
+                <td class="custom-recipe-source">Custom recipe</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="mx-2">
+        <div class="d-flex rounded" style="background-color: lightgray;">
+
+            <div class="mx-4 align-self-center">
+                <img src="https://github.com/dmor1928.png" alt="" width="64" height="64" class="rounded-circle">
+            </div>
+
+            <div class="me-2" style="width: 80%;">
+                <div class="d-flex fs-2" style="width: 100%;">
+                    <span class="fw-bold me-2">Banana Porridge</span>
+                    <span>
+                        <span class="badge rounded-pill text-bg-primary fs-6">Breakfast</span>
+                        <span class="badge rounded-pill text-bg-primary fs-6">Snack</span>
+                    </span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <p class="col ingredients fw-light">banana, oats, soya milk, peanut butter</p>
+                    <p class="col-1" style="white-space: nowrap;">475 Kcal</p>
                 </div>
             </div>
 
-            <div class="col m-2 ">
-                <div class="row rounded" style="background-color: lightgray;">
-                    <div class="col-2 align-self-center">
-                        <img src="https://github.com/dmor1928.png" alt="" width="64" height="64" class="rounded-circle me-2">
-                    </div>
-                    <div class="col">
-                        <div class="row">
-                            <p class="col me-auto">Recipe Name</p>
-                        </div>
-                        <div class="row">
-                            <p class="col ingredients fw-light">banana, oats, soya milk, peanut butter</p>
-                            <p class="col-2" style="white-space: nowrap;">475 Kcal</p>
-                        </div>
-                    </div>
-                    <div class="col-1 flex-row align-self-center" align="center" onclick="favouriteItem(this.children[0])">
-                        <i class=" bi bi-star-fill" style="font-size: x-large; color: #ffcf00;" ></i>
-                    </div>
-                </div>
+            <div class="d-flex me-3 flex-row align-self-center" style="max-width: 20%;" align="center" onclick="favouriteItem(this.children[0])">
+                <i class=" bi bi-star-fill fs-2" style="color: #ffcf00; line-height: 100px;" ></i>
             </div>
 
         </div>
-
-    </div>
-    <div id="foods-content" style="display: none;">
-        <h1>Foods</h1>
     </div>
 </div>
 {%- endmacro %}
