@@ -5,6 +5,10 @@
 {% from 'logged-in/add-diary.html' import add_food_menu %}
 
 {% block inline_style %} 
+<link
+    rel="stylesheet"
+    href="{{url_for('static', filename='add-diary.css')}}"
+/>
 {% endblock %}
 
 
@@ -28,11 +32,11 @@
         <div class="modal-dialog modal-dialog-scrollable modal-xl">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+              <h1 class="modal-title fs-5 fw-bold" id="exampleModalLabel">Add Food to Diary</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              {{add_food_menu()}}
+              {{add_food_menu(user_recipes)}}
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -48,7 +52,7 @@
         <div class="px-4">
             <div class="row">
                 <p class="display-6 m-2">Sat 16 Nov 2024</p>
-                <table id="ingredients-table" class="table table-striped" id="ingredients-table">
+                <table id="dashboard-table" class="table table-striped">
                     <thead>
                         <th class="col-1" scope="col">Time</th>
                         <th class="col-5" scope="col">Description</th>
