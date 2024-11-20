@@ -1,0 +1,80 @@
+{% macro add_food_menu() -%}
+<div class="fluid-container">
+    <div id="recipes-foods-radio" class="btn-group d-flex" role="group" aria-label="Basic radio toggle button group">
+        <input type="radio" class="btn-check" name="entrycategory" id="my-recipes" autocomplete="off" checked onclick="toggleRecipeFoods(this.id)">
+        <label class="btn btn-outline-primary" for="my-recipes">My Recipes</label>
+
+        <input type="radio" class="btn-check" name="entrycategory" id="foods" autocomplete="off" onclick="toggleRecipeFoods(this.id)">
+        <label class="btn btn-outline-primary" for="foods">Foods</label>
+
+    </div>
+    <div id="my-recipes-content">
+        <!-- <h1>My Recipes</h1> -->
+         <div class="d-flex" style="font-size: large;">
+            <div class="m-2 px-4 align-self-center" style="background-color: lightgray; border-radius: 25px; height: 50px; line-height: 50px;">
+                <p style="font-size: x-large;">Breakfast</p>
+            </div>
+            <div class="m-2 px-4 align-self-center" style="background-color: lightgray; border-radius: 25px; height: 50px; line-height: 50px;">
+                <p style="font-size: larger;">Lunch</p>
+            </div>
+            <div class="m-2 px-4 align-self-center" style="background-color: lightgray; border-radius: 25px; height: 50px; line-height: 50px;">
+                <p style="font-size: larger;">Dinner</p>
+            </div>
+            <div class="m-2 px-4 align-self-center" style="background-color: lightgray; border-radius: 25px; height: 50px; line-height: 50px;">
+                <p style="font-size: larger;">Snack</p>
+            </div>
+         </div>
+
+        <div class="row">
+            
+            <div class="col m-2">
+                <div class="row rounded" style="background-color: lightgray;">
+
+                    <div class="col-2 align-self-center">
+                        <img src="https://github.com/dmor1928.png" alt="" width="64" height="64" class="rounded-circle me-2">
+                    </div>
+                    
+                    
+                    <div class="col">
+                        <div class="row">
+                            <p class="col me-auto fw-bold" style="font-size: x-large;">Recipe Name</p>
+                        </div>
+                        <div class="row">
+                            <p class="col ingredients fw-light">banana, oats, soya milk, peanut butter</p>
+                            <p class="col-2" style="white-space: nowrap;">475 Kcal</p>
+                        </div>
+                    </div>
+                    <div class="col-1 flex-row align-self-center" align="center" onclick="favouriteItem(this.children[0])">
+                        <i class=" bi bi-star-fill" style="font-size: x-large; color: #ffcf00;" ></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col m-2 ">
+                <div class="row rounded" style="background-color: lightgray;">
+                    <div class="col-2 align-self-center">
+                        <img src="https://github.com/dmor1928.png" alt="" width="64" height="64" class="rounded-circle me-2">
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <p class="col me-auto">Recipe Name</p>
+                        </div>
+                        <div class="row">
+                            <p class="col ingredients fw-light">banana, oats, soya milk, peanut butter</p>
+                            <p class="col-2" style="white-space: nowrap;">475 Kcal</p>
+                        </div>
+                    </div>
+                    <div class="col-1 flex-row align-self-center" align="center" onclick="favouriteItem(this.children[0])">
+                        <i class=" bi bi-star-fill" style="font-size: x-large; color: #ffcf00;" ></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div id="foods-content" style="display: none;">
+        <h1>Foods</h1>
+    </div>
+</div>
+{%- endmacro %}
