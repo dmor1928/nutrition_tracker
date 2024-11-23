@@ -1,0 +1,168 @@
+:root {
+  --input-padding-x: .75rem;
+  --input-padding-y: .75rem;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+  -ms-flex-align: center;
+  -ms-flex-pack: center;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+
+.form-signin {
+  width: 100%;
+  max-width: 520px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.signin-section {
+  width: 100%;
+  /* max-width: 330px; */
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.form-label-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.form-signin .checkbox {
+  font-weight: 400;
+}
+
+/* .form-signin .form-control {
+  position: relative;
+  box-sizing: border-box;
+  height: auto;
+  padding: 10px;
+  font-size: 16px;
+} */
+ 
+/* .form-signin .form-control:focus {
+  z-index: 2;
+} */
+
+.form-signin input[id="inputFirstName"] {
+  margin-bottom: 10px;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: 10px;
+}
+
+.form-label-group:has(input[id="inputPassword1"]) {
+  margin-bottom: 0;
+}
+
+.form-signin input[id="inputPassword1"] {
+  /* margin-bottom: 10px; */
+  margin-bottom: -1px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.form-signin input[id="inputPassword2"] {
+  /* margin-bottom: 10px; */
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+
+.invalid-feedback {
+  margin-bottom: 10px;
+}
+
+
+.form-label-group > input,
+.form-label-group > label {
+  padding: var(--input-padding-y) var(--input-padding-x);
+  transition: all .1s ease-in-out;
+}
+
+.form-label-group > select {
+  padding: var(--input-padding-y) var(--input-padding-x);
+}
+
+
+.form-label-group > label, .floating-select + label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  margin-bottom: 0; /* Override default `<label>` margin */
+  line-height: 1.5;
+  color: #495057;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  transition: all .1s ease-in-out;
+}
+
+.floating-select + label {
+  pointer-events: none;
+}
+
+.form-label-group input::-webkit-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input:-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::-moz-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::placeholder {
+  color: transparent;
+}
+
+label {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+.form-label-group input:not(:placeholder-shown), .form-label-group select:not([value=""]):valid {
+  padding-top: calc(var(--input-padding-y) + var(--input-padding-y) * (2 / 3));
+  padding-bottom: calc(var(--input-padding-y) / 3);
+}
+
+.form-label-group input:not(:placeholder-shown) ~ label, .floating-select:focus ~ label , .floating-select:not([value=""]):valid ~ label {
+  padding-top: calc(var(--input-padding-y) / 3);
+  padding-bottom: calc(var(--input-padding-y) / 3);
+  font-size: 12px;
+  color: #777;
+  cursor: default;
+}
+
+.col > .form-label-group {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.invalid-feedback > p {
+  /* margin-top: 0; */
+  margin-bottom: 0;
+}
