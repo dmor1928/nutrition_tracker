@@ -3,26 +3,26 @@
     'use strict'
   
     // Fetch all the forms we want to apply custom Bootstrap validation styles to
-    var forms = document.querySelectorAll('.needs-validation')
+    var forms = document.querySelectorAll('.needs-validation');
     
     var inputs;
     var passwords = [];
-    var passwordsMatch;
+    // var passwordsMatch;
   
     // Loop over them and prevent submission
-    Array.prototype.slice.call(forms)
-        .forEach(function (form) {
+    Array.prototype.slice.call(forms).forEach(function (form) {
+        
             form.addEventListener('submit', function (event) {
 
-                inputs = form.getElementsByTagName("input");
-                for (var i=0; i<inputs.length; i++) {
-                    if (inputs[i].type.toLowerCase() === "password") {
-                        passwords.push(inputs[i].value);
-                      }
-                }
-                passwordsMatch = passwords.every( (val, i, arr) => val === arr[0] );
-                console.log(passwords);
-                console.log(passwordsMatch);
+                // inputs = form.getElementsByTagName("input");
+                // for (var i=0; i<inputs.length; i++) {
+                //     if (inputs[i].type.toLowerCase() === "password") {
+                //         passwords.push(inputs[i].value);
+                //       }
+                // }
+                // passwordsMatch = passwords.every( (val, i, arr) => val === arr[0] );
+                // console.log(passwords);
+                // console.log(passwordsMatch);
 
                 if (!form.checkValidity()) {
                     event.preventDefault();
@@ -31,29 +31,54 @@
   
                 form.classList.add('was-validated');
             }, false)
-      })
-  })()
+        })
+})()
 
+function firstNameCheck(element) {
+    var firstName = element.value;
 
-function passwordsMatch(element) {
-    var inputs = document.getElementsByTagName("input");
-    var passwords = [];
-    var passwordsMatch;
-
-    for (var i=0; i<inputs.length; i++) {
-        if (inputs[i].type.toLowerCase() === "password") {
-            passwords.push(inputs[i].value);
-            }
-    }
-
-    passwordsMatch = passwords.every( (val, i, arr) => val === arr[0] );
-
-    console.log(passwords);
-    console.log(passwordsMatch);
-
-    if (passwordsMatch) {
+    if (firstName.length >= 3) {
         element.classList.remove('is-invalid');
         element.classList.add('is-valid');
+    } else {
+        element.classList.remove('is-valid');
+        element.classList.add('is-invalid');
+    }
+}
+
+function emailCheck(element) {
+    var email = element.value;
+
+    var re = /\S+@\S+\.\S+/;  // email format anystring@anystring.anystring
+    if (re.test(email)) {
+        element.classList.remove('is-invalid');
+        element.classList.add('is-valid');
+    } else {
+        element.classList.remove('is-valid');
+        element.classList.add('is-invalid');
+    }
+}
+
+function passwordsMatchAndValid(element) {
+
+    var passwordsMatch = (function() {
+        var inputs = document.getElementsByTagName("input");
+        var passwords = [];
+        for (var i=0; i<inputs.length; i++) {
+            if (inputs[i].type.toLowerCase() === "password") {
+                passwords.push(inputs[i].value);
+                }
+        }
+        return passwords.every( (val, i, arr) => val === arr[0] );
+    })();
+    var inputPassword1Valid = document.getElementById('inputPassword1').classList.contains('is-valid');
+
+    if (passwordsMatch && inputPassword1Valid) {
+        element.classList.remove('is-invalid');
+        element.classList.add('is-valid');
+    } else if (!(inputPassword1Valid)) {
+        element.classList.remove('is-invalid');
+        element.classList.remove('is-valid');
     } else {
         element.classList.remove('is-valid');
         element.classList.add('is-invalid');
@@ -146,4 +171,67 @@ function passwordStrengthCheck(element) {
     // }
 
     // password.parentNode.childNodes.querySelectorAll('.invalid-feedback').value = "";
+}
+
+function toNextPage(element) {
+    var currentSection = element.parentNode.parentNode;
+
+    // validate that currentSection has valid inputs
+
+    var inputs;
+    inputs = currentSection.getElementsByTagName("input");
+    for (var i=0; i < inputs.length; i++) {
+        if (!(inputs[i].classList.contains('is-valid'))) {
+            return 0;
+        } 
+    }
+
+    var nextSection = currentSection.nextSibling;
+    while(nextSection && nextSection.nodeType != 1) {  // For browsers that check for whitespace
+        
+        nextSection = nextSection.nextSibling;
+    }
+
+    // currentSection.classList.add('hide-section');
+    nextSection.style.display = 'block';
+    // window.setTimeout(function () {
+        currentSection.style.display = 'none';
+    // }, 1000);
+
+    // window.setTimeout(function () {
+        // nextSection.classList.toggle('start-hidden');
+    // }, 1000);
+}
+
+function backPage(element) {
+    var currentSection = element.parentNode.parentNode;
+
+    var previousSection = currentSection.previousSibling;
+    while(previousSection && previousSection.nodeType != 1) {  // For browsers that check for whitespace
+        
+        previousSection = previousSection.previousSibling;
+    }
+
+    // currentSection.classList.add('hide-section');
+    previousSection.style.display = 'block';
+    // window.setTimeout(function () {
+    currentSection.style.display = 'none';
+    // }, 1000);
+
+    // window.setTimeout(function () {
+        // nextSection.classList.toggle('start-hidden');
+    // }, 1000);
+}
+
+function toggleReproduction(element) {
+    var selectedSex = element.id;
+
+    if (selectedSex.indexOf('Female') > -1) {
+        document.getElementById('inputReproduction').parentNode.style.visibility = 'visible';
+        document.getElementById('inputReproduction').value = '';
+    } else if (selectedSex.indexOf('Male') > -1) {
+        document.getElementById('inputReproduction').parentNode.style.visibility = 'hidden';
+    } else {
+        console.log("Error when toggling inputReproduction");
+    }
 }

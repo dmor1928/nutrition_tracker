@@ -9,28 +9,29 @@
 {% endblock %}
 
 {% block content %}
-<form class="form-signin needs-validation" novalidate>
+<form class="form-signup needs-validation" novalidate>
+    <div class="form-container d-flex row">
+    <div class="signup-section col shadow-sm">
     
-    <div class="signin-section shadow-sm p-3 pt-4">
-
         <div class="text-center">
-            <img class="mb-4" src="{{url_for('static', filename='nutrimetrics-green-heart.svg')}}" alt="" width="72" height="72">
-            <h1 class="h3 mb-3 font-weight-normal">Sign up</h1>
+            <img class="mb-4" src="{{url_for('static', filename='nutrimetrics-green-heart.svg')}}" alt="The NutriMetrics logo, a green heart" width="108" height="108">
+            <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
         </div>
         
 
         <div class="form-label-group">
-            <input type="text" id="inputFirstName" class="form-control" placeholder="First Name" required autofocus minlength="3">
+            <input type="text" id="inputFirstName" class="form-control" placeholder="First Name" required autofocus minlength="3" onblur="firstNameCheck(this)">
             <label for="inputFirstName">First Name</label>
             <div class="invalid-feedback">
-                Name must be at least 3 characters long.
+                Name must be at least 3 characters long
             </div>
         </div>
         
         <div class="form-label-group">
-            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
+            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required onblur="emailCheck(this)">
             <label for="inputEmail">Email address</label>
-            <div class="valid-feedback">
+            <div class="invalid-feedback">
+                Email must have valid format
             </div>
         </div>
         
@@ -41,8 +42,8 @@
             </div>
         </div>
 
-        <div class="form-label-group">
-            <input type="password" id="inputPassword2" class="form-control" placeholder="Confirm Password" onblur="passwordsMatch(this)" required>
+        <div class="form-label-group mb-4">
+            <input type="password" id="inputPassword2" class="form-control" placeholder="Confirm Password" onblur="passwordsMatchAndValid(this)" required>
             <label for="inputPassword2">Confirm Password</label>
             <div class="invalid-feedback">
                 Passwords don't match
@@ -63,16 +64,23 @@
         </div> -->
 
         <div class="d-grid mt-4">
-            <button class="btn btn-lg btn-primary btn-block">Next</button>
+            <button class="btn btn-lg btn-primary btn-block" type="button" onclick="toNextPage(this)">Next</button>
         </div>
+    
     </div>
 
-    <div class="signin-section shadow-sm p-3">
+    <div class="signup-section col start-hidden shadow-sm p-3">
 
-        <div class="text-center">
-            <h1 class="h3 mb-3 font-weight-normal">Personal details</h1>
-            <p class="mb-0">For more accurate results</p>
-            <p class="mt-0">(recommended)</p>
+        <div class="text-center mb-2">
+            <img class="mb-4" src="{{url_for('static', filename='nutrimetrics-green-heart.svg')}}" alt="The NutriMetrics logo, a green heart" width="108" height="108">
+            <h1 class="h3 font-weight-normal">Personal details</h1>
+            <p class="mb-0">For more accurate insights (recommended)</p>
+        </div>
+
+        <div class="back-button">
+            <button class="btn btn-lg btn-primary btn-block" type="button" onclick="backPage(this)">
+                <i class="bi bi-arrow-left-short"></i>
+            </button>
         </div>
 
         <fieldset>
@@ -81,20 +89,24 @@
             <div class="row">
                 <div class="col d-flex flex-column justify-content-center">
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="inputSex" id="sexMale" checked>
-                        <label class="form-check-label" for="sexMale">Male</label>
+                        <label class="form-check-label" for="sexMale">
+                            <input class="form-check-input" type="radio" name="inputSex" id="sexMale" checked onclick="toggleReproduction(this)">
+                            Male
+                        </label>
                     </div>
                 </div>
 
                 <div class="col d-flex flex-column justify-content-center">
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="inputSex" id="sexFemale">
-                        <label class="form-check-label" for="sexFemale">Female</label>
+                        <label class="form-check-label" for="sexFemale">
+                            <input class="form-check-input" type="radio" name="inputSex" id="sexFemale" onclick="toggleReproduction(this)">
+                            Female
+                        </label>
                     </div>
                 </div>
 
-                <div class="col d-flex flex-column justify-content-center">
-                    <div class="form-label-group my-auto">
+                <div class="col-4 d-flex flex-column justify-content-center">
+                    <div class="form-label-group my-auto" style="visibility: hidden;">
                         <select id="inputReproduction" class="form-select floating-select">
                             <option value="" selected></option>
                             <option value="1">Pregnant</option>
@@ -120,7 +132,7 @@
                             placeholder="Day"
                         /> -->
                         <select id="dobDay" class="form-select floating-select" onclick="this.setAttribute('value', this.value);" value="" required>
-                            <option class="placeholder-option" value="" selected></option>
+                            <option class="placeholder-option" value="" selected hidden></option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -160,7 +172,7 @@
                 <div class="col">
                     <div class="form-label-group">
                         <select id="dobMonth" class="form-select floating-select" onclick="this.setAttribute('value', this.value);" value="" required>
-                            <option class="placeholder-option" value="" selected></option>
+                            <option class="placeholder-option" value="" selected hidden></option>
                             <option value="1">January</option>
                             <option value="2">February</option>
                             <option value="3">March</option>
@@ -199,16 +211,16 @@
             
             <div class="row">
                 <div class="col">
-                    <div class="form-label-group">
+                    <div class="form-group">
                         <input 
                             type="number" 
                             class="form-control" 
                             id="inputWeight" 
                             name="inputWeight"
-                            placeholder="Year"
+                            placeholder="72"
                             required
                         />
-                        <label for="inputWeight">Weight</label>
+                        <!-- <label for="inputWeight">Weight</label> -->
                     </div>
                 </div>
                 <div class="col">
@@ -222,13 +234,70 @@
                 </div>
             </div>
         </fieldset>
-    </div>
-    <div class="text-center signin-section shadow-sm p-3">
+
+        <fieldset>
+            <legend for="inputSex form-label">Height</legend>
+            
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <input 
+                            type="number" 
+                            class="form-control" 
+                            id="inputFeet" 
+                            name="inputFeet"
+                            placeholder="5"
+                            required
+                        />
+                        <!-- <label for="inputWeight">Weight</label> -->
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <input 
+                            type="number" 
+                            class="form-control" 
+                            id="inputInches" 
+                            name="inputInches"
+                            placeholder="8"
+                            required
+                        />
+                        <!-- <label for="inputWeight">Weight</label> -->
+                    </div>
+                </div>
+                <div class="col" hidden>
+                    <div class="form-group">
+                        <input 
+                            type="number" 
+                            class="form-control" 
+                            id="inputCm" 
+                            name="inputCm"
+                            placeholder="170"
+                            required
+                        />
+                        <!-- <label for="inputWeight">Weight</label> -->
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-label-group">
+                        <select id="inputWeightUnit" class="form-select floating-select">
+                            <option value="kg" selected>cm</option>
+                            <option value="lb">feet and inches</option>
+                        </select>
+                        <label for="inputWeightUnit">Unit</label>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
         <div class="d-grid">
             <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
         </div>
     </div>
+</div>
 </form>
+
+
 {% endblock %}
 
 {% block scripts %}
