@@ -40,10 +40,15 @@ function firstNameCheck(element) {
     if (firstName.length >= 3) {
         element.classList.remove('is-invalid');
         element.classList.add('is-valid');
-    } else {
+    } else if (firstName.length >= 1) {
         element.classList.remove('is-valid');
         element.classList.add('is-invalid');
+    } else {
+        element.classList.remove('is-valid');
+        element.classList.remove('is-invalid');
     }
+
+    tryEnableNext();
 }
 
 function emailCheck(element) {
@@ -53,10 +58,15 @@ function emailCheck(element) {
     if (re.test(email)) {
         element.classList.remove('is-invalid');
         element.classList.add('is-valid');
-    } else {
+    } else if (email.length >= 1) {
         element.classList.remove('is-valid');
         element.classList.add('is-invalid');
+    } else {
+        element.classList.remove('is-valid');
+        element.classList.remove('is-invalid');
     }
+    
+    tryEnableNext();
 }
 
 function passwordsMatchAndValid(element) {
@@ -83,6 +93,8 @@ function passwordsMatchAndValid(element) {
         element.classList.remove('is-valid');
         element.classList.add('is-invalid');
     }
+
+    tryEnableNext();
 }
 
 function passwordStrengthCheck(element) {
@@ -92,10 +104,12 @@ function passwordStrengthCheck(element) {
 
     element.parentNode.querySelectorAll(':scope > .invalid-feedback')[0].innerHTML = '';
 
-    if (password == '') {
+    if (password.length == 0) {
         textp = document.createElement('p');
-        textp.innerText = 'Enter a password:';
+        // textp.innerText = 'Enter a password';
         element.parentNode.querySelectorAll(':scope > .invalid-feedback')[0].appendChild(textp);
+        element.classList.remove('is-valid');
+        element.classList.remove('is-invalid');
         return 0;
     }
 
@@ -133,8 +147,6 @@ function passwordStrengthCheck(element) {
         }
     }
 
-    console.log(feedbackText);
-
     if (feedbackText.length == 0) {
         element.classList.remove('is-invalid');
         element.classList.add('is-valid');
@@ -171,6 +183,21 @@ function passwordStrengthCheck(element) {
     // }
 
     // password.parentNode.childNodes.querySelectorAll('.invalid-feedback').value = "";
+
+    tryEnableNext();
+}
+
+function tryEnableNext() {
+    if (
+        (document.getElementById('inputFirstName').classList.contains('is-valid')) &&
+        (document.getElementById('inputEmail').classList.contains('is-valid')) &&
+        (document.getElementById('inputPassword1').classList.contains('is-valid')) &&
+        (document.getElementById('inputPassword2').classList.contains('is-valid'))
+    ) {
+        document.getElementById('nextButton').removeAttribute("disabled");
+    } else {
+        document.getElementById('nextButton').setAttribute("disabled", '');
+    }
 }
 
 function toNextPage(element) {
@@ -188,19 +215,11 @@ function toNextPage(element) {
 
     var nextSection = currentSection.nextSibling;
     while(nextSection && nextSection.nodeType != 1) {  // For browsers that check for whitespace
-        
         nextSection = nextSection.nextSibling;
     }
 
-    // currentSection.classList.add('hide-section');
     nextSection.style.display = 'block';
-    // window.setTimeout(function () {
-        currentSection.style.display = 'none';
-    // }, 1000);
-
-    // window.setTimeout(function () {
-        // nextSection.classList.toggle('start-hidden');
-    // }, 1000);
+    currentSection.style.display = 'none';
 }
 
 function backPage(element) {
@@ -208,19 +227,11 @@ function backPage(element) {
 
     var previousSection = currentSection.previousSibling;
     while(previousSection && previousSection.nodeType != 1) {  // For browsers that check for whitespace
-        
         previousSection = previousSection.previousSibling;
     }
 
-    // currentSection.classList.add('hide-section');
     previousSection.style.display = 'block';
-    // window.setTimeout(function () {
     currentSection.style.display = 'none';
-    // }, 1000);
-
-    // window.setTimeout(function () {
-        // nextSection.classList.toggle('start-hidden');
-    // }, 1000);
 }
 
 function toggleReproduction(element) {
@@ -235,3 +246,62 @@ function toggleReproduction(element) {
         console.log("Error when toggling inputReproduction");
     }
 }
+
+function toggleHeightUnits(element) {
+    var selectedUnit = element.value;
+    var imperialCols =Object.values(document.getElementsByClassName('imperial-units'));
+    var metricCols = Object.values(document.getElementsByClassName('metric-units'));
+
+    if (selectedUnit == "kg") {
+        for (var i=0; i<imperialCols.length; i++) {
+            imperialCols[i].style.display = 'none';
+        }
+        for (var i=0; i<metricCols.length; i++) {
+            metricCols[i].style.display = 'block';
+        }
+        
+    } else if (selectedUnit == "lb") {
+        for (var i=0; i<metricCols.length; i++) {
+            metricCols[i].style.display = 'none';
+        }
+        for (var i=0; i<imperialCols.length; i++) {
+            imperialCols[i].style.display = 'block';
+        }
+        
+    } else {
+        console.log("Error when toggling height units");
+    }
+}
+
+var heightInputFeetElement = document.getElementById("inputFeet");
+var heightInputInchesElement = document.getElementById("inputInches");
+var heightInputCmElement = document.getElementById("inputCm");
+
+function ChangeAllHeightInputs(element) {
+    var changed_id = element.id;
+
+    heightInputInches = Number(heightInputInchesElement.value);
+    heightInputFeet = Number(heightInputFeetElement.value);
+    heightInputCm = Number(heightInputCmElement.value);
+
+    if (changed_id == 'inputFeet' || changed_id == 'inputInches') {
+        var totalHeightCm = (12 * heightInputFeet + heightInputInches) * 2.54;
+        totalHeightCm = Math.round(totalHeightCm);
+        heightInputCmElement.value = totalHeightCm;
+    } else if (changed_id == 'inputCm') {
+        var totalHeightInches = heightInputCm / 2.54;
+        totalHeightInches = Math.round(totalHeightInches);
+        heightInputInchesElement.value = (totalHeightInches % 12).toString();
+        heightInputFeetElement.value = (Math.floor(totalHeightInches / 12)).toString();
+    }
+}
+
+heightInputFeetElement.addEventListener("input", function (evt) {
+    ChangeAllHeightInputs(heightInputFeetElement)
+});
+heightInputInchesElement.addEventListener("input", function (evt) {
+    ChangeAllHeightInputs(heightInputInchesElement)
+});
+heightInputCmElement.addEventListener("input", function (evt) {
+    ChangeAllHeightInputs(heightInputCmElement)
+});

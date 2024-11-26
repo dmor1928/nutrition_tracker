@@ -185,10 +185,19 @@ label {
   position: absolute;
   top: 0;
   left: 0;
+  margin: 10px;
 }
 
 input[type=radio] {
   -ms-transform: scale(1.25); /* IE 9 */
   -webkit-transform: scale(1.25); /* Chrome, Safari, Opera */
   transform: scale(1.25);
+}
+
+.imperial-units {
+  display: none;
+}
+
+.metric-units {
+  display: block;
 }
